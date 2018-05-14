@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Assignment3"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Assignment3">
+				<Option output="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/cmake-build-debug/Assignment3" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/."/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 Assignment3"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Assignment3/fast">
+				<Option output="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/cmake-build-debug/Assignment3" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/."/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 Assignment3/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/users/studs/bsc/2016/gevaj/Documents/Year\ C/Semester\ B/OS/ass3/Assignment3/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/asm.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/bio.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/bootmain.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/buf.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/cat.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/console.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/date.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/defs.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/echo.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/elf.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/exec.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/fcntl.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/file.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/file.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/forktest.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/fs.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/fs.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/grep.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/ide.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/init.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/ioapic.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/kalloc.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/kbd.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/kbd.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/kill.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/lapic.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/ln.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/log.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/ls.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/main.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/memide.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/memlayout.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/mkdir.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/mkfs.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/mmu.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/mp.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/mp.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/param.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/picirq.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/pipe.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/printf.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/proc.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/proc.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/rm.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/sh.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/sleeplock.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/sleeplock.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/spinlock.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/spinlock.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/stat.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/stressfs.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/string.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/syscall.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/syscall.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/sysfile.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/sysproc.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/trap.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/traps.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/types.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/uart.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/ulib.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/umalloc.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/user.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/usertests.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/vm.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/wc.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/x86.h">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/zombie.c">
+			<Option target="Assignment3"/>
+		</Unit>
+		<Unit filename="/users/studs/bsc/2016/gevaj/Documents/Year C/Semester B/OS/ass3/Assignment3/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
