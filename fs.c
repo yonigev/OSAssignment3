@@ -764,12 +764,7 @@ createSwapFile(struct proc *p) {
     return 0;
 }
 
-int
-addPageToBack(struct proc *p, char* vadd){
-    uint offset=p->paging_meta->next_free_offset;
-    writeToSwapFile(p,vadd,offset,PGSIZE);    //  write the page to the swap file
-    addPageMeta(p,vadd,offset);             //  add to meta-data of the process
-}
+
 //return as sys_write (-1 when error)
 int
 writeToSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {

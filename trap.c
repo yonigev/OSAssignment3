@@ -47,6 +47,7 @@ trap(struct trapframe *tf)
   }
 
   switch(tf->trapno){
+
   case T_IRQ0 + IRQ_TIMER:
     if(cpuid() == 0){
       acquire(&tickslock);
@@ -76,6 +77,16 @@ trap(struct trapframe *tf)
     cprintf("cpu%d: spurious interrupt at %x:%x\n",
             cpuid(), tf->cs, tf->eip);
     lapiceoi();
+    break;
+
+
+  //page fault
+  case T_PGFLT:
+    
+    
+
+
+
     break;
 
   //PAGEBREAK: 13

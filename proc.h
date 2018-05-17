@@ -36,45 +36,12 @@ enum procstate {
     UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE
 };
 
-
-
-//adds a page to the meta data of the Process
-int addPageMeta(struct proc* p,int virtual_address,uint file_offset){
-    int i;
-    for(i=0; i<MAX_TOTAL_PAGES; i++){
-        if(p->paging_meta->virtual_address[i] != 0)    //if there's a free spot, take it
-            continue;
-        p->paging_meta->virtual_address[i]=virtual_address;
-        p->paging_meta->num_in_file ++;
-        p->paging_meta->offset_swapfile[i]=file_offset;
-        p->paging_meta->next_free_offset = file_offset + PGSIZE;        //set the next free file offset
-        return 1;
-    }
-    return 0; //error, no place found
-}
-//removes a page from the meta data of the Process
-int removePageMeta(struct proc* p,int virtual_address,uint file_offset){
-    int i;
-    for(i=0; i<MAX_TOTAL_PAGES; i++){
-        //if the searched VAddress is found with the correct file offset
-        if( p->paging_meta->virtual_address[i] == virtual_address   &&p->paging_meta->offset_swapfile[i] == file_offset){
-            p->paging_meta->virtual_address[i] = 0;                 //clear the spot
-            p->paging_meta->offset_swapfile[i] = 0;                 //clear the offset (not necessary?)
-            p->paging_meta->num_in_file --;                         //decrease the counter
-            p->paging_meta->next_free_offset = file_offset - PGSIZE;        //set the next free file offset (a page was removed)
-            return 1;
-        }
-    }
-    return 0; //error, address not found
-}
-
-
+//if offset_swapfile[i] == 1, then the offset 4096*i is taken, by the page with the vadd - virtual_address[i]
 struct p_meta {
-    int  num_in_mem;
-    int  num_in_file;
-    char *virtual_address[MAX_PSYC_PAGES];     //  contains virtual addresses. the i'th address means the i'th page
-    uint offset_swapfile[MAX_PSYC_PAGES];      //  contains the offset of the i'th page in the swapfile
-    uint next_free_offset;
+    int    num_in_mem;                           //number of pages in memory
+    int    num_in_file;                          //number of pages in the Back
+    void * virtual_address[MAX_PSYC_PAGES];     //  contains virtual addresses. the i'th address means the i'th page
+    uint   offset_swapfile[MAX_PSYC_PAGES];      //  contains the offset of the i'th page in the swapfile
 
 
 };
