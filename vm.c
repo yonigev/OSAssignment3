@@ -389,6 +389,14 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 }
 
 
+
+//returns 1 if the page is PAGED OUT (not present AND marked as paged out.)
+int
+isPagedOut(struct proc *p,  void* vaddr){
+  if( !isFlagged(p,vaddr,PTE_P)  &&  isFlagged(p,vaddr,PTE_PG))
+    return 1;
+  return 0;
+}
 //page out a page with the adderss vaddr
 int
 pageOut(struct proc *p,void* vaddr){
@@ -502,6 +510,15 @@ removePageMeta(struct proc* p,int virtual_address){
     return 0; //error, address not found
 }
 
+//return 1 if the flag FLAG of page 'vaddr' is SET.
+int
+isFlagged(struct proc *p,void* vaddr ,uint FLAG){
+   struct p_meta *meta=p->paging_meta;
+   pte_t * pte=walkpgdir(p->pgdir,vaddr, 0);
+    if((FLAG & *pte) > 0)
+      return 1;
+    return 0;
+}
 
 
 int

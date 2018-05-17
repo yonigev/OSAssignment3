@@ -82,7 +82,14 @@ trap(struct trapframe *tf)
 
   //page fault
   case T_PGFLT:
-    
+    uint addr=rcr2();   //the "faulty" address
+    struct proc *p=myproc();
+    //if a process is running this  AND the page is Paged-out in the back
+    if(p){
+      if(isPagedOut(p,addr)){
+
+      }
+    }
     
 
 
