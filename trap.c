@@ -85,8 +85,8 @@ trap(struct trapframe *tf)
     uint addr=rcr2();   //the "faulty" address
     struct proc *p=myproc();
     //if a process is running this  AND the page is Paged-out in the back
-    if(p && isPagedOut(p,addr)){
-      safe_page_in(p,addr);  
+    if(p && isPagedOut(p,(void *)addr)){
+      safe_page_in(p,(void *)addr);  
       break;
       }
       //else  -   panic.
