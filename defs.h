@@ -193,7 +193,13 @@ void            switchuvm(struct proc*);
 void            switchkvm(void);
 int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
-int             isPagedOut(struct proc *p,  void* vaddr)
+    //added in assignment 3//
+int             isPagedOut(struct proc *p,  void* vaddr);
+int             numOfPagedOut(struct proc *p);
+int             numOfPagedIn(struct proc *p);
+int             pageIn(struct proc *p, void* vaddr);
+int             pageOut(struct proc *p,void* vaddr);
+int             add_new_page(struct proc *p, void* vaddr);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

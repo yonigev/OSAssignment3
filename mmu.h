@@ -128,8 +128,8 @@ struct segdesc {
 #define NPDENTRIES      1024    // # directory entries per page directory
 #define NPTENTRIES      1024    // # PTEs per page table
 #define PGSIZE          4096    // bytes mapped by a page
-//added for task 1.1
-#define PGFILE_FULL_ERR PGSIZE * MAX_TOTAL_PAGES
+//added for task 1.1- TODO: Find different way.
+#define PGFILE_FULL_ERR PGSIZE * MAX_TOTAL_PAGES  * 10
 
 
 #define PGSHIFT         12      // log2(PGSIZE)

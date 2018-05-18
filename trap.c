@@ -87,7 +87,7 @@ trap(struct trapframe *tf)
     //if a process is running this  AND the page is Paged-out in the back
     if(p){
       if(isPagedOut(p,addr)){
-
+        
       }
     }
     

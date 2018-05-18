@@ -43,6 +43,7 @@ exec(char *path, char **argv) {
 
 
     sz = 0;
+    //each iteration - different Program Header? 
     for (i = 0, off = elf.phoff; i < elf.phnum; i++, off += sizeof(ph)) {
         if (readi(ip, (char *) &ph, off, sizeof(ph)) != sizeof(ph))
             goto bad;
@@ -52,12 +53,26 @@ exec(char *path, char **argv) {
             goto bad;
         if (ph.vaddr + ph.memsz < ph.vaddr)
             goto bad;
-        if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
-            goto bad;
+    
+        //grow the process 1 page at a time!
+        int pagenum =   1;
+        while(sz     <    ph.vaddr+ph.memsz){
+            //if there's enough place in memory, allocate.
+            if(numOfPagedIn < MAX_PSYC_PAGES){
+                if ((sz = allocuvm(pgdir, sz, sz + PGSIZE)) == 0)
+                goto bad;
+            }
+            add_new_page(curproc,ph.vaddr + pagenum * PGSIZE);  //add a new page to the process
+            pagenum ++;
+        }
+
+        // if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
+        //     goto bad;
         if (ph.vaddr % PGSIZE != 0)
             goto bad;
         if (loaduvm(pgdir, (char *) ph.vaddr, ip, ph.off, ph.filesz) < 0)
             goto bad;
+        
     }
     iunlockput(ip);
     end_op();

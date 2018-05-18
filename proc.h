@@ -36,19 +36,25 @@ enum procstate {
     UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE
 };
 
-//if offset_swapfile[i] == 1, then the offset 4096*i is taken, by the page with the vadd - virtual_address[i]
-struct p_meta {
-    int    num_in_mem;                           //number of pages in memory
-    int    num_in_file;                          //number of pages in the Back
-    void * virtual_address[MAX_PSYC_PAGES];     //  contains virtual addresses. the i'th address means the i'th page
-    uint   offset_swapfile[MAX_PSYC_PAGES];      //  contains the offset of the i'th page in the swapfile
 
+struct page{
+    int         exists;         //1 -if this page exists, 0 if it's the end of the list.
+    void*       vaddr;          //the page's virtual address
+    int         in_back;        //1 if in back, 0 if stored in the memory.
+    uint        offset;         //offset in Back file ( if in_back == 1 )
+};
+
+struct p_meta {
+    int             num_in_mem;                           //number of pages in memory
+    int             num_in_file;                          //number of pages in the Back
+    struct page     pages[MAX_TOTAL_PAGES];               //  contains virtual addresses. the i'th address means the i'th page
+    int             offsets[MAX_TOTAL_PAGES];             // 0 if offset #i is available, 1 otherwise (taken by some page)
 
 };
 // Per-process state
 struct proc {
     uint sz;                     // Size of process memory (bytes)
-    pde_t *pgdir;                // Page table (Directory!?) (4KB directory, contains the page addresses, and flags of the SECOND level tables)
+    pde_t *pgdir;                // Page table (Directory) (4KB directory, contains the page addresses, and flags of the SECOND level tables)
     char *kstack;                // Bottom of kernel stack for this process
     enum procstate state;        // Process state
     int pid;                     // Process ID

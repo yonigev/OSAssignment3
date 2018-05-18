@@ -195,7 +195,6 @@ inituvm(pde_t *pgdir, char *init, uint sz)
 
 // Load a program segment into pgdir.  addr must be page-aligned
 // and the pages from addr to addr+sz must already be mapped.
-//TODO: divide into 16 pages here?
 int
 loaduvm(pde_t *pgdir, char *addr, struct inode *ip, uint offset, uint sz)
 {
@@ -266,7 +265,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
   if(newsz >= oldsz)
     return oldsz;
 
-  a = PGROUNDUP(newsz);
+  a = PGROUNDUP(newsz);               //align    newsz   to page size
   for(; a  < oldsz; a += PGSIZE){
     pte = walkpgdir(pgdir, (char*)a, 0);
     if(!pte)
@@ -282,7 +281,6 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
   }
   return newsz;
 }
-
 // Free a page table and all the physical memory pages
 // in the user part.
 void
@@ -390,6 +388,36 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 
 
 
+
+
+
+
+
+
+
+
+
+//page in 'to_in' and page out 'to_back'.
+int
+page_in_out(struct proc* p, void* to_in, void* to_back){
+  if(pageOut(p,to_back)){
+    return pageIn(p,to_in);
+  }
+  return -1;
+}
+//  Called only after checking that this page is indeed paged out!
+//  And only when there's less than MAX_PSYC pages in memory.
+int
+pageIn(struct proc *p, void* vaddr){
+    char* paddr;    //will contain Physical address that the page would be written to.
+    paddr = kalloc();                           //allocate physical page
+    mappages(p->pgdir,vaddr,PGSIZE,paddr,0);    //map the vaddr to the newly allocated Paddr
+    getPageFromBack(p,vaddr,vaddr);             //write the page into memory (vaddr is already mapped to paddr)
+    clearPTE_FLAG(p,vaddr,PTE_PG);              //clear the PAGED OUT flag
+    setPTE_FLAG(p,vaddr,PTE_P);                 //set the PRESENT flag
+    page_in_meta(p,vaddr);                      //remove meta data from the process meta-data struct 
+}
+
 //returns 1 if the page is PAGED OUT (not present AND marked as paged out.)
 int
 isPagedOut(struct proc *p,  void* vaddr){
@@ -400,10 +428,17 @@ isPagedOut(struct proc *p,  void* vaddr){
 //page out a page with the adderss vaddr
 int
 pageOut(struct proc *p,void* vaddr){
-   //write page to the file.
+  int newsize;
+  char* to_free;
+
+   //write page to the Back file.
   if(addPageToBack(p,vaddr)){
-    if(!deallocuvm(p->pgdir,p->sz,p->sz - PGSIZE))  //Dealloc the page from the Physical memory  (TODO: Check correctness)
-      panic("page out dealloc error");
+    if(!(to_free=uva2ka(p->pgdir,vaddr)))
+      panic("page-out");
+    kfree(to_free);      //free the PHYSICAL memory of the page
+    clearPTE_FLAG(p,vaddr,PTE_P);                     //clear the Present flag from the page table entry
+    setPTE_FLAG(p,vaddr,PTE_PG);                      //set the PAGED-OUT flag
+    lcr3(V2P(p->pgdir));                              //refresh the Table Lookaside Buffer            
     return 1;
   }
   return 0;   //error adding page to Back
@@ -416,10 +451,8 @@ addPageToBack(struct proc *p, const void* vaddr){
     if(free_offset == PGFILE_FULL_ERR)
       return 0;
     writeToSwapFile(p,vaddr,free_offset,PGSIZE);    //  write the page to the swap file
-    addPageMeta(p,vaddr,free_offset);             //  add to meta-data of the process
-    clearPTE_P(p,vaddr);                     //clear the Present flag from the page table entry
-    setPTE_PG(p,vaddr);                      //set the PAGED-OUT flag
-    lcr3(V2P(p->pgdir));                    //refresh the Table Lookaside Buffer
+    page_out_meta(p,vaddr,free_offset);             //  add to meta-data of the process
+   
     return 1;
 }
 
@@ -428,15 +461,13 @@ addPageToBack(struct proc *p, const void* vaddr){
 //  return 0 on error
 int
 getPageFromBack(struct proc* p, const void* vaddr, char* buffer){
-  struct p_meta *meta=p->paging_meta;
+  struct page* pages=p->paging_meta->pages;
   int i;
-  for(i=0; i  < MAX_PSYC_PAGES; i++){
-    if (meta->virtual_address[i]  ==   vaddr){
+  for(i=0; i  < MAX_TOTAL_PAGES; i++){
+    if (pages[i].exists && pages[i].vaddr  ==   vaddr){
       uint offset   = i * PGSIZE;
       if(readFromSwapFile(p,buffer,offset,PGSIZE) < 0)
         panic("get page error");
-      removePageMeta(p,vaddr);                  //remove meta data from the process meta-data struct
-      clearPTE_FLAG(p, vaddr,PTE_P | PTE_PG);   //set present and also NOT paged out.
       return 1;
     }
   }
@@ -444,15 +475,14 @@ getPageFromBack(struct proc* p, const void* vaddr, char* buffer){
 }
 
 
-//  A Naive way to get some page that we can remove from the Back file.
-//  returns -1 if Back file is empty
+//  A Naive way to get some page that we can remove to the Back file.
 void*
-getVaddrToPageIn(struct proc *p){
-  struct p_meta *meta=p->paging_meta;
+naive_getPageToStore(struct proc *p){
+  struct page *pages=p->paging_meta->pages;
   int i;
-  for(i = 0; i< MAX_PSYC_PAGES; i++){
-    if(meta->offset_swapfile[i] == 1){ // if taken
-      return meta->virtual_address[i];
+  for(i = 0; i< MAX_TOTAL_PAGES; i++){
+    if(pages[i].exists && !pages[i].in_back){ // if page #i exists and is currentnly in RAM
+      return pages[i].vaddr;
     }
   }
   return -1;
@@ -460,60 +490,90 @@ getVaddrToPageIn(struct proc *p){
 
 // returns 1 if the process has a place in the back for a page.
 int hasPlaceInBack(struct proc *p){
-  if(getNumOfPagedOut < MAX_PSYC_PAGES)
+  if(numOfPagedOut < MAX_TOTAL_PAGES)
     return 1;
   return 0;
 }
 //returns the number of paged out Pages
 int
-getNumOfPagedOut(struct proc *p){
-  return p->paging_meta->num_in_file;
+numOfPagedOut(struct proc *p){
+  struct page* pages=p->paging_meta->pages;
+  int i;
+  int counter = 0;
+  for(i=0; i  <MAX_TOTAL_PAGES; i++){
+    if(pages[i].exists  == 0)
+      continue;  
+    if(pages[i].in_back ==  1)
+      counter ++;
+  }
+  return counter;  
+}
+
+
+//Number of pages in RAM
+int
+numOfPagedIn(struct proc *p){
+  struct page* pages=p->paging_meta->pages;
+  int i;
+  int counter = 0;
+  for(i=0; i  <MAX_TOTAL_PAGES; i++){
+    if(pages[i].exists  == 0)
+      continue;  
+    if(pages[i].in_back ==  0)
+      counter ++;
+  }
+  return counter;  
 }
 //get the next free offset in the Back file
-//return PGFILE_FULL_ERR if none found (file is full)
+//return PGFILE_FULL_ERR if none found (file is full  - TODO: Possible?!)
 uint
 getFreePageOffset(struct proc *p){
   struct p_meta *meta=p->paging_meta;
   int i;
-  for(i=0; i< MAX_PSYC_PAGES; i++){
-    if(meta -> offset_swapfile[i] == 1) //if taken, continue..
+
+  for(i=0; i< MAX_TOTAL_PAGES; i++){
+    if(meta -> offsets[i] == 1) //if taken, continue..
       continue;
     return PGSIZE * i ;
   }
   return PGFILE_FULL_ERR ;
 }
-//adds a page to the meta data of the Process
-//manages a list of "Backed" virtual addresses, and a "free" offset in file etc...
+//adds a page to the meta data of the Process (when a page is added to the back)
+//page needs to already exist in the list.
 int 
-addPageMeta(struct proc *p,int virtual_address,uint file_offset){
-    int index = file_offset / PGSIZE ;        
-    struct p_meta *meta  = p->paging_meta;
-    meta->offset_swapfile[index] = 1;                         //mark as taken
-    meta->virtual_address[index] = virtual_address;           //the vaddr of the page
-    meta->num_in_file ++;
-    return 1;
+page_out_meta(struct proc *p,int vaddr,uint offset){
+   struct p_meta *meta  =   p->paging_meta;
+   struct page *pages   =   meta->pages;
+   int i;
+   for(i=0; i<MAX_TOTAL_PAGES; i++){
+     if(pages[i].vaddr  ==  vaddr){
+       pages[i].in_back =   1;              //mark as "Backed"
+       pages[i].offset  =   offset;         //store the offset of the page
+       meta->offsets[offset / PGSIZE] = 1;  //mark offset as taken
+       return 1;
+     }
+   }
+   return 0;
 }
 //removes a page from the meta data of the Process
 int 
-removePageMeta(struct proc* p,int virtual_address){
-    struct p_meta * meta  = p->paging_meta;
-    int i;
-    for(i=0; i<MAX_TOTAL_PAGES; i++){
-        //if the searched VAddress is found 
-        if(meta->virtual_address[i] == virtual_address){
-          meta->offset_swapfile[i] = 0;   //mark as a free spot
-          meta->virtual_address[i] = 0;   //clear
-          meta->num_in_file --;
-          return 1;  
-        }
-    }
-    return 0; //error, address not found
+page_in_meta(struct proc* p,int vaddr){
+   struct p_meta *meta  =   p->paging_meta;
+   struct page *pages   =   meta->pages;
+   int i;
+   for(i=0; i<MAX_TOTAL_PAGES; i++){
+     if(pages[i].vaddr  ==  vaddr){
+       pages[i].in_back =   0;                       //mark as "NOT Backed"
+       meta->offsets[pages[i].offset / PGSIZE] = 0;  //mark offset as free
+       return 1;
+     }
+   }
+   return 0;
 }
 
 //return 1 if the flag FLAG of page 'vaddr' is SET.
 int
 isFlagged(struct proc *p,void* vaddr ,uint FLAG){
-   struct p_meta *meta=p->paging_meta;
    pte_t * pte=walkpgdir(p->pgdir,vaddr, 0);
     if((FLAG & *pte) > 0)
       return 1;
@@ -538,6 +598,7 @@ setPTE_PG(struct proc *p, const void* vadd){
   *entry |= PTE_P;   //clear the P flag
 }
 
+void
 setPTE_FLAG(struct proc *p, const void* vadd, uint FLAG){
   //get the entry
   pte_t * entry=walkpgdir(p->pgdir,vadd, 0);
@@ -545,6 +606,7 @@ setPTE_FLAG(struct proc *p, const void* vadd, uint FLAG){
     panic("setPTE_PG");
   *entry |= FLAG;   //clear the  flag
 }
+void
 clearPTE_FLAG(struct proc *p, const void* vadd, uint FLAG){
   //get the entry
   pte_t * entry=walkpgdir(p->pgdir,vadd, 0);
@@ -553,6 +615,25 @@ clearPTE_FLAG(struct proc *p, const void* vadd, uint FLAG){
   *entry &= ~FLAG;   //clear the  flag
 }
 
+
+// Adds a TOTALLY new page to the process's list.
+int
+add_new_page(struct proc *p, void* vaddr){
+  struct p_meta *meta = p->paging_meta;
+  struct page *pages=meta->pages;
+  int i;
+  for(i=0; i<MAX_TOTAL_PAGES; i++){
+    if(pages[i].vaddr == vaddr)
+      panic("add_new_page vaddr exists");
+    if(pages[i].exists)
+      continue;
+    pages[i].exists = 1;      //mark this spot as taken, a page exists here now.
+    pages[i].vaddr  = vaddr;
+    pages[i].in_back= 0;
+    return 1;
+  }
+  return 0;
+}
 
 
 //PAGEBREAK!
