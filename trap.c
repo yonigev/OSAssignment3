@@ -79,9 +79,9 @@ trap(struct trapframe *tf)
     lapiceoi();
     break;
 
-
   //page fault
   case T_PGFLT:
+    ;//stupid bug 
     uint addr=rcr2();   //the "faulty" address
     struct proc *p=myproc();
     //if a process is running this  AND the page is Paged-out in the back
