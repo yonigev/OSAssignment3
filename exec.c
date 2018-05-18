@@ -60,8 +60,7 @@ exec(char *path, char **argv) {
         //     if(page_out_N(curproc, to_page_out)!= to_page_out)
         //         goto bad;
 
-         if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
-             goto bad;
+        
         if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
             goto bad;
         if (ph.vaddr % PGSIZE != 0)
