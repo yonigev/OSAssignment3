@@ -393,6 +393,17 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 
 
 
+
+
+
+//return 1 if the flag FLAG of page 'vaddr' is SET.
+int
+isFlagged(struct proc *p,void* vaddr ,uint FLAG){
+   pte_t * pte=walkpgdir(p->pgdir,vaddr, 0);
+    if((FLAG & *pte) > 0)
+      return 1;
+    return 0;
+}
 void
 setPTE_FLAG(struct proc *p, const void* vadd, uint FLAG){
   //get the entry
@@ -589,7 +600,7 @@ naive_getPageToStore(struct proc *p){
 
 // returns 1 if the process has a place in the back for a page.
 int hasPlaceInBack(struct proc *p){
-  if(numOfPagedOut < MAX_TOTAL_PAGES)
+  if(numOfPagedOut(p) < MAX_TOTAL_PAGES)
     return 1;
   return 0;
 }
@@ -635,20 +646,12 @@ numOfPagedIn(struct proc *p){
 //copy the parent's swapfile to the child.
 int
 copy_parent_swapfile(struct proc *child, struct proc *parent){
-  char buff[PGSIZE * 32]; //32 pages
+  char *buff = malloc(PGSIZE * 32);
   readFromSwapFile(parent,buff,0,PGSIZE * 32);
-  return writeToSwapFile(child,&buff,0,PGSIZE  * 32);
+  return writeToSwapFile(child,buff,0,PGSIZE  * 32);
 
 }
 
-//return 1 if the flag FLAG of page 'vaddr' is SET.
-int
-isFlagged(struct proc *p,void* vaddr ,uint FLAG){
-   pte_t * pte=walkpgdir(p->pgdir,vaddr, 0);
-    if((FLAG & *pte) > 0)
-      return 1;
-    return 0;
-}
 
 
 int
