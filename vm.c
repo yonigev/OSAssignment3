@@ -395,8 +395,38 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 
 
 
+//page in vaddr. if needed, page out some other one.
+int
+safe_page_in(struct proc *p, void* vaddr){
+  if(numOfPagedIn(p) == MAX_PSYC_PAGES){
+    page_out_N(p,1);
+  }
+  pageIn(p, vaddr);
+}
 
-
+// page out N different pages into the Back.
+int
+page_out_N(struct proc *p,int N){
+  int vaddr[N];
+  int found_in_ram=0;   //for debugging
+  struct page* pages=p->paging_meta->pages;
+  int i;
+  //find N pages to page OUT
+  for(i=0; i<N; i++){
+    if(pages[i].exists  && !pages[i].in_back){  //if the page exists and is IN RAM
+      vaddr[i] = pages[i].vaddr;                 //save his virtual address in the array
+      found_in_ram++;
+    }
+  }
+  if(found_in_ram < N)
+    panic("page_out_N");
+  //page OUT the pages you found
+  for(i=0; i<N; i++){
+    if(!pageOut(p,vaddr[i]))
+      panic("couldnt pageout");
+  }
+  return N;
+  }
 //page in 'to_in' and page out 'to_back'.
 int
 page_in_out(struct proc* p, void* to_in, void* to_back){
@@ -428,14 +458,13 @@ isPagedOut(struct proc *p,  void* vaddr){
 //page out a page with the adderss vaddr
 int
 pageOut(struct proc *p,void* vaddr){
-  int newsize;
   char* to_free;
 
    //write page to the Back file.
   if(addPageToBack(p,vaddr)){
     if(!(to_free=uva2ka(p->pgdir,vaddr)))
       panic("page-out");
-    kfree(to_free);      //free the PHYSICAL memory of the page
+    kfree(to_free);                                   //free the PHYSICAL memory of the page
     clearPTE_FLAG(p,vaddr,PTE_P);                     //clear the Present flag from the page table entry
     setPTE_FLAG(p,vaddr,PTE_PG);                      //set the PAGED-OUT flag
     lcr3(V2P(p->pgdir));                              //refresh the Table Lookaside Buffer            
@@ -569,6 +598,20 @@ page_in_meta(struct proc* p,int vaddr){
      }
    }
    return 0;
+}
+
+
+
+
+
+
+//copy the parent's swapfile to the child.
+int
+copy_parent_swapfile(struct proc *child, struct proc *parent){
+  char buff[PGSIZE * 32]; //32 pages
+  readFromSwapFile(parent,buff,0,PGSIZE * 32);
+  return writeToSwapFile(child,&buff,0,PGSIZE  * 32);
+
 }
 
 //return 1 if the flag FLAG of page 'vaddr' is SET.

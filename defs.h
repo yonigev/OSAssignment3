@@ -200,6 +200,9 @@ int             numOfPagedIn(struct proc *p);
 int             pageIn(struct proc *p, void* vaddr);
 int             pageOut(struct proc *p,void* vaddr);
 int             add_new_page(struct proc *p, void* vaddr);
+int             copy_parent_swapfile(struct proc *child, struct proc *parent);
+int             page_out_N(struct proc *p,int N);
+int             safe_page_in(struct proc *p, void* vaddr);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

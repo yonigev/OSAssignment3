@@ -192,6 +192,9 @@ fork(void)
     return -1;
   }
 
+  //copy the parent's swapfile into the child's.
+  copy_parent_swapfile(np,curproc);
+
   // Copy process state from proc.
   if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
     kfree(np->kstack);
@@ -266,6 +269,10 @@ exit(void)
 
   // Jump into the scheduler, never to return.
   curproc->state = ZOMBIE;
+  removeSwapFile(curproc);  //remove swap file
+  freevm(curproc->pgdir);   //release all virtual memory
+
+
   sched();
   panic("zombie exit");
 }

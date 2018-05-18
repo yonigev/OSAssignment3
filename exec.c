@@ -7,7 +7,6 @@
 #include "x86.h"
 #include "elf.h"
 
-//TOTO: Change?
 int
 exec(char *path, char **argv) {
     char *s, *last;
@@ -54,20 +53,14 @@ exec(char *path, char **argv) {
         if (ph.vaddr + ph.memsz < ph.vaddr)
             goto bad;
     
-        //grow the process 1 page at a time!
-        int pagenum =   1;
-        while(sz     <    ph.vaddr+ph.memsz){
-            //if there's enough place in memory, allocate.
-            if(numOfPagedIn < MAX_PSYC_PAGES){
-                if ((sz = allocuvm(pgdir, sz, sz + PGSIZE)) == 0)
+        int current_in_ram  =   numOfPagedIn(curproc);                          //number of current pages in ram
+        int toAdd           =   (ph.vaddr+ph.memsz - sz)/PGSIZE;                 //number of pages we want to add
+        int to_page_out     =   current_in_ram +toAdd - MAX_PSYC_PAGES;         //how many to page out (make room)
+        if(to_page_out  >   0)
+            if(page_out_N(curproc, to_page_out)!= to_page_out)
                 goto bad;
-            }
-            add_new_page(curproc,ph.vaddr + pagenum * PGSIZE);  //add a new page to the process
-            pagenum ++;
-        }
-
-        // if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
-        //     goto bad;
+        if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
+            goto bad;
         if (ph.vaddr % PGSIZE != 0)
             goto bad;
         if (loaduvm(pgdir, (char *) ph.vaddr, ip, ph.off, ph.filesz) < 0)
