@@ -261,6 +261,7 @@ exit(void)
 
   //if the process is not init or shell
   if(is_user_proc(curproc)){
+    cprintf("in exit - curproc->swap: %d\n",curproc->swapFile);
      if(removeSwapFile(curproc)!=0)
       panic("remove_swap_file");
   }
