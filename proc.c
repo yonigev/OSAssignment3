@@ -21,9 +21,10 @@ extern void trapret(void);
 static void wakeup1(void *chan);
 
 int is_user_proc(struct proc* p){
-
-  if(strncmp(p->name,  "init",4)!=0 && strncmp(p->name,  "sh",2)!=0 )
-    return 1;
+  if(p != 0){
+    if(strncmp(p->name,  "init",4)!=0 && strncmp(p->name,  "sh",2)!=0 )
+      return 1;
+  }
   return 0;
 }
 
