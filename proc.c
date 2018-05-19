@@ -112,10 +112,7 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
-  //task1 - create a swapFile
-  cprintf("new process id - %d",p->pid);
-  // if(createSwapFile(p))
-  //   panic("allocproc- swap file");
+  
   return p;
 }
 
@@ -142,7 +139,10 @@ userinit(void)
   p->tf->eflags = FL_IF;
   p->tf->esp = PGSIZE;
   p->tf->eip = 0;  // beginning of initcode.S
-
+  //task1 - create a swapFile 
+  
+   if(createSwapFile(p))
+     panic("allocproc- swap file");
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
 
