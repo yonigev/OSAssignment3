@@ -113,9 +113,9 @@ found:
   p->context->eip = (uint)forkret;
 
   //task1 - create a swapFile
-  // if(createSwapFile(p))
-  //   panic("allocproc- swap file");
-  createSwapFile(p);
+  if(createSwapFile(p))
+    panic("allocproc- swap file");
+  //createSwapFile(p);
   return p;
 }
 
@@ -194,7 +194,7 @@ fork(void)
   }
 
   //copy the parent's swapfile into the child's.
-  copy_parent_swapfile(np,curproc);
+  //copy_parent_swapfile(np,curproc);
 
   // Copy process state from proc.
   if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
