@@ -114,7 +114,7 @@ found:
 
   //task1 - create a swapFile
   if(createSwapFile(p))
-    panic("allocproc- swap file");
+    cprintf("Failed to create swapfile\n");
   //createSwapFile(p);
   return p;
 }
