@@ -125,6 +125,7 @@ int             wait(void);
 void            wakeup(void*);
 void            yield(void);
 int             is_user_proc(struct proc*);
+void            clean_meta(struct proc *p);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
