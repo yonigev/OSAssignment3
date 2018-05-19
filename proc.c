@@ -115,6 +115,7 @@ found:
   //task1 - create a swapFile
   // if(createSwapFile(p))
   //   panic("allocproc- swap file");
+  createSwapFile(p);
   return p;
 }
 
