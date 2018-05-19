@@ -20,6 +20,12 @@ extern void trapret(void);
 
 static void wakeup1(void *chan);
 
+int is_user_proc(struct proc* p){
+  if(strcmp(p->name,  "init")!=0 && strcmp(p->name,  "sh")!=0 )
+    return 1;
+  
+}
+
 void
 pinit(void)
 {
@@ -214,6 +220,10 @@ fork(void)
 
   //create swap file
   createSwapFile(np);
+  //copy from parent - if he's a user process
+  if(is_user_proc(curproc)){
+    copy_parent_swapfile(np,curproc);
+  }
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
@@ -265,6 +275,13 @@ exit(void)
 
   // Jump into the scheduler, never to return.
   curproc->state = ZOMBIE;
+  //if the process is not init or shell
+  if(is_user_proc(curproc)){
+    removeSwapFile(curproc);
+    freevm(curproc->pgdir);
+  }
+
+
   sched();
   panic("zombie exit");
 }

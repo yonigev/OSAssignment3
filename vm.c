@@ -646,10 +646,17 @@ numOfPagedIn(struct proc *p){
 //copy the parent's swapfile to the child.
 int
 copy_parent_swapfile(struct proc *child, struct proc *parent){
-  char buff [PGSIZE * 32];
-  readFromSwapFile(parent,buff,0,PGSIZE * 32);
-  return writeToSwapFile(child,buff,0,PGSIZE  * 32);
-
+  //copy only if parent is not the shell or init.
+    int chunk=  PGSIZE/2;   //limit ? 
+    int bytes_read;
+    char buff [PGSIZE/2]="";
+    int offset=0;
+    while((bytes_read=readFromSwapFile(parent,buff,offset,chunk))>0){//read chunk from parent
+      writeToSwapFile(child,buff,offset,chunk);                      //write chunk to child
+      offset+=bytes_read;                                            //next offset
+    }
+  
+  return 1;
 }
 
 
