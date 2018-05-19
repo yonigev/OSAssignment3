@@ -17,7 +17,7 @@ static struct proc *initproc;
 int nextpid = 1;
 extern void forkret(void);
 extern void trapret(void);
-
+ 
 static void wakeup1(void *chan);
 
 int is_user_proc(struct proc* p){
@@ -226,11 +226,14 @@ fork(void)
 
   //create swap file
   createSwapFile(np);
+  //initialize swap file meta
+  memset(np->paging_meta->pages,0,MAX_TOTAL_PAGES);
+
   //copy from parent - if he's a user process
   if(is_user_proc(curproc)){
+  
     copy_parent_swapfile(np,curproc);
   }
-  //clean_meta(np); //clean the paging
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;

@@ -721,21 +721,18 @@ add_new_page(struct proc *p, void* vaddr){
 }
 
 
-void
-clean_meta(struct proc *p){
-  p->paging_meta->num_in_file=0;
-  p->paging_meta->num_in_mem=0;
-  int i;
-  for (i=0; i<MAX_TOTAL_PAGES; i++){
-    p->paging_meta->offsets[i]=0;
-    p->paging_meta->pages[i].exists=0;
-    p->paging_meta->pages[i].in_back=0;
-    p->paging_meta->pages[i].offset=0;
-    p->paging_meta->pages[i].vaddr=0;
-  }
+// void
+// clean_meta(struct proc *p){
+//   p->paging_meta->num_in_file=0;
+//   p->paging_meta->num_in_mem=0;
+//   int i;
+//   for (i=0; i<MAX_TOTAL_PAGES; i++){
+//     p->paging_meta->offsets[i]=0;
+//     (struct page)p->paging_meta->pages[i]={0,0,0,0};
+//   }
   
   
-}
+// }
 
 
 //PAGEBREAK!
