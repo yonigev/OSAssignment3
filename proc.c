@@ -141,8 +141,7 @@ userinit(void)
   p->tf->eip = 0;  // beginning of initcode.S
   //task1 - create a swapFile 
   
-   if(createSwapFile(p))
-     panic("userinit- swap file");
+  createSwapFile(p);
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
 
@@ -220,7 +219,7 @@ fork(void)
 
   acquire(&ptable.lock);
   //create a swap file 
-  //createSwapFile(np);
+  createSwapFile(np);
   //copy the parent's swapfile into the child's.
   //copy_parent_swapfile(np,curproc);
 
