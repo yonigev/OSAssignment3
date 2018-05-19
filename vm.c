@@ -705,6 +705,7 @@ add_new_page(struct proc *p, void* vaddr){
     if(pages[i].exists && pages[i].vaddr == vaddr){
       cprintf("add_new > pages[i].exists = %d\n",pages[i].exists);
       cprintf("add_new > pages[i].vaddr = %d\n",pages[i].exists);
+      cprintf("add_new > vaddr = %d\n",vaddr);
 
       panic("add_new_page vaddr exists");
 
