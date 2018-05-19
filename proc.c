@@ -270,8 +270,8 @@ exit(void)
 
   // Jump into the scheduler, never to return.
   curproc->state = ZOMBIE;
-  removeSwapFile(curproc);  //remove swap file
-  freevm(curproc->pgdir);   //release all virtual memory
+  // removeSwapFile(curproc);  //remove swap file
+  // freevm(curproc->pgdir);   //release all virtual memory
 
 
   sched();
