@@ -22,7 +22,7 @@ static void wakeup1(void *chan);
 
 int is_user_proc(struct proc* p){
   if(p != 0){
-    cprintf(" is user proc- comparint init to %s\n",p->name);
+    //cprintf(" is user proc- comparing to %s\n",p->name);
     if(strncmp(p->name,  "init",4)!=0 && strncmp(p->name,  "sh",2)!=0 )
       return 1;
   }

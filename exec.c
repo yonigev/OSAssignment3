@@ -68,7 +68,6 @@ exec(char *path, char **argv) {
             goto bad;
         int newsz=sz;
         //while allocuvm succeeded -
-        cprintf("is user proc returns - %d\n",is_user_proc(curproc));
         if(is_user_proc(curproc) && sz > 0){
             while ( oldsz < newsz){
                 if(curproc!=0)
