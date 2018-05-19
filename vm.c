@@ -697,10 +697,18 @@ int
 add_new_page(struct proc *p, void* vaddr){
   struct p_meta *meta = p->paging_meta;
   struct page *pages=meta->pages;
+  
+  //struct page new_page={0};
+  cprintf("entered add_new_page\n");
   int i;
   for(i=0; i<MAX_TOTAL_PAGES; i++){
-    if(pages[i].exists && pages[i].vaddr == vaddr)
+    if(pages[i].exists && pages[i].vaddr == vaddr){
+      cprintf("add_new > pages[i].exists = %d\n",pages[i].exists);
+      cprintf("add_new > pages[i].vaddr = %d\n",pages[i].exists);
+
       panic("add_new_page vaddr exists");
+
+    }
     if(pages[i].exists)
       continue;
     pages[i].exists = 1;      //mark this spot as taken, a page exists here now.

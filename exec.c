@@ -77,10 +77,9 @@ exec(char *path, char **argv) {
         //while allocuvm succeeded -
         if(is_user_proc(curproc) && sz > 0){
             while ( oldsz < newsz){
-                if(curproc!=0)
-                    cprintf("proc id- %d\n",curproc->pid);
+               
                 cprintf("adding total - %d\n",(newsz-oldsz));
-                cprintf("adding new page - %d\n",oldsz);
+                cprintf("adding new page - %d\n",PGROUNDUP(oldsz));
                 add_new_page(curproc,(void *)PGROUNDUP(oldsz));
                 cprintf("added new page - %d\n",oldsz);
                 oldsz+=PGSIZE;
