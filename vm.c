@@ -423,10 +423,14 @@ clearPTE_FLAG(struct proc *p, const void* vadd, uint FLAG){
 //page in vaddr. if needed, page out some other one.
 int
 safe_page_in(struct proc *p, void* vaddr){
-  if(numOfPagedIn(p) == MAX_PSYC_PAGES){
-    page_out_N(p,1);
+  //make sure it's a private user page
+  if((uint)vaddr >= 0 && (uint)vaddr < KERNBASE){
+    if(numOfPagedIn(p) == MAX_PSYC_PAGES){
+      page_out_N(p,1);
+    }
+    return pageIn(p, vaddr);
   }
-  return pageIn(p, vaddr);
+  return 0;
 }
 
 // page out N different pages into the Back.
