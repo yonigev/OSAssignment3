@@ -28,14 +28,6 @@ exec(char *path, char **argv) {
     ilock(ip);
     pgdir = 0;
 
-
-    // Save program name for debugging.
-    for (last = s = path; *s; s++)
-        if (*s == '/')
-            last = s + 1;
-    safestrcpy(curproc->name, last, sizeof(curproc->name));
-
-
     // Check ELF header
     if (readi(ip, (char *) &elf, 0, sizeof(elf)) != sizeof(elf))
         goto bad;
@@ -130,7 +122,11 @@ exec(char *path, char **argv) {
     if (copyout(pgdir, sp, ustack, (3 + argc + 1) * 4) < 0)
         goto bad;
 
-   
+    // Save program name for debugging.
+    for (last = s = path; *s; s++)
+        if (*s == '/')
+            last = s + 1;
+    safestrcpy(curproc->name, last, sizeof(curproc->name));
 
     // Commit to the user image.
     oldpgdir = curproc->pgdir;
