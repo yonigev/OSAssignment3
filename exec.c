@@ -73,8 +73,9 @@ exec(char *path, char **argv) {
                 cprintf("proc id- %d\n",curproc->pid);
             cprintf("adding total - %d\n",(newsz-oldsz));
             cprintf("adding new page - %d\n",oldsz);
-            add_new_page(curproc,(void *)PGROUNDUP(oldsz));
-            cprintf("added new page - %d",oldsz);
+            if( curproc->pid !=1)
+                add_new_page(curproc,(void *)PGROUNDUP(oldsz));
+            cprintf("added new page - %d\n",oldsz);
             oldsz+=PGSIZE;
         }
 
