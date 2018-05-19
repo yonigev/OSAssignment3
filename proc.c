@@ -193,8 +193,7 @@ fork(void)
     return -1;
   }
 
-  //copy the parent's swapfile into the child's.
-  //copy_parent_swapfile(np,curproc);
+  
 
   // Copy process state from proc.
   if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
@@ -220,6 +219,11 @@ fork(void)
   pid = np->pid;
 
   acquire(&ptable.lock);
+  //create a swap file 
+  createSwapFile(np);
+  //copy the parent's swapfile into the child's.
+  copy_parent_swapfile(np,curproc);
+
 
   np->state = RUNNABLE;
 
