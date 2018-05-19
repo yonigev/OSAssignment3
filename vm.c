@@ -425,15 +425,7 @@ clearPTE_FLAG(struct proc *p, const void* vadd, uint FLAG){
 //page in vaddr. if needed, page out some other one.
 int
 safe_page_in(struct proc *p, void* vaddr){
-  cprintf("safe page in");
-  //make sure it's a private user page
-  if((uint)vaddr >= 0 && (uint)vaddr < KERNBASE){
-    if(numOfPagedIn(p) == MAX_PSYC_PAGES){
-      page_out_N(p,1);
-    }
-    return pageIn(p, vaddr);
-  }
-  return 0;
+  
 }
 
 // page out N different pages into the Back.
@@ -480,7 +472,7 @@ getPageFromBack(struct proc* p, const void* vaddr, char* buffer){
   return 0;
 }
 
-//removes a page from the meta data of the Process
+//update page meta-data when going to front
 int 
 page_in_meta(struct proc* p,void* vaddr){
    struct p_meta *meta  =   p->paging_meta;
@@ -490,6 +482,7 @@ page_in_meta(struct proc* p,void* vaddr){
      if(pages[i].vaddr  ==  vaddr){
        pages[i].in_back =   0;                       //mark as "NOT Backed"
        meta->offsets[pages[i].offset / PGSIZE] = 0;  //mark offset as free
+       pages[i].age = 0;                             //reset age
        return 1;
      }
    }
@@ -713,18 +706,37 @@ add_new_page(struct proc *p, void* vaddr){
 }
 
 
-// void
-// clean_meta(struct proc *p){
-//   p->paging_meta->num_in_file=0;
-//   p->paging_meta->num_in_mem=0;
-//   int i;
-//   for (i=0; i<MAX_TOTAL_PAGES; i++){
-//     p->paging_meta->offsets[i]=0;
-//     (struct page)p->paging_meta->pages[i]={0,0,0,0};
-//   }
-  
-  
-// }
+
+//Aging
+void
+age_process_pages(struct proc* proc){
+  struct page * pa=proc->paging_meta->pages;
+  int i;
+  //for every page
+  for(i=0; i<MAX_TOTAL_PAGES; i++){
+    pte_t *e= walkpgdir(proc->pgdir,pa[i].vaddr,0);
+    if((*e & PTE_A) > 0){            // if accessed
+      *e &=~PTE_A;                   // clear Accessed bit
+      pa[i].age=pa[i].age / 2;       //shift right
+      pa[i].age=pa[i].age | MSB;     //set MSB 
+    }
+    else                             //if not visited 
+      pa[i].age=pa[i].age / 2;       //just shift right
+  }
+
+}
+
+// counter number of 1's in a number
+uint 
+count_set_bits(uint number){
+  uint counter  =   0;
+  int i;
+  for(i=0; i<32; i++){
+    if((number | 1) > 0)
+      counter ++;
+    number = number / 2;
+  }
+}
 
 
 //PAGEBREAK!

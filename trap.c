@@ -85,7 +85,6 @@ trap(struct trapframe *tf)
     uint addr=rcr2();   //the "faulty" address
     //if a process is running this  AND the page is Paged-out in the back
     if(is_user_proc(myproc()) && isPagedOut(myproc(),(void *)addr)){
-      cprintf("paging in!!!");
       safe_page_in(myproc(),(void *)addr);  
       break;
       }

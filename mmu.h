@@ -1,6 +1,5 @@
 // This file contains definitions for the
 // x86 memory management unit (MMU).
-
 // Eflags register
 #define FL_CF           0x00000001      // Carry Flag
 #define FL_PF           0x00000004      // Parity Flag
@@ -140,15 +139,16 @@ struct segdesc {
 #define PGROUNDDOWN(a) (((a)) & ~(PGSIZE-1))
 
 // Page table/directory entry flags.
-#define PTE_P           0x001   // Present
-#define PTE_W           0x002   // Writeable
-#define PTE_U           0x004   // User
-#define PTE_PWT         0x008   // Write-Through
-#define PTE_PCD         0x010   // Cache-Disable
-#define PTE_A           0x020   // Accessed
-#define PTE_D           0x040   // Dirty
-#define PTE_PS          0x080   // Page Size
-#define PTE_MBZ         0x180   // Bits must be zero
+#define PTE_P           0x001       // Present
+#define PTE_W           0x002       // Writeable
+#define PTE_U           0x004       // User
+#define PTE_PWT         0x008       // Write-Through
+#define PTE_PCD         0x010       // Cache-Disable
+#define PTE_A           0x020       // Accessed
+#define PTE_D           0x040       // Dirty
+#define PTE_PS          0x080       // Page Size
+#define PTE_MBZ         0x180       // Bits must be zero
+#define MSB             0x80000000  //MSB for page Aging
 
 // Address in page table or page directory entry
 #define PTE_ADDR(pte)   ((uint)(pte) & ~0xFFF)
