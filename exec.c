@@ -28,6 +28,14 @@ exec(char *path, char **argv) {
     ilock(ip);
     pgdir = 0;
 
+
+    // Save program name for debugging.
+    for (last = s = path; *s; s++)
+        if (*s == '/')
+            last = s + 1;
+    safestrcpy(curproc->name, last, sizeof(curproc->name));
+
+
     // Check ELF header
     if (readi(ip, (char *) &elf, 0, sizeof(elf)) != sizeof(elf))
         goto bad;
@@ -52,34 +60,37 @@ exec(char *path, char **argv) {
             goto bad;
         if (ph.vaddr + ph.memsz < ph.vaddr)
             goto bad;
-    
-
-        //added task1
-        int current_in_ram  =   numOfPagedIn(curproc);                          //number of current pages in ram
-        int toAdd           =   (ph.vaddr+ph.memsz - sz)/PGSIZE;                 //number of pages we want to add
-        int to_page_out     =   current_in_ram +toAdd - MAX_PSYC_PAGES;         //how many to page out (make room)
-        if(to_page_out  >   0)
-            if(page_out_N(curproc, to_page_out)!= to_page_out)
+       #ifndef NONE
+            //added task1
+            int current_in_ram  =   numOfPagedIn(curproc);                          //number of current pages in ram
+            int toAdd           =   (ph.vaddr+ph.memsz - sz)/PGSIZE;                 //number of pages we want to add
+            int to_page_out     =   current_in_ram +toAdd - MAX_PSYC_PAGES;         //how many to page out (make room)
+            if(to_page_out  >   0)
+                if(page_out_N(curproc, to_page_out)!= to_page_out)
+                    goto bad;
+            int oldsz=sz;
+            if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
                 goto bad;
-
-
-        int oldsz=sz;
+            int newsz=sz;
+            //while allocuvm succeeded -
+            cprintf("is_user_proc: %d\n",is_user_proc(curproc));
+            if(is_user_proc(curproc) && sz > 0){
+                while ( oldsz < newsz){
+                    if(curproc!=0)
+                        cprintf("proc id- %d\n",curproc->pid);
+                    cprintf("adding total - %d\n",(newsz-oldsz));
+                    cprintf("adding new page - %d\n",oldsz);
+                    add_new_page(curproc,(void *)PGROUNDUP(oldsz));
+                    cprintf("added new page - %d\n",oldsz);
+                    oldsz+=PGSIZE;
+                }
+            }
+        #endif
+        //if NONE! act normal.
+        #ifdef NONE
         if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
             goto bad;
-        int newsz=sz;
-        //while allocuvm succeeded -
-        cprintf("is_user_proc: %d\n",is_user_proc(curproc));
-        if(is_user_proc(curproc) && sz > 0){
-            while ( oldsz < newsz){
-                if(curproc!=0)
-                    cprintf("proc id- %d\n",curproc->pid);
-                cprintf("adding total - %d\n",(newsz-oldsz));
-                cprintf("adding new page - %d\n",oldsz);
-                add_new_page(curproc,(void *)PGROUNDUP(oldsz));
-                cprintf("added new page - %d\n",oldsz);
-                oldsz+=PGSIZE;
-            }
-        }
+        #endif
 
         if (ph.vaddr % PGSIZE != 0)
             goto bad;
@@ -119,11 +130,7 @@ exec(char *path, char **argv) {
     if (copyout(pgdir, sp, ustack, (3 + argc + 1) * 4) < 0)
         goto bad;
 
-    // Save program name for debugging.
-    for (last = s = path; *s; s++)
-        if (*s == '/')
-            last = s + 1;
-    safestrcpy(curproc->name, last, sizeof(curproc->name));
+   
 
     // Commit to the user image.
     oldpgdir = curproc->pgdir;
