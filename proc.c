@@ -259,11 +259,15 @@ exit(void)
 
   if(curproc == initproc)
     panic("init exiting");
+    
+  #ifndef NONE
   //if the process is not init or shell
   if(is_user_proc(curproc)){
      if(removeSwapFile(curproc)!=0)
       panic("remove_swap_file");
   }
+  #endif
+
   // Close all open files.
   for(fd = 0; fd < NOFILE; fd++){
     if(curproc->ofile[fd]){
