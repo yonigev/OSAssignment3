@@ -212,10 +212,10 @@ fork(void)
 
   pid = np->pid;
 
-  acquire(&ptable.lock);
-
   //create swap file
   createSwapFile(np);
+  acquire(&ptable.lock);
+
   np->state = RUNNABLE;
 
   release(&ptable.lock);
