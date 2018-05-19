@@ -686,6 +686,7 @@ removeSwapFile(struct proc *p) {
     uint off;
 
     if (0 == p->swapFile) {
+        cprintf("first return -1\n");
         return -1;
     }
     fileclose(p->swapFile);
@@ -693,6 +694,7 @@ removeSwapFile(struct proc *p) {
     begin_op();
     if ((dp = nameiparent(path, name)) == 0) {
         end_op();
+        cprintf("second return -1\n");
         return -1;
     }
 
