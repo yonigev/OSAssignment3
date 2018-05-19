@@ -113,8 +113,9 @@ found:
   p->context->eip = (uint)forkret;
 
   //task1 - create a swapFile
-  if(createSwapFile(p))
-    cprintf("Failed to create swapfile\n");
+  // if(createSwapFile(p))
+  //   cprintf("Failed to create swapfile\n");
+    createSwapFile(p);
   //createSwapFile(p);
   return p;
 }
