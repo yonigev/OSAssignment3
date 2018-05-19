@@ -67,11 +67,12 @@ exec(char *path, char **argv) {
         if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
             goto bad;
         int newsz=sz;
-        while (oldsz < newsz){
+        //while allocuvm succeeded -
+        while (sz > 0 && oldsz < newsz){
             cprintf("adding total - %d\n",(newsz-oldsz));
             cprintf("adding new page - %d\n",oldsz);
             
-            add_new_page(curproc,(void *)oldsz);
+            add_new_page(curproc,(void *)PGROUNDUP(oldsz));
             cprintf("added new page - %d",oldsz);
             oldsz+=PGSIZE;
         }
