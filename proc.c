@@ -229,7 +229,9 @@ fork(void)
   //initialize swap file meta
   //memset(np->paging_meta,0,sizeof(struct p_meta));
   cprintf("new process id- %d\n",np->pid);
-  cprintf("size of struct: %d\n",sizeof(struct p_meta));
+  cprintf("size of struct page: %d\n",sizeof(struct page));
+  cprintf("size of struct p_meta: %d\n",sizeof(struct p_meta));
+
   
   //copy from parent - if he's a user process
   if(is_user_proc(curproc)){
