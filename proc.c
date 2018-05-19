@@ -112,7 +112,6 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
-  
   return p;
 }
 
@@ -139,8 +138,7 @@ userinit(void)
   p->tf->eflags = FL_IF;
   p->tf->esp = PGSIZE;
   p->tf->eip = 0;  // beginning of initcode.S
-  //task1 - create a swapFile 
-  
+
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
 
@@ -149,8 +147,9 @@ userinit(void)
   // writes to be visible, and the lock is also needed
   // because the assignment might not be atomic.
   acquire(&ptable.lock);
-  //createSwapFile(p);
 
+  //create swap file
+  createSwapFile(p);
   p->state = RUNNABLE;
 
   release(&ptable.lock);
@@ -192,8 +191,6 @@ fork(void)
     return -1;
   }
 
-  
-
   // Copy process state from proc.
   if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
     kfree(np->kstack);
@@ -218,11 +215,6 @@ fork(void)
   pid = np->pid;
 
   acquire(&ptable.lock);
-  //create a swap file 
-  createSwapFile(np);
-  //copy the parent's swapfile into the child's.
-  //copy_parent_swapfile(np,curproc);
-
 
   np->state = RUNNABLE;
 
@@ -273,10 +265,6 @@ exit(void)
 
   // Jump into the scheduler, never to return.
   curproc->state = ZOMBIE;
-  removeSwapFile(curproc);  //remove swap file
-  freevm(curproc->pgdir);   //release all virtual memory
-
-
   sched();
   panic("zombie exit");
 }
