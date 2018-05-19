@@ -113,8 +113,8 @@ found:
   p->context->eip = (uint)forkret;
 
   //task1 - create a swapFile
-  if(createSwapFile(p))
-    panic("allocproc- swap file");
+  // if(createSwapFile(p))
+  //   panic("allocproc- swap file");
   return p;
 }
 
