@@ -141,16 +141,13 @@ userinit(void)
 
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
-  //Setting the paging flag!
-  setcr0(CR0_PG);
+
   // this assignment to p->state lets other cores
   // run this process. the acquire forces the above
   // writes to be visible, and the lock is also needed
   // because the assignment might not be atomic.
   acquire(&ptable.lock);
 
-  //create swap file
-  createSwapFile(p);
   p->state = RUNNABLE;
 
   release(&ptable.lock);
@@ -217,6 +214,8 @@ fork(void)
 
   acquire(&ptable.lock);
 
+  //create swap file
+  createSwapFile(np);
   np->state = RUNNABLE;
 
   release(&ptable.lock);

@@ -139,12 +139,6 @@ rcr2(void)
 }
 
 static inline void
-setcr0(uint flag)
-{
-  asm volatile("orl %0,%%cr0");
-}
-
-static inline void
 lcr3(uint val)
 {
   asm volatile("movl %0,%%cr3" : : "r" (val));
