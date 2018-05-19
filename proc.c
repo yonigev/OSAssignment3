@@ -142,7 +142,7 @@ userinit(void)
   //task1 - create a swapFile 
   
    if(createSwapFile(p))
-     panic("allocproc- swap file");
+     panic("userinit- swap file");
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
 
@@ -220,9 +220,9 @@ fork(void)
 
   acquire(&ptable.lock);
   //create a swap file 
-  createSwapFile(np);
+  //createSwapFile(np);
   //copy the parent's swapfile into the child's.
-  copy_parent_swapfile(np,curproc);
+  //copy_parent_swapfile(np,curproc);
 
 
   np->state = RUNNABLE;
