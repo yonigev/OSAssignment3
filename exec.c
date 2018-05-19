@@ -47,13 +47,14 @@ exec(char *path, char **argv) {
 
     // Load program into memory.
 
-
+    #ifndef NONE
     //create swap file for this execution.
     //if it's not init.
     if(is_user_proc(curproc)){
         if(createSwapFile(curproc) != 0)
             panic("fork_create swapfile");
     }
+    #endif
     sz = 0;
     //each iteration - different Program Header? 
     for (i = 0, off = elf.phoff; i < elf.phnum; i++, off += sizeof(ph)) {
@@ -66,7 +67,7 @@ exec(char *path, char **argv) {
         if (ph.vaddr + ph.memsz < ph.vaddr)
             goto bad;
     
-
+        #ifndef NONE
         //added task1
         int current_in_ram  =   numOfPagedIn(curproc);                          //number of current pages in ram
         int toAdd           =   (ph.vaddr+ph.memsz - sz)/PGSIZE;                 //number of pages we want to add
@@ -77,8 +78,11 @@ exec(char *path, char **argv) {
 
 
         int oldsz=sz;
+        #endif
         if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
             goto bad;
+
+        #ifndef NONE
         int newsz=sz;
         //while allocuvm succeeded -
         if(is_user_proc(curproc) && sz > 0){
@@ -87,6 +91,7 @@ exec(char *path, char **argv) {
                 oldsz+=PGSIZE;
             }
         }
+        #endif
 
         if (ph.vaddr % PGSIZE != 0)
             goto bad;
