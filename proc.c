@@ -194,7 +194,7 @@ fork(void)
   }
 
   //copy the parent's swapfile into the child's.
-  //copy_parent_swapfile(np,curproc);
+  copy_parent_swapfile(np,curproc);
 
   // Copy process state from proc.
   if((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0){
