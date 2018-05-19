@@ -230,7 +230,7 @@ fork(void)
   if(is_user_proc(curproc)){
     copy_parent_swapfile(np,curproc);
   }
-  clean_meta(np); //clean the paging meta data
+  //clean_meta(np); //clean the paging
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;

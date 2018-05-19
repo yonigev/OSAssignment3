@@ -52,6 +52,8 @@ exec(char *path, char **argv) {
             goto bad;
         if (ph.vaddr + ph.memsz < ph.vaddr)
             goto bad;
+    
+
         //added task1
         int current_in_ram  =   numOfPagedIn(curproc);                          //number of current pages in ram
         int toAdd           =   (ph.vaddr+ph.memsz - sz)/PGSIZE;                 //number of pages we want to add
@@ -59,12 +61,13 @@ exec(char *path, char **argv) {
         if(to_page_out  >   0)
             if(page_out_N(curproc, to_page_out)!= to_page_out)
                 goto bad;
+
+
         int oldsz=sz;
         if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
             goto bad;
         int newsz=sz;
         //while allocuvm succeeded -
-        cprintf("is_user_proc: %d\n",is_user_proc(curproc));
         if(is_user_proc(curproc) && sz > 0){
             while ( oldsz < newsz){
                 if(curproc!=0)
