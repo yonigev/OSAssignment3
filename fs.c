@@ -675,6 +675,11 @@ char *itoa(int i, char b[]) {
 //remove swap file of proc p;
 int
 removeSwapFile(struct proc *p) {
+
+    if(myproc() !=0 )
+        cprintf(" i am : %s\n",myproc()->name);
+    cprintf("REMOVING swap file for: %s\n",p->name);
+
     //path of proccess
     char path[DIGITS];
     memmove(path, "/.swap", 6);
@@ -743,7 +748,10 @@ removeSwapFile(struct proc *p) {
 //return 0 on success
 int
 createSwapFile(struct proc *p) {
-
+    if(myproc() !=0 )
+        cprintf(" i am : %s\n",myproc()->name);
+    cprintf("creating swap file for: %s\n",p->name);
+    
     char path[DIGITS];
     memmove(path, "/.swap", 6);
     itoa(p->pid, path + 6);
