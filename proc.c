@@ -141,7 +141,6 @@ userinit(void)
   p->tf->eip = 0;  // beginning of initcode.S
   //task1 - create a swapFile 
   
-  createSwapFile(p);
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
 
@@ -150,6 +149,7 @@ userinit(void)
   // writes to be visible, and the lock is also needed
   // because the assignment might not be atomic.
   acquire(&ptable.lock);
+  createSwapFile(p);
 
   p->state = RUNNABLE;
 
