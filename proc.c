@@ -224,16 +224,17 @@ fork(void)
 
   pid = np->pid;
 
-  //create swap file
-  if(createSwapFile(np) != 0)
-    panic("fork_create swapfile");
-  //initialize swap file meta
+  
   memset(&np->paging_meta,0,sizeof(struct p_meta));
 
   
   //copy from parent - if he's a user process
   if(is_user_proc(curproc)){
-  
+    cprintf("copying swapfile from - %s to $s\n",curproc->name,np->name);
+    //create swap file
+    if(createSwapFile(np) != 0)
+      panic("fork_create swapfile");
+  //initialize swap file meta
     copy_parent_swapfile(np,curproc);
   }
   acquire(&ptable.lock);
