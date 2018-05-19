@@ -227,7 +227,7 @@ fork(void)
   //create swap file
   createSwapFile(np);
   //initialize swap file meta
-  memset(np->paging_meta->pages,0,MAX_TOTAL_PAGES);
+  memset(np->paging_meta,0,sizeof(struct p_meta));
 
   //copy from parent - if he's a user process
   if(is_user_proc(curproc)){

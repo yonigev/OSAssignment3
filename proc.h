@@ -45,8 +45,7 @@ struct page{
 };
 
 struct p_meta {
-    int             num_in_mem;                           //number of pages in memory
-    int             num_in_file;                          //number of pages in the Back
+    
     struct page     pages[MAX_TOTAL_PAGES];               //  contains virtual addresses. the i'th address means the i'th page
     int             offsets[MAX_TOTAL_PAGES];             // 0 if offset #i is available, 1 otherwise (taken by some page)
 
