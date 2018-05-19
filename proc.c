@@ -149,7 +149,7 @@ userinit(void)
   // writes to be visible, and the lock is also needed
   // because the assignment might not be atomic.
   acquire(&ptable.lock);
-  createSwapFile(p);
+  //createSwapFile(p);
 
   p->state = RUNNABLE;
 
