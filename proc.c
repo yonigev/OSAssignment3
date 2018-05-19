@@ -24,7 +24,7 @@ int is_user_proc(struct proc* p){
 
   if(strncmp(p->name,  "init",4)!=0 && strncmp(p->name,  "sh",2)!=0 )
     return 1;
-  
+  return 0;
 }
 
 void
