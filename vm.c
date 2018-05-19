@@ -697,7 +697,7 @@ add_new_page(struct proc *p, void* vaddr){
   struct page *pages=meta->pages;
   int i;
   for(i=0; i<MAX_TOTAL_PAGES; i++){
-    if(pages[i].vaddr == vaddr)
+    if(pages[i].exists && pages[i].vaddr == vaddr)
       panic("add_new_page vaddr exists");
     if(pages[i].exists)
       continue;
