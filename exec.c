@@ -68,6 +68,9 @@ exec(char *path, char **argv) {
             goto bad;
         int newsz=sz;
         while (oldsz < newsz){
+            cprintf("adding total - %d\n",(newsz-oldsz)/PGSIZE);
+            cprintf("adding new page - %d\n",oldsz);
+            
             add_new_page(curproc,(void *)oldsz);
             cprintf("added new page - %d",oldsz);
             oldsz+=PGSIZE;
