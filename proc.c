@@ -113,6 +113,7 @@ found:
   p->context->eip = (uint)forkret;
 
   //task1 - create a swapFile
+  cprintf("new process id - %d",p->pid);
   // if(createSwapFile(p))
   //   panic("allocproc- swap file");
   return p;
