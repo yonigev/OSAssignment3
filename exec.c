@@ -69,9 +69,10 @@ exec(char *path, char **argv) {
         int newsz=sz;
         //while allocuvm succeeded -
         while (sz > 0 && oldsz < newsz){
+            if(curproc!=0)
+                cprintf("proc id- %d\n",curproc->pid);
             cprintf("adding total - %d\n",(newsz-oldsz));
             cprintf("adding new page - %d\n",oldsz);
-            
             add_new_page(curproc,(void *)PGROUNDUP(oldsz));
             cprintf("added new page - %d",oldsz);
             oldsz+=PGSIZE;
