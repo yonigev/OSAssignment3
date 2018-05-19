@@ -115,7 +115,7 @@ found:
   //task1 - create a swapFile
   // if(createSwapFile(p))
   //   cprintf("Failed to create swapfile\n");
-  createSwapFile(p);
+  //createSwapFile(p);
   return p;
 }
 
