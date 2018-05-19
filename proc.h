@@ -42,6 +42,7 @@ struct page{
     void*       vaddr;          //the page's virtual address
     int         in_back;        //1 if in back, 0 if stored in the memory.
     uint        offset;         //offset in Back file ( if in_back == 1 )
+    uint        age;            //for NFUA
 };
 
 struct p_meta {
