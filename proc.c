@@ -114,8 +114,7 @@ found:
 
   //task1 - create a swapFile
   // if(createSwapFile(p))
-  //   cprintf("Failed to create swapfile\n");
-  //createSwapFile(p);
+  //   panic("allocproc- swap file");
   return p;
 }
 
@@ -270,8 +269,8 @@ exit(void)
 
   // Jump into the scheduler, never to return.
   curproc->state = ZOMBIE;
-  // removeSwapFile(curproc);  //remove swap file
-  // freevm(curproc->pgdir);   //release all virtual memory
+  removeSwapFile(curproc);  //remove swap file
+  freevm(curproc->pgdir);   //release all virtual memory
 
 
   sched();
