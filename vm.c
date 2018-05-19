@@ -437,6 +437,7 @@ safe_page_in(struct proc *p, void* vaddr){
 // page out N different pages into the Back.
 int
 page_out_N(struct proc *p,int N){
+  cprintf("page_out_N",N);
   void* vaddr[N];
   int found_in_ram=0;   //for debugging
   struct page* pages=p->paging_meta->pages;

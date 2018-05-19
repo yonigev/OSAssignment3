@@ -53,6 +53,8 @@ exec(char *path, char **argv) {
         if (ph.vaddr + ph.memsz < ph.vaddr)
             goto bad;
     
+
+        //added task1
         int current_in_ram  =   numOfPagedIn(curproc);                          //number of current pages in ram
         int toAdd           =   (ph.vaddr+ph.memsz - sz)/PGSIZE;                 //number of pages we want to add
         int to_page_out     =   current_in_ram +toAdd - MAX_PSYC_PAGES;         //how many to page out (make room)
@@ -60,9 +62,17 @@ exec(char *path, char **argv) {
             if(page_out_N(curproc, to_page_out)!= to_page_out)
                 goto bad;
 
-        
+
+        int oldsz=sz;
         if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
             goto bad;
+        int newsz=sz;
+        while (oldsz < newsz){
+            add_new_page(curproc,oldsz);
+            cprintf("added new page - %d",oldsz);
+            oldsz+=PGSIZE;
+        }
+
         if (ph.vaddr % PGSIZE != 0)
             goto bad;
         if (loaduvm(pgdir, (char *) ph.vaddr, ip, ph.off, ph.filesz) < 0)
@@ -72,8 +82,7 @@ exec(char *path, char **argv) {
     iunlockput(ip);
     end_op();
     ip = 0;
-    // if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
-    //             goto bad;
+   
 
     // Allocate two pages at the next page boundary.
     // Make the first inaccessible.  Use the second as the user stack.
