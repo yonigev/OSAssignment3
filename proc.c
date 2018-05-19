@@ -232,9 +232,7 @@ fork(void)
       panic("fork_create swapfile");
   
   //copy from parent - if he's a user process
-  if(is_user_proc(curproc)){
-    cprintf("copying swapfile from - %s to $s\n",curproc->name,np->name);
-    
+  if(is_user_proc(curproc)){  
   //initialize swap file meta
     copy_parent_swapfile(np,curproc);
   }
@@ -259,7 +257,7 @@ exit(void)
 
   if(curproc == initproc)
     panic("init exiting");
-    
+
   #ifndef NONE
   //if the process is not init or shell
   if(is_user_proc(curproc)){
