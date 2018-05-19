@@ -425,7 +425,7 @@ clearPTE_FLAG(struct proc *p, const void* vadd, uint FLAG){
 //page in vaddr. if needed, page out some other one.
 int
 safe_page_in(struct proc *p, void* vaddr){
-  
+
 }
 
 // page out N different pages into the Back.
@@ -483,6 +483,7 @@ page_in_meta(struct proc* p,void* vaddr){
        pages[i].in_back =   0;                       //mark as "NOT Backed"
        meta->offsets[pages[i].offset / PGSIZE] = 0;  //mark offset as free
        pages[i].age = 0;                             //reset age
+       pages[i].age2= 0xffffffff;
        return 1;
      }
    }
@@ -525,6 +526,7 @@ pageIn(struct proc *p, void* vaddr){
       return 0;
     clearPTE_FLAG(p,vaddr,PTE_PG);              //clear the PAGED OUT flag
     setPTE_FLAG(p,vaddr,PTE_P);                 //set the PRESENT flag
+    
     if(!page_in_meta(p,vaddr))                      //remove meta data from the process meta-data struct 
       return 0;
     return 1;   
@@ -700,6 +702,8 @@ add_new_page(struct proc *p, void* vaddr){
     pages[i].exists = 1;      //mark this spot as taken, a page exists here now.
     pages[i].vaddr  = vaddr;
     pages[i].in_back= 0;
+    pages[i].age  = 0;
+    pages[i].age2  = 0xffffffff;
     return 1;
   }
   return 0;
@@ -719,13 +723,91 @@ age_process_pages(struct proc* proc){
       *e &=~PTE_A;                   // clear Accessed bit
       pa[i].age=pa[i].age / 2;       //shift right
       pa[i].age=pa[i].age | MSB;     //set MSB 
+      //for LAPA
+      pa[i].age2=pa[i].age2 / 2;     //shift right
+      pa[i].age2=pa[i].age2 | MSB;   //set MSB 
+      
     }
-    else                             //if not visited 
+    else{                             //if not visited 
       pa[i].age=pa[i].age / 2;       //just shift right
+      pa[i].age2=pa[i].age2 / 2;       //just shift right
+    }
   }
 
 }
 
+
+//
+void*
+select_page_to_back(struct proc *p){
+  //implement algorithms
+  
+  #ifdef NFUA
+  int    min_count;          //min num of set bits
+  struct page  min_page;     //vaddr of that page
+  int i = 0;
+  struct page * pa=p->paging_meta->pages;
+  //first loop  - get the first page that exists and is NOT in the back.
+  for(i = 0; i<MAX_TOTAL_PAGES; i++){
+    if(pa[i].exists && !pa[i].in_back){
+        min_count=pa[i].age;
+        min_page=pa[i];
+    }
+  }
+  //Possible bug?
+  for(; i<MAX_TOTAL_PAGES; i++){
+    if(!pa[i].exists || pa[i].in_back)  //if spot not occupied OR the page is in the back file already , skip.
+      continue;
+    int curr_count  =   pa[i].age;
+    if(curr_count < min_count){
+      min_count=curr_count;
+      min_page=pa[i];
+    }
+  }
+  //return this page's vaddr
+  return min_page.vaddr;
+  #endif
+
+
+  #ifdef LAPA
+  int    min_count;         //min num of set bits
+  struct page  min_page;     //vaddr of that page
+  int i = 0;
+  struct page * pa=p->paging_meta->pages;
+  //first loop  - get the first page that exists and is NOT in the back.
+  for(i = 0; i<MAX_TOTAL_PAGES; i++){
+    if(pa[i].exists && !pa[i].in_back){
+        min_count=count_set_bits(pa[i].age2);
+        min_page=pa[i];
+    }
+  }
+  //Possible bug?
+  for(; i<MAX_TOTAL_PAGES; i++){
+    if(!pa[i].exists || pa[i].in_back)  //if spot not occupied OR the page is in the back file already , skip.
+      continue;
+    int curr_count  = count_set_bits(pa[i].age2);
+    if(curr_count < min_count){
+      min_count=curr_count;
+      min_page=pa[i];
+    }
+    else if( curr_count == min_count){
+      if(pa[i].age2 < min_page.age2){
+        min_count=count_set_bits(pa[i].age2);
+        min_page=pa[i];
+      }
+    }
+  }
+  //return this page's vaddr
+  return min_page.vaddr;
+  #endif
+
+
+
+
+
+
+
+}
 // counter number of 1's in a number
 uint 
 count_set_bits(uint number){
@@ -736,6 +818,7 @@ count_set_bits(uint number){
       counter ++;
     number = number / 2;
   }
+  return counter;
 }
 
 

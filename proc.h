@@ -43,6 +43,7 @@ struct page{
     int         in_back;        //1 if in back, 0 if stored in the memory.
     uint        offset;         //offset in Back file ( if in_back == 1 )
     uint        age;            //for NFUA
+    uint        age2;           //for LAPA
 };
 
 struct p_meta {
