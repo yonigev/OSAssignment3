@@ -258,6 +258,12 @@ exit(void)
   if(curproc == initproc)
     panic("init exiting");
 
+
+  //if the process is not init or shell
+  if(is_user_proc(curproc)){
+     if(removeSwapFile(curproc)!=0)
+      panic("remove_swap_file");
+  }
   // Close all open files.
   for(fd = 0; fd < NOFILE; fd++){
     if(curproc->ofile[fd]){
@@ -270,11 +276,7 @@ exit(void)
   iput(curproc->cwd);
   end_op();
   curproc->cwd = 0;
-  //if the process is not init or shell
-  if(is_user_proc(curproc)){
-     if(removeSwapFile(curproc)!=0)
-      panic("remove_swap_file");
-  }
+  
   acquire(&ptable.lock);
 
   // Parent might be sleeping in wait().
