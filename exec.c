@@ -18,6 +18,7 @@ exec(char *path, char **argv) {
     pde_t *pgdir, *oldpgdir;
     struct proc *curproc = myproc();
 
+
     begin_op();
 
     if ((ip = namei(path)) == 0) {
@@ -47,7 +48,13 @@ exec(char *path, char **argv) {
     // Load program into memory.
 
 
-
+    //create swap file for this execution.
+    //if it's not init.
+    if(is_user_proc(curproc)){
+        cprintf("in exec creating swapfile\n");
+        if(createSwapFile(curproc) != 0)
+            panic("fork_create swapfile");
+    }
     sz = 0;
     //each iteration - different Program Header? 
     for (i = 0, off = elf.phoff; i < elf.phnum; i++, off += sizeof(ph)) {
