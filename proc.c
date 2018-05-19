@@ -225,7 +225,8 @@ fork(void)
   pid = np->pid;
 
   //create swap file
-  createSwapFile(np);
+  if(createSwapFile(np) != 0)
+    panic("fork_create swapfile");
   //initialize swap file meta
   memset(&np->paging_meta,0,sizeof(struct p_meta));
 
