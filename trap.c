@@ -79,17 +79,16 @@ trap(struct trapframe *tf)
     lapiceoi();
     break;
 
-  // //page fault
-  // case T_PGFLT:
-  //   ;//stupid bug 
-  //   uint addr=rcr2();   //the "faulty" address
-  //   struct proc *p=myproc();
-  //   //if a process is running this  AND the page is Paged-out in the back
-  //   if(p && isPagedOut(p,(void *)addr)){
-  //     safe_page_in(p,(void *)addr);  
-  //     break;
-  //     }
-  //     //else  -   panic.
+  //page fault
+  case T_PGFLT:
+    ;//stupid bug 
+    uint addr=rcr2();   //the "faulty" address
+    //if a process is running this  AND the page is Paged-out in the back
+    if(is_user_proc(myproc()) && isPagedOut(myproc(),(void *)addr)){
+      safe_page_in(myproc(),(void *)addr);  
+      break;
+      }
+      //else  -   panic.
       
 
 
