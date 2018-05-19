@@ -51,7 +51,6 @@ exec(char *path, char **argv) {
     //create swap file for this execution.
     //if it's not init.
     if(is_user_proc(curproc)){
-        cprintf("in exec creating swapfile\n");
         if(createSwapFile(curproc) != 0)
             panic("fork_create swapfile");
     }

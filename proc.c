@@ -227,8 +227,8 @@ fork(void)
   
   memset(&np->paging_meta,0,sizeof(struct p_meta));
     
-    //create swap file
-    if(createSwapFile(np) != 0)
+  //create swap file
+  if(is_user_proc(np) && createSwapFile(np) != 0)
       panic("fork_create swapfile");
   
   //copy from parent - if he's a user process
