@@ -697,9 +697,6 @@ int
 add_new_page(struct proc *p, void* vaddr){
   struct p_meta *meta = p->paging_meta;
   struct page *pages=meta->pages;
-  
-  //struct page new_page={0};
-  cprintf("entered add_new_page\n");
   int i;
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(pages[i].exists && pages[i].vaddr == vaddr){
