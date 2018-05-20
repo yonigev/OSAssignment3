@@ -673,8 +673,6 @@ pageOut(struct proc *p,void* vaddr){
   if(addPageToBack(p,vaddr)){
     pte_t *pte=walkpgdir(p->pgdir,vaddr,0);
     to_free=(char*)P2V(PTE_ADDR(*pte));   //TODO: why U flag always 0
-     if(!(to_free=uva2ka(p->pgdir,vaddr)))
-       panic("page-out");
     cprintf("pageout - calling kfree\n");
     kfree(to_free);                                   //free the PHYSICAL memory of the page
     cprintf("pageout - after kfree\n");
