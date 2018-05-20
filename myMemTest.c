@@ -4,11 +4,11 @@
 #include "stat.h"
 int main(){
 
-    char arr1[PGSIZE]={1};
+    char arr1[PGSIZE-100]={1};
     //char arr2[2*PGSIZE]={2};
 
     int i;
-    for(i=0; i<PGSIZE; i++){
+    for(i=0; i<PGSIZE-100; i++){
         printf(1, "%c",arr1[i]);
     }
     
