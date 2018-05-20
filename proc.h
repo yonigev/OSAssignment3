@@ -47,8 +47,15 @@ struct page{
     uint        age;            //for NFUA
     uint        age2;           //for LAPA
 };
-struct p_meta {
-    
+
+
+//a page queue .
+struct page_queue {
+    struct page         pages[MAX_TOTAL_PAGES];
+    int lastIndex;
+};
+
+struct p_meta {  
     struct page         pages[MAX_TOTAL_PAGES];               //    contains virtual addresses. the i'th address means the i'th page
     struct page_queue   pq;                                   //    used for SCFIFO
     int                 offsets[MAX_TOTAL_PAGES];             //    0 if offset #i is available, 1 otherwise (taken by some page)
@@ -57,11 +64,7 @@ struct p_meta {
 
 
 
-//a page queue .
-struct page_queue {
-    struct page         pages[MAX_TOTAL_PAGES];
-    int lastIndex;
-};
+
 // Per-process state
 struct proc {
     uint sz;                     // Size of process memory (bytes)
