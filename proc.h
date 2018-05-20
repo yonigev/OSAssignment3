@@ -41,7 +41,7 @@ enum procstate {
 
 //a process queue .
 struct page_queue {
-    struct page pages[MAX_TOTAL_PAGES];
+    struct page         pages[MAX_TOTAL_PAGES];
     int lastIndex;
 };
 
