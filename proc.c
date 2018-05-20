@@ -568,7 +568,7 @@ procdump(void)
     else
       state = "???";
     cprintf("%d %s %s", p->pid, state, p->name);
-    #ifdef VERBOSE_PRINT == TRUE
+    #if VERBOSE_PRINT == TRUE
     int current_allocated=get_allocated_pages(p);
     int paged_out=get_paged_out(p);
     int page_faults=p->page_faults;
