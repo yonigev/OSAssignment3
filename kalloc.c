@@ -85,6 +85,7 @@ kalloc(void)
 {
   struct run *r;
   if(kmem.use_lock){           //lock?
+    cprintf("wanna_lock\n");
     acquire(&kmem.lock);
     cprintf("acq_lock\n");
   }
