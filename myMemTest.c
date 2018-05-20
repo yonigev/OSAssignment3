@@ -12,7 +12,7 @@ int main(){
         printf(1, "%c",arr1[i]);
     }
     
-    for(i=0; i<20 * 2; i++){
+    for(i=0; i<20 ; i++){
         printf(1, "%c",arr2[i]);
     }
 
