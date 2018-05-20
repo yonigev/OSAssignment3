@@ -232,7 +232,7 @@ fork(void)
     if(createSwapFile(np) != 0){
       panic("fork_create swapfile");
     }
-    reset_paging_meta(np);
+    //reset_paging_meta(np);
   }
   //create swap file
   if(is_user_proc(np) && createSwapFile(np) != 0)
@@ -244,7 +244,7 @@ fork(void)
     copy_parent_swapfile(np,curproc);
   }
   np->page_faults = 0;    //reset number of page faults to 0;
-  np->num_pageouts = curproc->num_pageouts;
+  np->num_pageouts = 0;
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
@@ -287,7 +287,9 @@ exit(void)
   iput(curproc->cwd);
   end_op();
   curproc->cwd = 0;
-  
+  #if VERBOSE_PRINT == TRUE
+  procdump();
+  #endif
   acquire(&ptable.lock);
 
   // Parent might be sleeping in wait().
@@ -568,7 +570,7 @@ procdump(void)
     else
       state = "???";
     cprintf("%d %s %s", p->pid, state, p->name);
-    #if VERBOSE_PRINT == TRUE
+    
     int current_allocated=get_allocated_pages(p);
     int paged_out=get_paged_out(p);
     int page_faults=p->page_faults;
@@ -576,7 +578,7 @@ procdump(void)
     cprintf(" %d %d %d %d",current_allocated,paged_out,page_faults,total_out);
 
 
-    #endif
+    
     if(p->state == SLEEPING){
       getcallerpcs((uint*)p->context->ebp+2, pc); //call stack (program counters.)
       for(i=0; i<10 && pc[i] != 0; i++)
@@ -584,4 +586,11 @@ procdump(void)
     }
     cprintf("\n");
   }
+  //now print ratio
+
+  int free_pages=num_free();
+  int used_kernel=KERNBASE/PGSIZE;
+  cprintf("%d  /  %d  free pages in the system\n",free_pages,free_pages+used_kernel);
+
+
 }
