@@ -675,7 +675,7 @@ pageOut(struct proc *p,void* vaddr){
     to_free=(char*)P2V(PTE_ADDR(*pte));   //TODO: why U flag always 0
     // if(!(to_free=uva2ka(p->pgdir,vaddr)))
     //   panic("page-out");
-    kfree(to_free);                                   //free the PHYSICAL memory of the page
+    //kfree(to_free);                                   //free the PHYSICAL memory of the page
     clearPTE_FLAG(p,vaddr,PTE_P);                     //clear the Present flag from the page table entry
     setPTE_FLAG(p,vaddr,PTE_PG);                      //set the PAGED-OUT flag
     lcr3(V2P(p->pgdir));                              //refresh the Table Lookaside Buffer            
