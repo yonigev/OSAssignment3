@@ -718,6 +718,7 @@ add_new_page(struct proc *p, void* vaddr){
     // pages[i].in_back= 0;
     // pages[i].age  = 0;
     // pages[i].age2  = 0xffffffff;
+    cprintf("does this happen?? \n");
     pages[i]  = toAdd;
     enqueue(p,toAdd);
     
