@@ -749,27 +749,27 @@ add_new_page(struct proc *p, void* vaddr){
 //Aging
 void
 age_process_pages(struct proc* proc){
-  struct page * pa=proc->paging_meta.pages;
+  struct page * pa_arr=proc->paging_meta.pages;
   int i;
 
   //for every page
   for(i=0; i<MAX_TOTAL_PAGES; i++){
-    if(!pa[i].exists  || pa[i].in_back)
+    if(!pa_arr[i].exists  || pa_arr[i].in_back)
     continue;
-    pte_t *e= walkpgdir(proc->pgdir,pa[i].vaddr,0);
+    pte_t *e= walkpgdir(proc->pgdir,pa_arr[i].vaddr,0);
   
     if((*e & PTE_A) > 0){            // if accessed
       *e &=~PTE_A;                   // clear Accessed bit
-      pa[i].age=pa[i].age / 2;       //shift right
-      pa[i].age=pa[i].age | MSB;     //set MSB 
+      pa_arr[i].age=pa_arr[i].age / 2;       //shift right
+      pa_arr[i].age=pa_arr[i].age | MSB;     //set MSB 
       //for LAPA
-      pa[i].age2=pa[i].age2 / 2;     //shift right
-      pa[i].age2=pa[i].age2 | MSB;   //set MSB 
+      pa_arr[i].age2=pa_arr[i].age2 / 2;     //shift right
+      pa_arr[i].age2=pa_arr[i].age2 | MSB;   //set MSB 
       
     }
     else{                             //if not visited 
-      pa[i].age=pa[i].age / 2;       //just shift right
-      pa[i].age2=pa[i].age2 / 2;       //just shift right
+      pa_arr[i].age=pa_arr[i].age / 2;       //just shift right
+      pa_arr[i].age2=pa_arr[i].age2 / 2;       //just shift right
     }
   }
 
@@ -779,10 +779,10 @@ age_process_pages(struct proc* proc){
   int j;
   //start from the second place from last.
   for(j = pq->lastIndex - 1; j>=0; j--){
-    pte_t entry_j = walkpgdir(proc->pgdir,pa[j].vaddr,0);
-    pte_t entry_prec_j = walkpgdir(proc->pgdir,pa[j+1].vaddr,0);
+    pte_t *entry_j = walkpgdir(proc->pgdir,pa[j].vaddr,0);
+    pte_t *entry_prec_j = walkpgdir(proc->pgdir,pa[j+1].vaddr,0);
     //if the i'th page was accessed, and the i-1 not, switch them.
-    if((entry_j & PTE_A) > 0 && (entry_prec_j & PTE_A)<=0){
+    if((*entry_j & PTE_A) > 0 && (*entry_prec_j & PTE_A)<=0){
       struct page temp=pa[j];
       pa[j] = pa[j+1];
       pa[j+1]=temp;
