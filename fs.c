@@ -675,6 +675,7 @@ char *itoa(int i, char b[]) {
 //remove swap file of proc p;
 int
 removeSwapFile(struct proc *p) {
+
     //path of proccess
     char path[DIGITS];
     memmove(path, "/.swap", 6);
