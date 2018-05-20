@@ -679,6 +679,8 @@ pageOut(struct proc *p,void* vaddr){
     lcr3(V2P(p->pgdir));                              //refresh the Table Lookaside Buffer            
     return 1;
   }
+  else
+    panic("page_out");
   return 0;   //error adding page to Back
 }
 
