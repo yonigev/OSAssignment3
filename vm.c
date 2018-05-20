@@ -666,13 +666,13 @@ addPageToBack(struct proc *p, void* vaddr){
 //page out a page with the adderss vaddr
 int
 pageOut(struct proc *p,void* vaddr){
-  char* to_free;
+  //char* to_free;
 
     cprintf("pageOut: paging out vaddr: %x\n",vaddr);
    //write page to the Back file.
   if(addPageToBack(p,vaddr)){
     pte_t *pte=walkpgdir(p->pgdir,vaddr,0);
-    to_free=(char*)P2V(PTE_ADDR(*pte));   //TODO: why U flag always 0
+    //to_free=(char*)P2V(PTE_ADDR(*pte));   //TODO: why U flag always 0
     // if(!(to_free=uva2ka(p->pgdir,vaddr)))
     //   panic("page-out");
     //kfree(to_free);                                   //free the PHYSICAL memory of the page
