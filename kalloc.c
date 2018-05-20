@@ -85,14 +85,17 @@ kalloc(void)
 {
   struct run *r;
   if(kmem.use_lock){           //lock?
-    cprintf("acqlock\n");
     acquire(&kmem.lock);
+    cprintf("acq_lock\n");
   }
   r = kmem.freelist;          //take the list of free pages
   if(r)                       //if not 0
     kmem.freelist = r->next;  //"delete" a page. meaning make the list start from the second free page
-  if(kmem.use_lock)
+  if(kmem.use_lock){
     release(&kmem.lock);
+    cprintf("rel_lock\n");
+
+  }
   //cprintf("in kalloc end ! (released lock)\n");
   return (char*)r;            //return the page
 }
