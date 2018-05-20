@@ -253,7 +253,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
 
     mem = kalloc();
-    cprintf("got  : %x from kalloc()\n");
+    cprintf("got  : %x from kalloc()\n", mem);
     #ifndef NONE
     add_new_page(myproc(),mem);
     #endif
@@ -944,6 +944,7 @@ is_user_page(struct proc* p, void* vaddr){
   // pte_t *entry=walkpgdir(p->pgdir,vaddr,0);
   // if((*entry & PTE_U) > 0)
      return 1;
+
   // return 0;
 }
 
