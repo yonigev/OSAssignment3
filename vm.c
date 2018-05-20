@@ -460,44 +460,10 @@ clearPTE_FLAG(struct proc *p, const void* vadd, uint FLAG){
     panic("setPTE_PG");
   *entry &= ~FLAG;   //clear the  flag
 }
-//page in vaddr. if needed, page out some other one.
-int
-safe_page_in(struct proc *p, void* vaddr){
-  cprintf("safe page in");
-  //make sure it's a private user page
-  if((uint)vaddr >= 0 && (uint)vaddr < KERNBASE){
-    if(numOfPagedIn(p) == MAX_PSYC_PAGES){
-      page_out_N(p,1);
-    }
-    return pageIn(p, vaddr);
-  }
-  return 0;
-}
 
-// page out N different pages into the Back.
-int
-page_out_N(struct proc *p,int N){
-  cprintf("page_out_N",N);
-  void* vaddr[N];
-  int found_in_ram=0;   //for debugging
-  struct page* pages=p->paging_meta.pages;
-  int i;
-  //find N pages to page OUT
-  for(i=0; i<N; i++){
-    if(pages[i].exists  && !pages[i].in_back){  //if the page exists and is IN RAM
-      vaddr[i] = pages[i].vaddr;                 //save his virtual address in the array
-      found_in_ram++;
-    }
-  }
-  if(found_in_ram < N)
-    panic("page_out_N");
-  //page OUT the pages you found
-  for(i=0; i<N; i++){
-    if(!pageOut(p,vaddr[i]))
-      panic("couldnt pageout");
-  }
-  return N;
-  }
+
+
+  
 
 
 //  get a page from the back, write it into buffer
@@ -772,12 +738,7 @@ age_process_pages(struct proc* proc){
     if(!pa[i].exists  || pa[i].in_back)
     continue;
     pte_t *e= walkpgdir(proc->pgdir,pa[i].vaddr,0);
-    //cprintf("now watching entry   -   %d\n",e);
-    //cprintf("pages[i] age =    -   %d\n",pa[i].age);
-
-    cprintf("pa[i] before - \n");
-    cprintf("age  - %x\n",pa[i].age);
-    cprintf("age2  - %x\n",pa[i].age2);
+  
     if((*e & PTE_A) > 0){            // if accessed
       *e &=~PTE_A;                   // clear Accessed bit
       pa[i].age=pa[i].age / 2;       //shift right
@@ -791,11 +752,6 @@ age_process_pages(struct proc* proc){
       pa[i].age=pa[i].age / 2;       //just shift right
       pa[i].age2=pa[i].age2 / 2;       //just shift right
     }
-    cprintf("pa[i]  - after\n");
-    cprintf("age  - %x\n",pa[i].age);
-    cprintf("age2  - %x\n",pa[i].age2);
-
-
   }
 
 }
@@ -869,6 +825,40 @@ select_page_to_back(struct proc *p){
 
   return (void*) 1;   //delete
 }
+
+
+
+// page out N different pages into the Back.
+int
+page_out_N(struct proc *p,int N){
+  cprintf("page_out_N",N);
+  struct page* pages=p->paging_meta.pages;
+  int i;
+  //find N pages to page OUT
+  for(i=0; i<N; i++){
+    void* vaddr=select_page_to_back(p);
+    pageOut(p,vaddr);
+   
+  }
+}
+
+
+//page in vaddr. if needed, page out some other one.
+int
+safe_page_in(struct proc *p, void* vaddr){
+  cprintf("safe page in");
+  //make sure it's a private user page
+  if((uint)vaddr >= 0 && (uint)vaddr < KERNBASE){
+    if(numOfPagedIn(p) == MAX_PSYC_PAGES){
+      page_out_N(p,1);
+    }
+    return pageIn(p, vaddr);
+  }
+  return 0;
+}
+
+
+
 // counter number of 1's in a number
 uint 
 count_set_bits(uint number){
