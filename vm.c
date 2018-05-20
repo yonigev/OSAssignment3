@@ -789,6 +789,7 @@ age_process_pages(struct proc* proc){
     }
   }
 #endif
+
 }
 
 //returns 1 if it's a user page (and can be swapped out).
@@ -886,8 +887,9 @@ select_page_to_back(struct proc *p){
         enqueue(p,toReturn);
     }
     #endif
-
-  //return (void*) 1;   //delete
+  #ifdef NONE
+  return (void*) 1;   //delete
+  #endif
 }
 
 
