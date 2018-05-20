@@ -83,6 +83,9 @@ struct proc {
     struct p_meta paging_meta;
     //Swap file. must initiate with create swap file
     struct file *swapFile;      //page file
+    //added task 3
+    uint    page_faults;
+    uint    num_pageouts;
 };
 
 

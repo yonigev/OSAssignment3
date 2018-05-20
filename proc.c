@@ -150,6 +150,8 @@ userinit(void)
   p->tf->eflags = FL_IF;
   p->tf->esp = PGSIZE;
   p->tf->eip = 0;  // beginning of initcode.S
+  p->page_faults = 0;
+  p->num_pageouts = 0;
 
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
@@ -241,6 +243,8 @@ fork(void)
   //initialize swap file meta
     copy_parent_swapfile(np,curproc);
   }
+  np->page_faults = 0;    //reset number of page faults to 0;
+  np->num_pageouts = curproc->num_pageouts;
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
@@ -565,7 +569,7 @@ procdump(void)
       state = "???";
     cprintf("%d %s %s", p->pid, state, p->name);
     if(p->state == SLEEPING){
-      getcallerpcs((uint*)p->context->ebp+2, pc);
+      getcallerpcs((uint*)p->context->ebp+2, pc); //call stack (program counters.)
       for(i=0; i<10 && pc[i] != 0; i++)
         cprintf(" %p", pc[i]);
     }

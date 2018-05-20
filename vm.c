@@ -672,6 +672,9 @@ copy_parent_swapfile(struct proc *child, struct proc *parent){
       writeToSwapFile(child,buff,offset,chunk);                      //write chunk to child
       offset+=bytes_read;                                            //next offset
     }
+    //copy all the meta data from the parent
+    memmove(&child->paging_meta,&parent->paging_meta,sizeof(struct p_meta));
+    
   
   return 1;
 }
@@ -913,6 +916,7 @@ page_out_N(struct proc *p,int N){
       panic("page_out_N error");
     }
   }
+  p->num_pageouts +=N;    //add to number of pageouts for this process
   return N;
 }
 
