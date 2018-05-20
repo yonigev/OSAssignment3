@@ -751,6 +751,9 @@ add_new_page(struct proc *p, void* vaddr){
     pages[i].age  = 0;
     pages[i].age2  = 0xffffffff;
     
+
+
+
     return 1;
   }
   return 0;
@@ -771,6 +774,10 @@ age_process_pages(struct proc* proc){
     pte_t *e= walkpgdir(proc->pgdir,pa[i].vaddr,0);
     //cprintf("now watching entry   -   %d\n",e);
     //cprintf("pages[i] age =    -   %d\n",pa[i].age);
+
+    cprintf("pa[i] before - \n");
+    cprintf("age  - %x\n",pa[i].age);
+    cprintf("age2  - %x\n",pa[i].age2);
     if((*e & PTE_A) > 0){            // if accessed
       *e &=~PTE_A;                   // clear Accessed bit
       pa[i].age=pa[i].age / 2;       //shift right
@@ -784,6 +791,11 @@ age_process_pages(struct proc* proc){
       pa[i].age=pa[i].age / 2;       //just shift right
       pa[i].age2=pa[i].age2 / 2;       //just shift right
     }
+    cprintf("pa[i]  - after\n");
+    cprintf("age  - %x\n",pa[i].age);
+    cprintf("age2  - %x\n",pa[i].age2);
+
+
   }
 
 }
