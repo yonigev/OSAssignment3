@@ -238,7 +238,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
   a = PGROUNDUP(oldsz);
   for(; a < newsz; a += PGSIZE){
 
-    
+    #ifndef NONE
     //add new page
     if(myproc()){
       int pages_in_ram=numOfPagedIn(myproc());
@@ -246,10 +246,13 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
         page_out_N(myproc(),1);
       }
     }
+    #endif
 
 
     mem = kalloc();
+    #ifndef NONE
     add_new_page(myproc(),mem);
+    #endif
 
     if(mem == 0){
       cprintf("allocuvm out of memory\n");
