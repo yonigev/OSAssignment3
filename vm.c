@@ -295,6 +295,12 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       if(pa == 0)
         panic("kfree");
       char *v = P2V(pa);
+      #ifndef NONE
+      if(myproc()){
+        free_page(myproc(),v);
+      }
+      #endif
+
       kfree(v);
       *pte = 0;
     }
@@ -448,6 +454,9 @@ struct page dequeue(struct proc *pr) {
             //pq.pages[i] = {0,0,0,0,0,0};
             pq.pages[i].exists = 0;
             pq.pages[i].vaddr  = 0;
+            pq.pages[i].age    = 0;
+            pq.pages[i].age2   = 0;
+            pq.pages[i].in_back= 0;
         }
         else
             pq.pages[i] = pq.pages[i + 1];
@@ -456,7 +465,41 @@ struct page dequeue(struct proc *pr) {
     return toReturn;
 }
 
+//when freeing memory   -   remove this page from queue
+int
+free_from_queue(struct proc *p,void* vaddr){
+  struct p_meta meta;
+  meta=p->paging_meta;
+  struct page_queue pq=meta.pq;
+  int to_del;     //index of page to delete from queue
+  for(to_del = 0; to_del<MAX_TOTAL_PAGES; to_del++){
+    if(!(pq.pages[to_del].exists && pq.pages[to_del].vaddr == vaddr))
+      continue;
+    break;
+  }
+  int i;
+  for(i=to_del; i<pq.lastIndex; i++){
+    if(i == MAX_TOTAL_PAGES-1){ //if its the last one, just delete it
+      pq.pages[i].exists = 0;
+      pq.pages[i].vaddr  = 0;
+      pq.pages[i].age    = 0;
+      pq.pages[i].age2   = 0;
+      pq.pages[i].in_back= 0;
+    }
+    else
+      pq.pages[i] = pq.pages[i + 1];  //shift
 
+    
+  }
+
+
+
+
+
+
+
+
+}
 
 
 //return 1 if the flag FLAG of page 'vaddr' is SET.
@@ -801,7 +844,24 @@ add_new_page(struct proc *p, void* vaddr){
 }
 
 
-
+//free a page with Virtual Address vaddr
+int
+free_page(struct proc *p, void* vaddr){
+  struct p_meta *meta=&p->paging_meta;
+  struct page *pages=meta->pages;
+  int i;
+  for(i=0; i<MAX_TOTAL_PAGES; i++){
+    if(pages[i].exists && pages[i].vaddr == vaddr){
+      pages[i].age=0;
+      pages[i].age2=0xffffffff;
+      pages[i].in_back=0;
+      pages[i].offset=0;
+      pages[i].vaddr=0;
+      pages[i].exists=0;
+    }
+  }
+  free_from_queue(p,vaddr);
+}
 //Aging
 void
 age_process_pages(struct proc* proc){
