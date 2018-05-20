@@ -225,9 +225,13 @@ fork(void)
   pid = np->pid;
 
   
-  //memset(&np->paging_meta,0,sizeof(struct p_meta));
-  reset_paging_meta(&np);
-  
+  //reset_paging_meta(&np);
+  if(is_user_proc(np)){
+    if(createSwapFile(np) != 0){
+      panic("fork_create swapfile");
+    }
+    memset(&np->paging_meta,0,sizeof(struct p_meta));
+  }
   //create swap file
   if(is_user_proc(np) && createSwapFile(np) != 0)
       panic("fork_create swapfile");
