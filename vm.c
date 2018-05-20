@@ -1061,14 +1061,13 @@ page_out_N(struct proc *p,int N){
 //page in vaddr. if needed, page out some other one.
 int
 safe_page_in(struct proc *p, void* vaddr){
-  cprintf("safe page in - \n");
+  cprintf("safe page in - %x \n",vaddr);
   
   
   if(numOfPagedIn(p) == MAX_PSYC_PAGES){
     cprintf("R: RAM FULL! \n");
      page_out_N(p,1);
   } 
-    cprintf("calling pageIn()\n");
     return pageIn(p, vaddr);
   
   //return 0;
