@@ -244,7 +244,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       int pages_in_ram=numOfPagedIn(myproc());
       cprintf("ALLOCUVM id: %d , name: %s- pages in ram : %d\n",myproc()->pid,myproc()->name,pages_in_ram);
       if(pages_in_ram == MAX_PSYC_PAGES){
-        page_out_N(myproc(),1);
+        pageOut(myproc(),select_page_to_back(myproc()));
         cprintf("finished paging out!\n");
 
       }
