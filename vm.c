@@ -9,7 +9,7 @@
 
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
-
+void*   select_page_to_back(struct proc *p);
 // Set up CPU's kernel segment descriptors.
 // Run once on entry on each CPU.
 void
