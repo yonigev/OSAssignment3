@@ -396,42 +396,42 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 
 
 
-// //Enqueue a page
-// int enqueue(struct proc *pr,struct page toAdd) {
-//     struct p_meta meta;
-//     meta=*pr->paging_meta;
+//Enqueue a page
+int enqueue(struct proc *pr,struct page toAdd) {
+    struct p_meta meta;
+    meta=*pr->paging_meta;
     
-//     if (meta.pq.lastIndex == MAX_TOTAL_PAGES) {
-//         //no place
-//         return 0;
-//     } else {
-//         meta.pq.pages[meta.pq.lastIndex] = toAdd;
-//         meta.pq.lastIndex++;
-//         return 1;
-//     }
-// }
+    if (meta.pq.lastIndex == MAX_TOTAL_PAGES) {
+        //no place
+        return 0;
+    } else {
+        meta.pq.pages[meta.pq.lastIndex] = toAdd;
+        meta.pq.lastIndex++;
+        return 1;
+    }
+}
 
-// //Dequeue a page
-// struct page dequeue(struct proc *pr) {
-//     struct p_meta meta;
-//     meta=*pr->paging_meta;
-//     struct page toReturn = meta.pq.pages[0];
-//     struct page_queue pq=meta.pq;
-//     pq.pages[0].exists  = 0;          //delete
-//     pq.pages[0].vaddr   = (void *)0;  //it
-//     int i;
-//     for (i = 0; i < MAX_TOTAL_PAGES; i++) {
-//         if (i == MAX_TOTAL_PAGES - 1){
-//             //pq.pages[i] = {0,0,0,0,0,0};
-//             pq.pages[i].exists = 0;
-//             pq.pages[i].vaddr  = 0;
-//         }
-//         else
-//             pq.pages[i] = pq.pages[i + 1];
-//     }
-//     pq.lastIndex--;
-//     return toReturn;
-// }
+//Dequeue a page
+struct page dequeue(struct proc *pr) {
+    struct p_meta meta;
+    meta=*pr->paging_meta;
+    struct page toReturn = meta.pq.pages[0];
+    struct page_queue pq=meta.pq;
+    pq.pages[0].exists  = 0;          //delete
+    pq.pages[0].vaddr   = (void *)0;  //it
+    int i;
+    for (i = 0; i < MAX_TOTAL_PAGES; i++) {
+        if (i == MAX_TOTAL_PAGES - 1){
+            //pq.pages[i] = {0,0,0,0,0,0};
+            pq.pages[i].exists = 0;
+            pq.pages[i].vaddr  = 0;
+        }
+        else
+            pq.pages[i] = pq.pages[i + 1];
+    }
+    pq.lastIndex--;
+    return toReturn;
+}
 
 
 
