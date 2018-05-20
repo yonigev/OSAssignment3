@@ -80,7 +80,6 @@ void globalTest(){
 
 
 int main(int argc, char *argv[]){
-  malloc(100);
   printf(1,"memtest starting\n");
   globalTest();			//for testing each policy efficiency
   forkTest();			//for testing swapping machanism in fork.

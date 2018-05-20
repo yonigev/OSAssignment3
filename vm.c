@@ -227,20 +227,38 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
   char *mem;
   uint a;
 
+  
   if(newsz >= KERNBASE)
     return 0;
   if(newsz < oldsz)
     return oldsz;
 
+  
+
   a = PGROUNDUP(oldsz);
   for(; a < newsz; a += PGSIZE){
+
+    
+    //add new page
+    if(myproc()){
+      int pages_in_ram=numOfPagedIn(myproc());
+      if(pages_in_ram == MAX_PSYC_PAGES){
+        page_out_N(myproc(),1);
+      }
+    }
+
+
     mem = kalloc();
+    add_new_page(myproc(),mem);
+
     if(mem == 0){
       cprintf("allocuvm out of memory\n");
       deallocuvm(pgdir, newsz, oldsz);
       return 0;
     }
     memset(mem, 0, PGSIZE);
+
+    
     if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) < 0){
       cprintf("allocuvm out of memory (2)\n");
       deallocuvm(pgdir, newsz, oldsz);
