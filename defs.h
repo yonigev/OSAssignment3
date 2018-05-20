@@ -211,6 +211,7 @@ void            age_process_pages(struct proc* proc);
 void            reset_paging_meta(struct proc* pr);
 int             get_allocated_pages(struct proc *p);
 int             get_paged_out(struct proc *p);
+int             free_page(struct proc *p, void* vaddr);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
