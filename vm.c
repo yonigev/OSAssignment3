@@ -783,8 +783,8 @@ age_process_pages(struct proc* proc){
 //0 otherwise
 int
 is_user_page(struct proc* p, void* vaddr){
-  pte_t entry=walkpgdir(p->pgdir,vaddr,0);
-  if((entry & PTE_U) > 0)
+  pte_t *entry=walkpgdir(p->pgdir,vaddr,0);
+  if((*entry & PTE_U) > 0)
     return 1;
   return 0;
 }
