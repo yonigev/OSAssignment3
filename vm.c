@@ -700,6 +700,18 @@ setPTE_PG(struct proc *p, const void* vadd){
 
 
 
+// counter number of 1's in a number
+uint 
+count_set_bits(uint number){
+  uint counter  =   0;
+  int i;
+  for(i=0; i<32; i++){
+    if((number | 1) > 0)
+      counter ++;
+    number = number / 2;
+  }
+  return counter;
+}
 
 // Adds a TOTALLY new page to the process's list.
 int
@@ -912,18 +924,6 @@ safe_page_in(struct proc *p, void* vaddr){
 
 
 
-// counter number of 1's in a number
-uint 
-count_set_bits(uint number){
-  uint counter  =   0;
-  int i;
-  for(i=0; i<32; i++){
-    if((number | 1) > 0)
-      counter ++;
-    number = number / 2;
-  }
-  return counter;
-}
 
 
 
