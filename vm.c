@@ -242,7 +242,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     //add new page
     if(myproc()){
       int pages_in_ram=numOfPagedIn(myproc());
-      cprintf("proc- id: %d , name: %s- pages in ram : %d\n",myproc()->pid,myproc()->name,pages_in_ram);
+      cprintf("ALLOCUVM id: %d , name: %s- pages in ram : %d\n",myproc()->pid,myproc()->name,pages_in_ram);
       if(pages_in_ram == MAX_PSYC_PAGES){
         page_out_N(myproc(),1);
         cprintf("finished paging out!\n");
@@ -253,6 +253,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
 
     mem = kalloc();
+    cprintf("got  : %x from kalloc()\n");
     #ifndef NONE
     add_new_page(myproc(),mem);
     #endif
@@ -843,7 +844,6 @@ add_new_page(struct proc *p, void* vaddr){
   cprintf("adding page. proc: %d , %s \t\t vaddr: %x\n",p->pid,p->name, vaddr);
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(pages[i].exists && pages[i].vaddr == vaddr){
-      cprintf("adding vaddr:  %x    pages[i]: exists: %d   ,   vaddr: %x\n",vaddr,pages[i].exists,pages[i].vaddr);
       panic("add_new_page vaddr exists");
     }
     if(pages[i].exists)
