@@ -705,18 +705,23 @@ add_new_page(struct proc *p, void* vaddr){
   struct p_meta *meta = &p->paging_meta;
   struct page *pages= meta->pages;
   int i;
+  struct page toAdd={.exists = 1, .vaddr = vaddr, .in_back = 0, .age = 0, .age2 = 0xffffffff};
+
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(pages[i].exists && pages[i].vaddr == vaddr){
       panic("add_new_page vaddr exists");
     }
     if(pages[i].exists)
       continue;
-    pages[i].exists = 1;      //mark this spot as taken, a page exists here now.
-    pages[i].vaddr  = vaddr;
-    pages[i].in_back= 0;
-    pages[i].age  = 0;
-    pages[i].age2  = 0xffffffff;
+    // pages[i].exists = 1;      //mark this spot as taken, a page exists here now.
+    // pages[i].vaddr  = vaddr;
+    // pages[i].in_back= 0;
+    // pages[i].age  = 0;
+    // pages[i].age2  = 0xffffffff;
+    pages[i]  = toAdd;
+    enqueue(p,toAdd);
     
+
 
 
 
@@ -763,7 +768,7 @@ select_page_to_back(struct proc *p){
   //implement algorithms
   
   #ifdef NFUA
-  struct page  min_page={.exists = 0, .vaddr=(void *)0, .in_back=0,.offset=0, .age=0,.age2=0};     //vaddr of that page
+  struct page  min_page={.exists = 0, .vaddr=(void *)0, .in_back=0,.offset=0, .age=0,.age2=0};   
   int i = 0;
   struct page * pa  =   (&(p->paging_meta))->pages;
   //first loop  - get the first page that exists and is NOT in the back.
@@ -787,7 +792,7 @@ select_page_to_back(struct proc *p){
 
   #ifdef LAPA
   int    min_count;         //min num of set bits
-  struct page  min_page;     //vaddr of that page
+  struct page  min_page={.exists = 0, .vaddr=(void *)0, .in_back=0,.offset=0, .age=0,.age2=0};   
   int i = 0;
   struct page * pa  =   (&(p->paging_meta))->pages;
   //first loop  - get the first page that exists and is NOT in the back.
