@@ -741,8 +741,6 @@ add_new_page(struct proc *p, void* vaddr){
   int i;
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(pages[i].exists && pages[i].vaddr == vaddr){
-      cprintf("exists   -   vaddr: %x\n",pages[i].vaddr);
-      cprintf("exists   -   exists: %d\n",pages[i].exists);
       panic("add_new_page vaddr exists");
     }
     if(pages[i].exists)
@@ -752,14 +750,7 @@ add_new_page(struct proc *p, void* vaddr){
     pages[i].in_back= 0;
     pages[i].age  = 0;
     pages[i].age2  = 0xffffffff;
-    cprintf("added page   -   vaddr: %x\n",pages[i].vaddr);
-    cprintf("in back  - %d\n",pages[i].in_back);
-    cprintf("in back  - %d\n",pages[i].in_back);
-    cprintf("age  - %x\n",pages[i].age);
-    cprintf("age2  - %x\n",pages[i].age2);
-
-
-
+    
     return 1;
   }
   return 0;

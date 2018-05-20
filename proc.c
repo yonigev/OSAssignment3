@@ -231,7 +231,6 @@ fork(void)
       panic("fork_create swapfile");
     }
     reset_paging_meta(np);
-    //memset(&np->paging_meta,0,sizeof(struct p_meta));
   }
   //create swap file
   if(is_user_proc(np) && createSwapFile(np) != 0)
@@ -405,10 +404,10 @@ sched(void)
 {
   int intena;
   struct proc *p = myproc();
-  // #ifndef NONE
-  // if(p!=0)
-  //   age_process_pages(p);       //update aging of pages.
-  // #endif
+  #ifndef NONE
+  if(p!=0)
+    age_process_pages(p);       //update aging of pages.
+  #endif
   if(!holding(&ptable.lock))
     panic("sched ptable.lock");
   if(mycpu()->ncli != 1)
