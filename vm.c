@@ -1066,7 +1066,7 @@ safe_page_in(struct proc *p, void* vaddr){
   
   if(numOfPagedIn(p) == MAX_PSYC_PAGES){
     cprintf("R: RAM FULL! \n");
-     page_out_N(p,1);
+     pageOut(p,select_page_to_back(p));
   } 
     return pageIn(p, vaddr);
   
