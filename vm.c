@@ -242,7 +242,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     //add new page
     if(myproc()){
       int pages_in_ram=numOfPagedIn(myproc());
-      cprintf("allocuvm- pages in ram : %d\n",pages_in_ram);
+      cprintf("proc- id: %d , name: %s- pages in ram : %d\n",myproc()->pid,myproc()->name,pages_in_ram);
       if(pages_in_ram == MAX_PSYC_PAGES){
         page_out_N(myproc(),1);
       }
