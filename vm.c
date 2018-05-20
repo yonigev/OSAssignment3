@@ -616,9 +616,7 @@ page_in_out(struct proc* p, void* to_in, void* to_back){
 int
 pageIn(struct proc *p, void* vaddr){
     char* paddr;    //will contain Physical address that the page would be written to.
-    cprintf("pageIn : calling kalloc()\n");
     paddr = kalloc();                           //allocate physical page
-    cprintf("pageIn : finished kalloc()\n");
     mappages(p->pgdir,vaddr,PGSIZE,(uint)paddr,0);    //map the vaddr to the newly allocated Paddr
     if(!getPageFromBack(p,vaddr,vaddr))             //write the page into memory (vaddr is already mapped to paddr)
       return 0;

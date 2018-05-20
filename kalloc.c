@@ -97,17 +97,17 @@ kalloc(void)
 int
 num_free(void){
   int counter=0;
-  struct run *r;
+  // struct run *r;
 
-  if(kmem.use_lock)           //lock?
-    acquire(&kmem.lock);
-  r = kmem.freelist;          //take the list of free pages
-  while(r){                       //if not 0
-    counter ++;
-    r = r->next;  
-  }
-  if(kmem.use_lock)
-    release(&kmem.lock);
+  // if(kmem.use_lock)           //lock?
+  //   acquire(&kmem.lock);
+  // r = kmem.freelist;          //take the list of free pages
+  // while(r){                       //if not 0
+  //   counter ++;
+  //   r = r->next;  
+  // }
+  // if(kmem.use_lock)
+  //   release(&kmem.lock);
   return counter;            //return the page
 }
 
