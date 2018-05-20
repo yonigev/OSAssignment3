@@ -86,7 +86,7 @@ trap(struct trapframe *tf)
     //uint addr=rcr2();   //the "faulty" address
     //added task 3
     if(myproc()){
-      cprintf("got page fault\n");
+      cprintf("got page fault for : %x\n",rcr2());
       myproc()->page_faults++;
     }
     //if a process is running this  AND the page is Paged-out in the back
