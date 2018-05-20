@@ -39,12 +39,6 @@ enum procstate {
 
 
 
-//a process queue .
-struct page_queue {
-    struct page         pages[MAX_TOTAL_PAGES];
-    int lastIndex;
-};
-
 struct page{
     int         exists;         //1 -if this page exists, 0 if it's the end of the list.
     void*       vaddr;          //the page's virtual address
@@ -62,6 +56,12 @@ struct p_meta {
 
 };
 
+
+//a process queue .
+struct page_queue {
+    struct page         pages[MAX_TOTAL_PAGES];
+    int lastIndex;
+};
 
 
 // Per-process state
