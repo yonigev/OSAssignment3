@@ -671,7 +671,7 @@ pageOut(struct proc *p,void* vaddr){
     cprintf("pageOut: paging out vaddr: %x\n",vaddr);
    //write page to the Back file.
   if(addPageToBack(p,vaddr)){
-    pte_t *pte=walkpgdir(p->pgdir,vaddr,0);
+    //pte_t *pte=walkpgdir(p->pgdir,vaddr,0);
     //to_free=(char*)P2V(PTE_ADDR(*pte));   //TODO: why U flag always 0
     // if(!(to_free=uva2ka(p->pgdir,vaddr)))
     //   panic("page-out");
