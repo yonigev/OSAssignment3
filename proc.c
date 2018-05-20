@@ -230,7 +230,7 @@ fork(void)
     if(createSwapFile(np) != 0){
       panic("fork_create swapfile");
     }
-    memset(&np->paging_meta,0,sizeof(struct p_meta));
+    //memset(&np->paging_meta,0,sizeof(struct p_meta));
   }
   //create swap file
   if(is_user_proc(np) && createSwapFile(np) != 0)
