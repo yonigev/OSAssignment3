@@ -762,9 +762,12 @@ void
 age_process_pages(struct proc* proc){
   struct page * pa=proc->paging_meta->pages;
   int i;
+  cprintf("Now aging\n");
   //for every page
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     pte_t *e= walkpgdir(proc->pgdir,pa[i].vaddr,0);
+    cprintf("now watching entry   -   %d\n",e);
+    cprintf("pages[i] =    -   %d\n",pa[i]);
     if((*e & PTE_A) > 0){            // if accessed
       *e &=~PTE_A;                   // clear Accessed bit
       pa[i].age=pa[i].age / 2;       //shift right
