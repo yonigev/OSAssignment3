@@ -466,7 +466,7 @@ struct page dequeue(struct proc *pr) {
 }
 
 //when freeing memory   -   remove this page from queue
-int
+void
 free_from_queue(struct proc *p,void* vaddr){
   struct p_meta meta;
   meta=p->paging_meta;
@@ -845,7 +845,7 @@ add_new_page(struct proc *p, void* vaddr){
 
 
 //free a page with Virtual Address vaddr
-int
+void
 free_page(struct proc *p, void* vaddr){
   struct p_meta *meta=&p->paging_meta;
   struct page *pages=meta->pages;
