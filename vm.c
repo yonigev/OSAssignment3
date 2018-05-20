@@ -397,9 +397,11 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 
 
 //Enqueue a page
-int enqueue(struct proc *pr,struct page toAdd) {
+int enqueue(int check, struct proc *pr,struct page toAdd) {
+    check=93;
+    struct p_meta meta;
+    meta=pr->paging_meta;
     
-    struct p_meta meta=pr->paging_meta;
     if (meta.pq.lastIndex == MAX_TOTAL_PAGES) {
         //no place
         return 0;
