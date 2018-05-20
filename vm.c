@@ -832,14 +832,15 @@ select_page_to_back(struct proc *p){
 int
 page_out_N(struct proc *p,int N){
   cprintf("page_out_N",N);
-  struct page* pages=p->paging_meta.pages;
   int i;
   //find N pages to page OUT
   for(i=0; i<N; i++){
     void* vaddr=select_page_to_back(p);
-    pageOut(p,vaddr);
-   
+    if(!pageOut(p,vaddr)){
+      panic("page_out_N error");
+    }
   }
+  return N;
 }
 
 
