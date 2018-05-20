@@ -251,7 +251,9 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     #endif
 
 
+    cprintf("Before kalloc()\n");
     mem = kalloc();
+    cprintf("After kalloc()\n");
     #ifndef NONE
     add_new_page(myproc(),mem);
     #endif
