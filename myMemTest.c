@@ -64,8 +64,8 @@ SCFIFO: 35 Page faults
 */
 void globalTest(){
 	char * arr;
-	int i;
-	int randNum;
+	//int i;
+	//int randNum;
 	arr = malloc(ARR_SIZE); //allocates 14 pages (sums to 17 - to allow more then one swapping in scfifo)
 // 	for (i = 0; i < TEST_POOL; i++) {
 // 		randNum = getRandNum();	//generates a pseudo random number between 0 and ARR_SIZE
