@@ -425,7 +425,7 @@ clearPTE_FLAG(struct proc *p, const void* vadd, uint FLAG){
 //page in vaddr. if needed, page out some other one.
 int
 safe_page_in(struct proc *p, void* vaddr){
-
+return 0;
 }
 
 // page out N different pages into the Back.
@@ -803,7 +803,7 @@ select_page_to_back(struct proc *p){
 
   #endif
 
-
+  return (void*) 1;   //delete
 }
 // counter number of 1's in a number
 uint 
@@ -821,13 +821,14 @@ count_set_bits(uint number){
 
 //Enqueue a page
 int enqueue(struct proc *pr,struct page toAdd) {
-    struct p_meta meta=proc->paging_meta;
+    struct p_meta meta=pr->paging_meta;
     if (meta.pq.lastIndex == MAX_TOTAL_PAGES) {
         //no place
         return 0;
     } else {
         meta.pq.pages[meta.pq.lastIndex] = toAdd;
         meta.pq.lastIndex++;
+        return 1;
     }
 }
 
@@ -836,7 +837,7 @@ struct page dequeue(struct proc *pr) {
     struct p_meta meta=pr->paging_meta;
     struct page toReturn = meta.pq.pages[0];
     struct page_queue pq=meta.pq;
-    pq.pages[0] = 0;
+    pq.pages[0] = (struct page)0;
     int i;
     for (i = 0; i < MAX_TOTAL_PAGES; i++) {
         if (i == MAX_TOTAL_PAGES - 1)
