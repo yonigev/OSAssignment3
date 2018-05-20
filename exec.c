@@ -51,9 +51,10 @@ exec(char *path, char **argv) {
     //create swap file for this execution.
     //if it's not init.
     if(is_user_proc(curproc)){
-        memset(curproc->paging_meta,0,sizeof(struct p_meta));
+        //memset(curproc->paging_meta,0,sizeof(struct p_meta));
+        reset_paging_meta(curproc);
         if(createSwapFile(curproc) != 0)
-            panic("fork_create swapfile");
+            panic("exec_create swapfile");
     }
     #endif
     sz = 0;

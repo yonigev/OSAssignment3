@@ -206,6 +206,6 @@ int             copy_parent_swapfile(struct proc *child, struct proc *parent);
 int             page_out_N(struct proc *p,int N);
 int             safe_page_in(struct proc *p, void* vaddr);
 void            age_process_pages(struct proc* proc);
-
+void            reset_paging_meta(struct proc* pr);
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

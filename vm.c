@@ -881,7 +881,10 @@ count_set_bits(uint number){
 
 
 
-
+void
+reset_paging_meta(struct proc* pr){
+   memset(pr->paging_meta,0,sizeof(struct p_meta));
+}
 
 
 //PAGEBREAK!
