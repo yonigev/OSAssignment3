@@ -240,7 +240,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
     #ifndef NONE
     //add new page
-    if(myproc()){דש
+    if(myproc()){
       int pages_in_ram=numOfPagedIn(myproc());
       cprintf("proc- id: %d , name: %s- pages in ram : %d\n",myproc()->pid,myproc()->name,pages_in_ram);
       if(pages_in_ram == MAX_PSYC_PAGES){
@@ -1061,7 +1061,7 @@ safe_page_in(struct proc *p, void* vaddr){
   //make sure it's a private user page
   //if((uint)vaddr >= 0 && (uint)vaddr < KERNBASE){
   if(numOfPagedIn(p) == MAX_PSYC_PAGES){
-    cprintf("safe_page_in: RAM FULL! \n");
+    cprintf("R: RAM FULL! \n");
      page_out_N(p,1);
   } 
     cprintf("calling pageIn()\n");
