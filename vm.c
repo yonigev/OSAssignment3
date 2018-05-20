@@ -775,6 +775,7 @@ add_new_page(struct proc *p, void* vaddr){
 
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(pages[i].exists && pages[i].vaddr == vaddr){
+      cprintf("adding vaddr:  %d    pages[i]: exists: %d   ,   vaddr: %d\n",vaddr,pages[i].exists,pages[i].vaddr);
       panic("add_new_page vaddr exists");
     }
     if(pages[i].exists)
@@ -956,7 +957,7 @@ select_page_to_back(struct proc *p){
 // page out N different pages into the Back.
 int
 page_out_N(struct proc *p,int N){
-  cprintf("page_out_N",N);
+  cprintf("page_out_N = %d\n",N);
   int i;
   //find N pages to page OUT
   for(i=0; i<N; i++){

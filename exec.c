@@ -74,9 +74,9 @@ exec(char *path, char **argv) {
         int current_in_ram  =   numOfPagedIn(curproc);                          //number of current pages in ram
         int toAdd           =   (ph.vaddr+ph.memsz - sz)/PGSIZE;                 //number of pages we want to add
         int to_page_out     =   current_in_ram +toAdd - MAX_PSYC_PAGES;         //how many to page out (make room)
-        cprintf("in exec.c- adding %d bytes\n",ph.vaddr+ph.memsz);
-        cprintf("         - adding %d pages\n",toAdd);
-        cprintf("         - in ram %d pages\n",current_in_ram);
+        // cprintf("in exec.c- adding %d bytes\n",ph.vaddr+ph.memsz);
+        // cprintf("         - adding %d pages\n",toAdd);
+        // cprintf("         - in ram %d pages\n",current_in_ram);
 
 
 
