@@ -251,9 +251,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     #endif
 
 
-    cprintf("Before kalloc()\n");
     mem = kalloc();
-    cprintf("After kalloc()\n");
     #ifndef NONE
     add_new_page(myproc(),mem);
     #endif
@@ -471,7 +469,6 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 
 
 
-#ifndef NONE
 
 
 
@@ -1060,7 +1057,7 @@ page_out_N(struct proc *p,int N){
 //page in vaddr. if needed, page out some other one.
 int
 safe_page_in(struct proc *p, void* vaddr){
-  cprintf("safe page in");
+  cprintf("safe page in - \n");
   //make sure it's a private user page
   //if((uint)vaddr >= 0 && (uint)vaddr < KERNBASE){
   if(numOfPagedIn(p) == MAX_PSYC_PAGES){
@@ -1082,7 +1079,6 @@ void
 reset_paging_meta(struct proc* pr){
    memset(&pr->paging_meta,0,sizeof(struct p_meta));
 }
-#endif
 
 //PAGEBREAK!
 // Blank page.

@@ -24,7 +24,6 @@ initlock(struct spinlock *lk, char *name)
 void
 acquire(struct spinlock *lk)
 {
-  //cprintf("ACQUIRING  -   proc: %d, %s", myproc()->pid, myproc()->name);
   pushcli(); // disable interrupts to avoid deadlock.
   if(holding(lk))
     panic("acquire");
