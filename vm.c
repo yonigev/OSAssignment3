@@ -389,7 +389,11 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 }
 
 
+// Our new Functions
 
+
+
+#ifndef NONE
 
 
 
@@ -971,7 +975,7 @@ void
 reset_paging_meta(struct proc* pr){
    memset(&pr->paging_meta,0,sizeof(struct p_meta));
 }
-
+#endif
 
 //PAGEBREAK!
 // Blank page.

@@ -227,17 +227,13 @@ fork(void)
   pid = np->pid;
 
   
-  
+  #ifndef NONE
   if(is_user_proc(np)){
     if(createSwapFile(np) != 0){
       panic("fork_create swapfile");
     }
     //reset_paging_meta(np);
   }
-  //create swap file
-  if(is_user_proc(np) && createSwapFile(np) != 0)
-      panic("fork_create swapfile");
-  
   //copy from parent - if he's a user process
   if(is_user_proc(curproc)){  
   //initialize swap file meta
@@ -245,6 +241,8 @@ fork(void)
   }
   np->page_faults = 0;    //reset number of page faults to 0;
   np->num_pageouts = 0;
+  #endif
+
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
@@ -287,8 +285,10 @@ exit(void)
   iput(curproc->cwd);
   end_op();
   curproc->cwd = 0;
+  #ifndef NONE
   #if VERBOSE_PRINT == TRUE
   procdump();
+  #endif
   #endif
   acquire(&ptable.lock);
 
@@ -570,13 +570,13 @@ procdump(void)
     else
       state = "???";
     cprintf("%d %s %s", p->pid, state, p->name);
-    
+    #ifndef NONE
     int current_allocated=get_allocated_pages(p);
     int paged_out=get_paged_out(p);
     int page_faults=p->page_faults;
     int total_out=p->num_pageouts;
     cprintf(" %d %d %d %d",current_allocated,paged_out,page_faults,total_out);
-
+    #endif
 
     
     if(p->state == SLEEPING){
@@ -587,10 +587,10 @@ procdump(void)
     cprintf("\n");
   }
   //now print ratio
-
+  #ifndef NONE
   int free_pages=num_free();
-  int used_kernel=KERNBASE/PGSIZE;
-  cprintf("%d  /  %d  free pages in the system\n",free_pages,free_pages+used_kernel);
-
+  int used_kernel=KERNBASE/PGSIZE; //TODO: Check correctness
+  cprintf("%d  /  %d  free pages in the system\n",free_pages,free_pages + used_kernel);
+  #endif
 
 }
