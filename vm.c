@@ -79,6 +79,7 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
     a += PGSIZE;
     pa += PGSIZE;
   }
+  cprintf("finishing mappages\n");
   return 0;
 }
 
