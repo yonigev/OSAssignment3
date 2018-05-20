@@ -743,14 +743,12 @@ select_page_to_back(struct proc *p){
   //implement algorithms
   
   #ifdef NFUA
-  int    min_count;          //min num of set bits
   struct page  min_page;     //vaddr of that page
   int i = 0;
   struct page * pa=p->paging_meta->pages;
   //first loop  - get the first page that exists and is NOT in the back.
   for(i = 0; i<MAX_TOTAL_PAGES; i++){
     if(pa[i].exists && !pa[i].in_back){
-        min_count=pa[i].age;
         min_page=pa[i];
     }
   }
@@ -758,9 +756,7 @@ select_page_to_back(struct proc *p){
   for(; i<MAX_TOTAL_PAGES; i++){
     if(!pa[i].exists || pa[i].in_back)  //if spot not occupied OR the page is in the back file already , skip.
       continue;
-    int curr_count  =   pa[i].age;
-    if(curr_count < min_count){
-      min_count=curr_count;
+    if(pa[i].age < min_page.age){
       min_page=pa[i];
     }
   }
@@ -783,7 +779,7 @@ select_page_to_back(struct proc *p){
   }
   //Possible bug?
   for(; i<MAX_TOTAL_PAGES; i++){
-    if(!pa[i].exists || pa[i].in_back)  //if spot not occupied OR the page is in the back file already , skip.
+    if(!pa[i].exists || pa[i].in_back || pa[i].vaddr  ==  min_page.vaddr)  //if spot not occupied OR the page is in the back file already, skip
       continue;
     int curr_count  = count_set_bits(pa[i].age2);
     if(curr_count < min_count){
@@ -800,11 +796,12 @@ select_page_to_back(struct proc *p){
   //return this page's vaddr
   return min_page.vaddr;
   #endif
+  #ifdef SCFIFO
 
 
 
 
-
+  #endif
 
 
 }
@@ -820,6 +817,37 @@ count_set_bits(uint number){
   }
   return counter;
 }
+
+
+//Enqueue a page
+int enqueue(struct proc *pr,struct page toAdd) {
+    struct p_meta meta=proc->paging_meta;
+    if (meta.pq.lastIndex == MAX_TOTAL_PAGES) {
+        //no place
+        return 0;
+    } else {
+        meta.pq.pages[meta.pq.lastIndex] = toAdd;
+        meta.pq.lastIndex++;
+    }
+}
+
+//Dequeue a page
+struct page dequeue(struct proc *pr) {
+    struct p_meta meta=pr->paging_meta;
+    struct page toReturn = meta.pq.pages[0];
+    struct page_queue pq=meta.pq;
+    pq.pages[0] = 0;
+    int i;
+    for (i = 0; i < MAX_TOTAL_PAGES; i++) {
+        if (i == MAX_TOTAL_PAGES - 1)
+            pq.pages[i] = 0;
+        else
+            pq.pages[i] = pq.pages[i + 1];
+    }
+    pq.lastIndex--;
+    return toReturn;
+}
+
 
 
 //PAGEBREAK!

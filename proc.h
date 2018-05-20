@@ -37,6 +37,14 @@ enum procstate {
 };
 
 
+
+
+//a process queue .
+struct page_queue {
+    struct page pages[MAX_TOTAL_PAGES];
+    int lastIndex;
+};
+
 struct page{
     int         exists;         //1 -if this page exists, 0 if it's the end of the list.
     void*       vaddr;          //the page's virtual address
@@ -48,10 +56,14 @@ struct page{
 
 struct p_meta {
     
-    struct page     pages[MAX_TOTAL_PAGES];               //  contains virtual addresses. the i'th address means the i'th page
-    int             offsets[MAX_TOTAL_PAGES];             // 0 if offset #i is available, 1 otherwise (taken by some page)
+    struct page         pages[MAX_TOTAL_PAGES];               //    contains virtual addresses. the i'th address means the i'th page
+    struct page_queue   pq;                                   //    used for SCFIFO
+    int                 offsets[MAX_TOTAL_PAGES];             //    0 if offset #i is available, 1 otherwise (taken by some page)
 
 };
+
+
+
 // Per-process state
 struct proc {
     uint sz;                     // Size of process memory (bytes)
