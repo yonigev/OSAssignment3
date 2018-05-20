@@ -76,7 +76,7 @@ void globalTest(){
 // 		arr[randNum] = 'X';				//write to memory
 // 	printf(1,"test %d i= \n",i);
 //   }
-//	free(arr);
+	free(arr);
 }
 
 

@@ -1062,15 +1062,15 @@ page_out_N(struct proc *p,int N){
 int
 safe_page_in(struct proc *p, void* vaddr){
   cprintf("safe page in - \n");
-  //make sure it's a private user page
-  //if((uint)vaddr >= 0 && (uint)vaddr < KERNBASE){
+  
+  
   if(numOfPagedIn(p) == MAX_PSYC_PAGES){
     cprintf("R: RAM FULL! \n");
      page_out_N(p,1);
   } 
     cprintf("calling pageIn()\n");
     return pageIn(p, vaddr);
-  //}
+  
   //return 0;
 }
 
