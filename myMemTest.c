@@ -1,14 +1,14 @@
-#define PGSIZE 4096
+#define H_PGSIZE 2048
 #include "types.h"
 #include "user.h"
 #include "stat.h"
 int main(){
 
-    char arr1[PGSIZE-100]={1};
+    char arr1[H_PGSIZE-100]={1};
     //char arr2[2*PGSIZE]={2};
 
     int i;
-    for(i=0; i<PGSIZE-100; i++){
+    for(i=0; i<H_PGSIZE-100; i++){
         printf(1, "%c",arr1[i]);
     }
     
