@@ -297,7 +297,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       char *v = P2V(pa);
       #ifndef NONE
       if(myproc()){
-        free_page(myproc(),v);
+        free_page(myproc(),(void *)v);
       }
       #endif
 
