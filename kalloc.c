@@ -87,7 +87,6 @@ kalloc(void)
 {
   cprintf("in kalloc start !\n");
   struct run *r;
-  int i=myproc()->pid;
   if(kmem.use_lock)           //lock?
     acquire(&kmem.lock);
   r = kmem.freelist;          //take the list of free pages
