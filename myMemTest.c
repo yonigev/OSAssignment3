@@ -4,7 +4,7 @@
 #include "stat.h"
 int main(){
 
-    char arr1[H_PGSIZE+100]={1};
+    char arr1[3000]={1};
     //char arr2[2*PGSIZE]={2};
 
     int i;
