@@ -85,7 +85,7 @@ exec(char *path, char **argv) {
         //         goto bad;
 
 
-        int oldsz=sz;
+        //int oldsz=sz;
        // #endif
         if ((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
             goto bad;
