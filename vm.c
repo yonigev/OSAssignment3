@@ -413,16 +413,17 @@ int enqueue(struct proc *pr,struct page toAdd) {
 
 //Dequeue a page
 struct page dequeue(struct proc *pr) {
-    struct p_meta meta=pr->paging_meta;
+    struct p_meta meta;
+    meta=*pr->paging_meta;
     struct page toReturn = meta.pq.pages[0];
     struct page_queue pq=meta.pq;
     pq.pages[0] = NULL;
     int i;
     for (i = 0; i < MAX_TOTAL_PAGES; i++) {
         if (i == MAX_TOTAL_PAGES - 1){
-            pq.pages[i] = 0;
+            pq.pages[i] = {0,0,0,0,0,0};
             pq.pages[i].exists = 0;
-            pq.pages[i].vaddr  = 0
+            pq.pages[i].vaddr  = 0;
         }
         else
             pq.pages[i] = pq.pages[i + 1];
