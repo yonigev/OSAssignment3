@@ -788,6 +788,13 @@ age_process_pages(struct proc* proc){
       pa[j+1]=temp;
     }
   }
+  //Clean up Accessed bits
+  for(j = pq->lastIndex - 1; j>=0; j--){
+    pte_t *entry=walkpgdir(proc->pgdir,pa[j].vaddr,0);
+    *entry &=~PTE_A;                   // clear Accessed bit
+  }  
+
+
 #endif
 
 }
