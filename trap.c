@@ -80,6 +80,7 @@ trap(struct trapframe *tf)
     break;
 
   //page fault
+  #ifndef NONE
   case T_PGFLT:
     ;//stupid bug 
     uint addr=rcr2();   //the "faulty" address
@@ -92,6 +93,7 @@ trap(struct trapframe *tf)
       safe_page_in(myproc(),(void *)addr);  //page another one OUT, and page this one IN
       break;
       }
+  #endif
   
 
 
