@@ -48,6 +48,11 @@ struct page{
     uint        age2;           //for LAPA
 };
 
+//a process queue .
+struct page_queue {
+    struct page         pages[MAX_TOTAL_PAGES];
+    int lastIndex;
+};
 struct p_meta {
     
     struct page         pages[MAX_TOTAL_PAGES];               //    contains virtual addresses. the i'th address means the i'th page
@@ -57,11 +62,6 @@ struct p_meta {
 };
 
 
-//a process queue .
-struct page_queue {
-    struct page         pages[MAX_TOTAL_PAGES];
-    int lastIndex;
-};
 
 
 // Per-process state
