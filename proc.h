@@ -80,7 +80,7 @@ struct proc {
     struct file *ofile[NOFILE];  // Open files
     struct inode *cwd;           // Current directory
     char name[16];               // Process name (debugging)
-    struct p_meta* paging_meta;
+    struct p_meta paging_meta;
     //Swap file. must initiate with create swap file
     struct file *swapFile;      //page file
 };

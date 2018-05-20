@@ -399,7 +399,7 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 //Enqueue a page
 int enqueue(struct proc *pr,struct page toAdd) {
     struct p_meta meta;
-    meta=*pr->paging_meta;
+    meta=pr->paging_meta;
     
     if (meta.pq.lastIndex == MAX_TOTAL_PAGES) {
         //no place
@@ -414,7 +414,7 @@ int enqueue(struct proc *pr,struct page toAdd) {
 //Dequeue a page
 struct page dequeue(struct proc *pr) {
     struct p_meta meta;
-    meta=*pr->paging_meta;
+    meta=pr->paging_meta;
     struct page toReturn = meta.pq.pages[0];
     struct page_queue pq=meta.pq;
     pq.pages[0].exists  = 0;          //delete
@@ -480,7 +480,7 @@ page_out_N(struct proc *p,int N){
   cprintf("page_out_N",N);
   void* vaddr[N];
   int found_in_ram=0;   //for debugging
-  struct page* pages=p->paging_meta->pages;
+  struct page* pages=p->paging_meta.pages;
   int i;
   //find N pages to page OUT
   for(i=0; i<N; i++){
@@ -505,7 +505,7 @@ page_out_N(struct proc *p,int N){
 //  return 0 on error
 int
 getPageFromBack(struct proc* p, const void* vaddr, char* buffer){
-  struct page* pages=p->paging_meta->pages;
+  struct page* pages=p->paging_meta.pages;
   int i;
   for(i=0; i  < MAX_TOTAL_PAGES; i++){
     if (pages[i].exists && pages[i].vaddr  ==   vaddr){
@@ -521,8 +521,8 @@ getPageFromBack(struct proc* p, const void* vaddr, char* buffer){
 //update page meta-data when going to front
 int 
 page_in_meta(struct proc* p,void* vaddr){
-   struct p_meta *meta  =   p->paging_meta;
-   struct page *pages   =   meta->pages;
+   struct p_meta meta  =   p->paging_meta;
+   struct page *pages   =   meta.pages;
    int i;
    for(i=0; i<MAX_TOTAL_PAGES; i++){
      if(pages[i].vaddr  ==  vaddr){
@@ -539,8 +539,8 @@ page_in_meta(struct proc* p,void* vaddr){
 //page needs to already exist in the list.
 int 
 page_out_meta(struct proc *p,void* vaddr,uint offset){
-   struct p_meta *meta  =   p->paging_meta;
-   struct page *pages   =   meta->pages;
+   struct p_meta meta  =   p->paging_meta;
+   struct page *pages   =   meta.pages;
    int i;
    for(i=0; i<MAX_TOTAL_PAGES; i++){
      if(pages[i].vaddr  ==  vaddr){
@@ -589,7 +589,7 @@ isPagedOut(struct proc *p,  void* vaddr){
 //return PGFILE_FULL_ERR if none found (file is full  - TODO: Possible?!)
 uint
 getFreePageOffset(struct proc *p){
-  struct p_meta *meta=p->paging_meta;
+  struct p_meta meta=p->paging_meta;
   int i;
 
   for(i=0; i< MAX_TOTAL_PAGES; i++){
@@ -637,7 +637,7 @@ pageOut(struct proc *p,void* vaddr){
 //  A Naive way to get some page that we can remove to the Back file.
 void*
 naive_getPageToStore(struct proc *p){
-  struct page *pages=p->paging_meta->pages;
+  struct page *pages=p->paging_meta.pages;
   int i;
   for(i = 0; i< MAX_TOTAL_PAGES; i++){
     if(pages[i].exists && !pages[i].in_back){ // if page #i exists and is currentnly in RAM
@@ -656,7 +656,7 @@ int hasPlaceInBack(struct proc *p){
 //returns the number of paged out Pages
 int
 numOfPagedOut(struct proc *p){
-  struct page* pages=p->paging_meta->pages;
+  struct page* pages=p->paging_meta.pages;
   int i;
   int counter = 0;
   for(i=0; i  <MAX_TOTAL_PAGES; i++){
@@ -672,7 +672,7 @@ numOfPagedOut(struct proc *p){
 //Number of pages in RAM
 int
 numOfPagedIn(struct proc *p){
-  struct page* pages=p->paging_meta->pages;
+  struct page* pages=p->paging_meta.pages;
   int i;
   int counter = 0;
   for(i=0; i  <MAX_TOTAL_PAGES; i++){
@@ -736,8 +736,8 @@ setPTE_PG(struct proc *p, const void* vadd){
 // Adds a TOTALLY new page to the process's list.
 int
 add_new_page(struct proc *p, void* vaddr){
-  struct p_meta *meta = p->paging_meta;
-  struct page *pages=meta->pages;
+  struct p_meta meta = p->paging_meta;
+  struct page *pages=meta.pages;
   int i;
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(pages[i].exists && pages[i].vaddr == vaddr){
@@ -806,7 +806,7 @@ select_page_to_back(struct proc *p){
   #ifdef NFUA
   struct page  min_page={.exists = 0, .vaddr=(void *)0, .in_back=0,.offset=0, .age=0,.age2=0};     //vaddr of that page
   int i = 0;
-  struct page * pa=p->paging_meta->pages;
+  struct page * pa=p->paging_meta.pages;
   //first loop  - get the first page that exists and is NOT in the back.
   for(i = 0; i<MAX_TOTAL_PAGES; i++){
     if(pa[i].exists && !pa[i].in_back){
@@ -830,7 +830,7 @@ select_page_to_back(struct proc *p){
   int    min_count;         //min num of set bits
   struct page  min_page;     //vaddr of that page
   int i = 0;
-  struct page * pa=p->paging_meta->pages;
+  struct page * pa=p->paging_meta.pages;
   //first loop  - get the first page that exists and is NOT in the back.
   for(i = 0; i<MAX_TOTAL_PAGES; i++){
     if(pa[i].exists && !pa[i].in_back){
@@ -883,7 +883,7 @@ count_set_bits(uint number){
 
 void
 reset_paging_meta(struct proc* pr){
-   memset(pr->paging_meta,0,sizeof(struct p_meta));
+   memset(&pr->paging_meta,0,sizeof(struct p_meta));
 }
 
 
