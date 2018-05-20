@@ -788,8 +788,8 @@ void*
 select_page_to_back(struct proc *p){
   //implement algorithms
   
-  #ifdef NFUA
-  struct page  min_page;     //vaddr of that page
+  //#ifdef NFUA
+  struct page  min_page={.exists = 0, .vaddr=(void *)0, .in_back=0,.offset=0, .age=0,.age2=0};     //vaddr of that page
   int i = 0;
   struct page * pa=p->paging_meta->pages;
   //first loop  - get the first page that exists and is NOT in the back.
