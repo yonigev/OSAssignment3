@@ -936,10 +936,10 @@ age_process_pages(struct proc* proc){
 //0 otherwise
 int
 is_user_page(struct proc* p, void* vaddr){
-  pte_t *entry=walkpgdir(p->pgdir,vaddr,0);
-  if((*entry & PTE_U) > 0)
-    return 1;
-  return 0;
+  // pte_t *entry=walkpgdir(p->pgdir,vaddr,0);
+  // if((*entry & PTE_U) > 0)
+     return 1;
+  // return 0;
 }
 
 // Returns a Virtual Address of a page to be replaced in the RAM, according to replacement algorithms.
@@ -955,7 +955,7 @@ select_page_to_back(struct proc *p){
     for(i = 0; i<MAX_TOTAL_PAGES; i++){
       if(pa[i].exists && !pa[i].in_back && is_user_page(p,pa[i].vaddr)){
           min_page=pa[i];
-          cprintf("SELECT PAGE : NFUA : FIRST NORMAL : FOUND : %x\n",min_page.vaddr);
+         // cprintf("SELECT PAGE : NFUA : FIRST NORMAL : FOUND : %x\n",min_page.vaddr);
       }
     }
     //Possible bug?
