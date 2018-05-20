@@ -679,6 +679,33 @@ copy_parent_swapfile(struct proc *child, struct proc *parent){
   return 1;
 }
 
+//return number of allocated pages for this process
+int
+get_allocated_pages(struct proc *p){
+  struct page *pages=p->paging_meta.pages;
+  int i;
+  int counter = 0;
+  for(i=0; i<MAX_TOTAL_PAGES; i++){
+    if(pages[i].exists){
+      counter++;
+    }
+  }
+  return counter;
+}
+//return number of currently paged-out pages for this process
+int
+get_paged_out(struct proc *p){
+  struct page *pages=p->paging_meta.pages;
+  int i;
+  int counter = 0;
+  for(i=0; i<MAX_TOTAL_PAGES; i++){
+    if(pages[i].exists && pages[i].in_back){
+      counter++;
+    }
+  }
+  return  counter;
+}
+
 
 
 int

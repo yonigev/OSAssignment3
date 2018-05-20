@@ -568,6 +568,15 @@ procdump(void)
     else
       state = "???";
     cprintf("%d %s %s", p->pid, state, p->name);
+    #ifdef VERBOSE_PRINT == TRUE
+    int current_allocated=get_allocated_pages(p);
+    int paged_out=get_paged_out(p);
+    int page_faults=p->page_faults;
+    int total_out=p->num_pageouts;
+    cprintf(" %d %d %d %d",current_allocated,paged_out,page_faults,total_out);
+
+
+    #endif
     if(p->state == SLEEPING){
       getcallerpcs((uint*)p->context->ebp+2, pc); //call stack (program counters.)
       for(i=0; i<10 && pc[i] != 0; i++)
