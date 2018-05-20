@@ -606,6 +606,7 @@ int
 pageOut(struct proc *p,void* vaddr){
   char* to_free;
 
+    cprintf("pageOut: paging out vaddr: %x\n",vaddr);
    //write page to the Back file.
   if(addPageToBack(p,vaddr)){
     if(!(to_free=uva2ka(p->pgdir,vaddr)))
