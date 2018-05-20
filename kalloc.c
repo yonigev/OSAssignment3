@@ -83,10 +83,11 @@ kfree(char *v)
 char*
 kalloc(void)
 {
-  //cprintf("in kalloc start !\n");
   struct run *r;
-  if(kmem.use_lock)           //lock?
+  if(kmem.use_lock){           //lock?
+    cprintf("acqlock\n");
     acquire(&kmem.lock);
+  }
   r = kmem.freelist;          //take the list of free pages
   if(r)                       //if not 0
     kmem.freelist = r->next;  //"delete" a page. meaning make the list start from the second free page
