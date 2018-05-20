@@ -59,6 +59,8 @@ freerange(void *vstart, void *vend)
 void
 kfree(char *v)
 {
+
+  cprintf("in KFREE start !\n");
   struct run *r;
 
   if((uint)v % PGSIZE || v < end || V2P(v) >= PHYSTOP)
@@ -74,6 +76,7 @@ kfree(char *v)
   kmem.freelist = r;            //
   if(kmem.use_lock)             //unlock
     release(&kmem.lock);
+    cprintf("in KFREE END !\n");
 }
 
 // Allocate one 4096-byte page of physical memory.
@@ -84,7 +87,7 @@ kalloc(void)
 {
   cprintf("in kalloc start !\n");
   struct run *r;
-
+  int i=myproc()->pid;
   if(kmem.use_lock)           //lock?
     acquire(&kmem.lock);
   r = kmem.freelist;          //take the list of free pages
