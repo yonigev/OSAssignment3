@@ -246,6 +246,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       if(pages_in_ram == MAX_PSYC_PAGES){
         page_out_N(myproc(),1);
       }
+      cprintf("finished paging out!\n");
     }
     #endif
 
