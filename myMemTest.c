@@ -74,7 +74,7 @@ void globalTest(){
 			randNum = getRandNum(); //gives page #13 50% less chance of being selected
 															//(redraw number if randNum is in the first half of page #13)
 		arr[randNum] = 'X';				//write to memory
-	printf(1,"test %d i= \n",i);
+	printf(1,"test  i= %d\n",i);
   }
 	free(arr);
 }

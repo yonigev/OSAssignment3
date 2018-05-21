@@ -904,13 +904,11 @@ age_process_pages(struct proc* proc){
 //0 otherwise
 int
 is_user_page(struct proc* p, void* vaddr){
-  // pte_t *entry=walkpgdir(p->pgdir,vaddr,0);
-  // if((*entry & PTE_U) > 0)
-  if((uint)vaddr>=PGSIZE*3)
-     return 1;
-  return 0;
-
+  // if((uint)vaddr>=PGSIZE*3)
+  //    return 1;
   // return 0;
+
+  return 1;
 }
 
 // Returns a Virtual Address of a page to be replaced in the RAM, according to replacement algorithms.
