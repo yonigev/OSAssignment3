@@ -289,6 +289,7 @@ free_from_queue(struct proc *p,void* vaddr){
   for(to_del = 0; to_del<MAX_TOTAL_PAGES; to_del++){
     if(!(pq->pages[to_del].exists && pq->pages[to_del].vaddr == vaddr))
       continue;
+    pq->lastIndex--;
     break;
   }
   int i;
@@ -303,7 +304,6 @@ free_from_queue(struct proc *p,void* vaddr){
     else
       pq->pages[i] = pq->pages[i + 1];  //shift    
   }
-  pq->lastIndex--;
 }
 
 
@@ -965,7 +965,7 @@ select_page_to_back(struct proc *p){
       }
       toReturn  = dequeue(p);
       
-      cprintf("After - last index: %d\n",lastIndex);
+      cprintf("After - last index: %d\n",q->lastIndex);
       for(k=0; k<=lastIndex; k++){
         cprintf("<%d,%x>\n", pgs[k].exists,pgs[k].vaddr);
       }
