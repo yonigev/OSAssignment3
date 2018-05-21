@@ -719,7 +719,7 @@ safe_page_in(struct proc* p,void *vaddr){
   }
   cprintf("calling page in with : %x\n",vaddr);
 
-  return pageIn(p,PGROUNDDOWN((uint)vaddr));
+  return pageIn(p,(void *)PGROUNDDOWN((uint)vaddr));
 }
 
 
