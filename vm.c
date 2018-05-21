@@ -558,6 +558,8 @@ getPageFromBack(struct proc* p, const void* vaddr, char* buffer){
       uint offset   = pages[i].offset;
       if(readFromSwapFile(p,buffer,offset,PGSIZE) < 0)
         panic("get page error");
+
+      cprintf("--------------------------\nfinished reading from swapfile\n the buffer is %s\n--------------------------------",buffer);
       return 1;
     }
   }
