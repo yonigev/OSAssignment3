@@ -592,7 +592,7 @@ pageIn(struct proc *p, void* vaddr){
     paddr = kalloc();                           //allocate physical page
     mappages(p->pgdir,vaddr,PGSIZE,V2P(paddr),0);    //map the vaddr to the newly allocated Paddr
     char  arr[PGSIZE]={0};
-    if(!getPageFromBack(p,vaddr,&arr))             //write the page into memory (vaddr is already mapped to paddr)
+    if(!getPageFromBack(p,vaddr,arr))             //write the page into memory (vaddr is already mapped to paddr)
       return 0;
     cprintf("arr  -   %s\n\n",arr);
     clearPTE_FLAG(p,vaddr,PTE_PG);              //clear the PAGED OUT flag
