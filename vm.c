@@ -805,7 +805,7 @@ add_new_page(struct proc *p, void* vaddr){
   cprintf("adding page. proc: %d , %s \t\t vaddr: %x\n",p->pid,p->name, vaddr);
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(pages[i].exists && pages[i].vaddr == vaddr){
-      panic("add_new_page vaddr exists");
+      //panic("add_new_page vaddr exists");
     }
     if(pages[i].exists)
       continue;
