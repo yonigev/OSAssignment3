@@ -589,13 +589,12 @@ page_in_meta(struct proc* p,void* vaddr){
 //  And only when there's less than MAX_PSYC pages in memory.
 int
 pageIn(struct proc *p, void* vaddr){
+    cprintf("in pageIn with: %x\n",vaddr);
     char* paddr;    //will contain Physical address that the page would be written to.
     paddr = kalloc();                           //allocate physical page
     mappages(p->pgdir,vaddr,PGSIZE,V2P(paddr),0);    //map the vaddr to the newly allocated Paddr
-    char  arr[PGSIZE]={0};
-    if(!getPageFromBack(p,vaddr,arr))             //write the page into memory (vaddr is already mapped to paddr)
+    if(!getPageFromBack(p,vaddr,vaddr))             //write the page into memory (vaddr is already mapped to paddr)
       return 0;
-    cprintf("arr  -   %s\n\n",arr);
     clearPTE_FLAG(p,vaddr,PTE_PG);              //clear the PAGED OUT flag
     setPTE_FLAG(p,vaddr,PTE_P);                 //set the PRESENT flag
     
