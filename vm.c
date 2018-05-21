@@ -848,6 +848,13 @@ age_process_pages(struct proc* proc){
   struct page_queue *pq=&proc->paging_meta.pq;   //access the actuall Page Queue
   struct page *pa= pq->pages;                 //access the Queue's array.
   int j;
+
+  cprintf(" AQ\n-------  before  ----------\n");
+  int m;
+  for(m=0; m<MAX_TOTAL_PAGES; m++){
+    pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
+     cprintf("<exists,flags,vaddr> <%d,%x,%x>\n",pa[m].exists,PTE_FLAGS(*e),pa[m].vaddr);
+  }
   //start from the second place from last.
   for(j = pq->lastIndex - 1; j>=0; j--){
     pte_t *entry_j = walkpgdir(proc->pgdir,pa[j].vaddr,0);
@@ -863,7 +870,12 @@ age_process_pages(struct proc* proc){
   for(j = pq->lastIndex - 1; j>=0; j--){
     pte_t *entry=walkpgdir(proc->pgdir,pa[j].vaddr,0);
     *entry &=~PTE_A;                   // clear Accessed bit
-  }  
+  }
+  cprintf(" AQ\n------- after  ----------\n"); 
+  for(m=0; m<MAX_TOTAL_PAGES; m++){
+    pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
+     cprintf("<exists,flags,vaddr> <%d,%x,%x>\n",pa[m].exists,PTE_FLAGS(*e),pa[m].vaddr);
+  } 
 #endif
 }
 // Returns a Virtual Address of a page to be replaced in the RAM, according to replacement algorithms.
