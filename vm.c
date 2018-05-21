@@ -465,7 +465,6 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 
 #ifndef NONE
 // Our new Functions
-//Enqueue a page - is different if defined AQ
 int enqueue(struct proc *pr,struct page toAdd) {
     struct p_meta *meta;
     meta=&pr->paging_meta;
@@ -880,7 +879,7 @@ age_process_pages(struct proc* proc){
 void*
 select_page_to_back(struct proc *p){
   //implement algorithms
-  
+    
     #ifdef NFUA
     struct page  min_page={.exists = 0, .vaddr=(void *)0, .in_back=0,.offset=0, .age=0,.age2=0};   
     int i = 0;
@@ -901,6 +900,10 @@ select_page_to_back(struct proc *p){
       }
     }
     //return this page's vaddr
+
+    dequeue(p)  //without returning (queue not needed)
+
+
     return min_page.vaddr;
     #endif
 
@@ -933,6 +936,8 @@ select_page_to_back(struct proc *p){
         }
       }
     }
+    dequeue(p)  //without returning (queue not needed)
+
     //return this page's vaddr
     return min_page.vaddr;
     #endif
@@ -957,6 +962,7 @@ select_page_to_back(struct proc *p){
       return toReturn.vaddr;
     
     #endif
+  
   #ifdef NONE
   return (void*) 1;   //delete
   #endif
