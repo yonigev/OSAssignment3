@@ -243,9 +243,9 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     if(myproc()){
       int pages_in_ram=numOfPagedIn(myproc());
       if(pages_in_ram == MAX_PSYC_PAGES){
-        cprintf("paging out something   - for paging in %x...in ram: %d\n",a,numOfPagedIn(myproc()));
+        //cprintf("paging out something   - for paging in %x...in ram: %d\n",a,numOfPagedIn(myproc()));
         pageOut(myproc(),select_page_to_back(myproc()));
-        cprintf("finished paging out something ...in ram: %d\n",numOfPagedIn(myproc()));
+        //cprintf("finished paging out something ...in ram: %d\n",numOfPagedIn(myproc()));
       }
     }
     #endif
@@ -268,7 +268,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       return 0;
     }
     #ifndef NONE
-    cprintf("mapped v: %x to p: %x\n",(char*)a,V2P(mem));
+    cprintf("\nmapped v: %x to p: %x\n",(char*)a,V2P(mem));
     add_new_page(myproc(),(void *)a);
     #endif
 
@@ -474,7 +474,6 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 int enqueue(struct proc *pr,struct page toAdd) {
     struct p_meta *meta;
     meta=&pr->paging_meta;
-    cprintf("Enqueueing   -   %x\n",toAdd.vaddr);
     
     if (meta->pq.lastIndex == MAX_TOTAL_PAGES) {
         //no place
@@ -509,7 +508,7 @@ struct page dequeue(struct proc *pr) {
             pq->pages[i] = pq->pages[i + 1];
     }
     pq->lastIndex--;
-    cprintf("DE-queueing - %x\n",toReturn.vaddr);
+    //cprintf("DE-queueing - %x\n",toReturn.vaddr);
     return toReturn;
 }
 
@@ -677,7 +676,7 @@ pageOut(struct proc *p,void* vaddr){
   if(addPageToBack(p,vaddr)){
     pte_t *pte=walkpgdir(p->pgdir,vaddr,0);
 
-    cprintf("entry: %x\n",*pte);
+    cprintf("************************** entry: %x\n",*pte);
     to_free=(char*)P2V(PTE_ADDR(*pte));   
     kfree(to_free);                                   //free the PHYSICAL memory of the page
     clearPTE_FLAG(p,vaddr,PTE_P);                     //clear the Present flag from the page table entry
@@ -806,7 +805,6 @@ count_set_bits(uint number){
 // Adds a TOTALLY new page to the process's list.
 int
 add_new_page(struct proc *p, void* vaddr){
-  cprintf("adding new page: %x, in ram: %d  \n",vaddr,numOfPagedIn(p));
   struct p_meta *meta = &p->paging_meta;
   struct page *pages= meta->pages;
   int i;
