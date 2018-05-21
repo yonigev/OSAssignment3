@@ -405,10 +405,10 @@ sched(void)
 {
   int intena;
   struct proc *p = myproc();
-  //#ifndef NONE
+  #ifndef NONE
   if(p!=0)
     age_process_pages(p);       //update aging of pages.
-  //#endif
+  #endif
   if(!holding(&ptable.lock))
     panic("sched ptable.lock");
   if(mycpu()->ncli != 1)
