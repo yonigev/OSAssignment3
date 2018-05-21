@@ -22,7 +22,7 @@ static void wakeup1(void *chan);
 
 int is_user_proc(struct proc* p){
   if(p != 0){
-    if(p->pid >=2)
+    if(p->pid >2)
       return 1;
   }
   return 0;
