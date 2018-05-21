@@ -652,7 +652,8 @@ addPageToBack(struct proc *p, void* vaddr){
 
     if(free_offset == PGFILE_FULL_ERR)
       return 0;
-    writeToSwapFile(p,vaddr,free_offset,PGSIZE);    //  write the page to the swap file
+    void * temp=  P2V(PTE_ADDR(*walkpgdir(p->pgdir,vaddr,0)));
+    writeToSwapFile(p,temp,free_offset,PGSIZE);    //  write the page to the swap file
     page_out_meta(p,vaddr,free_offset);             //  add to meta-data of the process
    
     return 1;
