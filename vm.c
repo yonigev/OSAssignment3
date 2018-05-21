@@ -921,7 +921,7 @@ select_page_to_back(struct proc *p){
     //return this page's vaddr
     return min_page.vaddr;
     #endif
-    //#ifdef SCFIFO
+    #ifdef SCFIFO
     struct page current;
     while(1){
       current = dequeue(p);
@@ -934,7 +934,7 @@ select_page_to_back(struct proc *p){
         return current.vaddr;
       }
     }
-    //#endif
+    #endif
 
     #ifdef AQ
       struct page toReturn;
