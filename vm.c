@@ -481,28 +481,28 @@ int enqueue(struct proc *pr,struct page toAdd) {
 
 //Dequeue a page
 struct page dequeue(struct proc *pr) {
-    struct p_meta *meta;
-    meta=&pr->paging_meta;
+    struct p_meta *meta=&(pr->paging_meta);
     struct page toReturn = meta->pq.pages[0];
     struct page_queue *pq=&meta->pq;
-    pq->pages[0].exists = 0;
-    pq->pages[0].vaddr  = 0;
-    pq->pages[0].age    = 0;
-    pq->pages[0].age2   = 0;
-    pq->pages[0].in_back= 0;
+    struct page *pages=pq->pages;
+    pages[0].exists = 0;
+    pages[0].vaddr  = 0;
+    pages[0].age    = 0;
+    pages[0].age2   = 0;
+    pages[0].in_back= 0;
     int i;
     for (i = 0; i < MAX_TOTAL_PAGES; i++) {    //CHANGED to pq.lastIndex from MAX_TOTAL_PAGES
         if (i == MAX_TOTAL_PAGES - 1){
-            pq->pages[i].exists = 0;
-            pq->pages[i].vaddr  = 0;
-            pq->pages[i].age    = 0;
-            pq->pages[i].age2   = 0;
-            pq->pages[i].in_back= 0;
+            pages[i].exists = 0;
+            pages[i].vaddr  = 0;
+            pages[i].age    = 0;
+            pages[i].age2   = 0;
+            pages[i].in_back= 0;
         }
         else
-            pq->pages[i] = pq->pages[i + 1];
+            pages[i] = pages[i + 1];
     }
-    pq->lastIndex--;
+    pq->lastIndex=pq->lastIndex-1;
     return toReturn;
 }
 
@@ -938,8 +938,7 @@ select_page_to_back(struct proc *p){
     }
     #endif
 
-    #ifdef AQ
-    while(1){
+    //#ifdef AQ
       struct page toReturn;
       int k;
       struct page_queue *q=&p->paging_meta.pq;
@@ -960,8 +959,8 @@ select_page_to_back(struct proc *p){
 
       //if it's legal to swap out, do it. otherwise, keep looping.
       return toReturn.vaddr;
-    }
-    #endif
+    
+   // #endif
   #ifdef NONE
   return (void*) 1;   //delete
   #endif
