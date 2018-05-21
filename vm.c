@@ -305,7 +305,7 @@ free_from_queue(struct proc *p,void* vaddr){
   int k;
   cprintf("in free from queue: \n");
   for(k=0; k<pq.lastIndex; k++){
-    cprintf("q vaddr: %x\n",pq.pages[k].vaddr);
+    cprintf("q  -   <exists,vaddr>:<%d, %x>\n",pq.pages[k].vaddr,pq.pages[k].vaddr);
   }
 }
 
