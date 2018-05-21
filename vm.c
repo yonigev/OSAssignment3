@@ -901,7 +901,7 @@ select_page_to_back(struct proc *p){
     }
     //return this page's vaddr
 
-    dequeue(p)  //without returning (queue not needed)
+    dequeue(p);  //without returning (queue not needed)
 
 
     return min_page.vaddr;
@@ -936,7 +936,7 @@ select_page_to_back(struct proc *p){
         }
       }
     }
-    dequeue(p)  //without returning (queue not needed)
+    dequeue(p);  //without returning (queue not needed)
 
     //return this page's vaddr
     return min_page.vaddr;
