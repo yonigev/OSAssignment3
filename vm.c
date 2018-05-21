@@ -281,9 +281,9 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 //when freeing memory   -   remove this page from queue
 void
 free_from_queue(struct proc *p,void* vaddr){
-  struct p_meta meta;
-  meta=p->paging_meta;
-  struct page_queue *pq=&meta.pq;
+  struct p_meta *meta;
+  meta=&p->paging_meta;
+  struct page_queue *pq=&meta->pq;
   int to_del;     //index of page to delete from queue
   for(to_del = 0; to_del<MAX_TOTAL_PAGES; to_del++){
     if(!(pq->pages[to_del].exists && pq->pages[to_del].vaddr == vaddr))
