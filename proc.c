@@ -265,6 +265,7 @@ exit(void)
   if(is_user_proc(curproc)){
      if(removeSwapFile(curproc)!=0)
       panic("remove_swap_file");
+      reset_paging_meta(curproc);
   }
   #endif
 
