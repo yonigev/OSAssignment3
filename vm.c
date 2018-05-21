@@ -710,8 +710,10 @@ numOfPagedIn(struct proc *p){
 int
 safe_page_in(struct proc* p,void *vaddr){
   if(numOfPagedIn(p) == MAX_PSYC_PAGES){
+    cprintf("ram full, paging out first-\n");
     pageOut(p,select_page_to_back(p));
   }
+  cprintf("calling page in\n");
   return pageIn(p,vaddr);
 }
 
