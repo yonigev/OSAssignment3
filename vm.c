@@ -236,7 +236,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     if(myproc()){
       int pages_in_ram=numOfPagedIn(myproc());
       if(pages_in_ram == MAX_PSYC_PAGES){
-        cprintf("ram full\n");
+        //cprintf("ram full\n");
         pageOut(myproc(),select_page_to_back(myproc()));
       }
     }
@@ -772,7 +772,7 @@ add_new_page(struct proc *p, void* vaddr){
   struct p_meta *meta = &p->paging_meta;
   struct page *pages= meta->pages;
 
-  cprintf("pid: %d adding page: %x\n",p->pid,vaddr);
+  //cprintf("pid: %d adding page: %x\n",p->pid,vaddr);
   int i;
   struct page toAdd={.exists = 1, .vaddr = vaddr, .in_back = 0, .age = 0, .age2 = 0xffffffff};
   for(i=0; i<MAX_TOTAL_PAGES; i++){
@@ -784,7 +784,7 @@ add_new_page(struct proc *p, void* vaddr){
    
     pages[i]  = toAdd;
     enqueue(p,toAdd);
-    cprintf("pid: %d ---added--- page: %x. now in ram %d\n",p->pid,vaddr,numOfPagedIn(p));
+    //cprintf("pid: %d ---added--- page: %x. now in ram %d\n",p->pid,vaddr,numOfPagedIn(p));
     return 1;
   }
   return 0;
