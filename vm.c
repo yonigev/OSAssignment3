@@ -462,7 +462,7 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 
 
 
-#ifndef NONE
+//#ifndef NONE
 // Our new Functions
 //Enqueue a page - is different if defined AQ
 int enqueue(struct proc *pr,struct page toAdd) {
@@ -957,7 +957,7 @@ void
 reset_paging_meta(struct proc* pr){
    memset(&pr->paging_meta,0,sizeof(struct p_meta));
 }
-#endif
+//#endif
 //PAGEBREAK!
 // Blank page.
 //PAGEBREAK!
