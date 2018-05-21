@@ -599,7 +599,9 @@ pageIn(struct proc *p, void* vaddr){
       return 0;
     clearPTE_FLAG(p,vaddr,PTE_PG);             //clear the PAGED OUT flag
     setPTE_FLAG(p,vaddr,PTE_P);                 //set the PRESENT flag
-    
+    cprintf("printing flags!!\n");
+    pte_t *e=walkpgdir(p->pgdir,vaddr,0);
+    cprintf("entry is: %x\n",*e);
     if(!page_in_meta(p,vaddr))                      //remove meta data from the process meta-data struct 
       return 0;
     return 1;   
@@ -720,7 +722,6 @@ safe_page_in(struct proc* p,void *vaddr){
     cprintf("ram full, paging out first-\n");
     pageOut(p,select_page_to_back(p));
   }
-  cprintf("calling page in with : %x\n",vaddr);
 
   return pageIn(p,(void *)PGROUNDDOWN((uint)vaddr));
 }
