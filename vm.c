@@ -334,7 +334,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       char *v = P2V(pa);
       #ifndef NONE
       if(myproc()){
-        cprintf("deallocuvm - a: %x, pa: %x\n",a,pa);
+        //cprintf("deallocuvm - a: %x, pa: %x\n",a,pa);
           //free_page(myproc(),(void *)v);
           struct p_meta *meta=&myproc()->paging_meta;
           struct page *pages=meta->pages;
@@ -806,7 +806,7 @@ add_new_page(struct proc *p, void* vaddr){
   cprintf("adding page. proc: %d , %s \t\t vaddr: %x\n",p->pid,p->name, vaddr);
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(pages[i].exists && pages[i].vaddr == vaddr){
-      //panic("add_new_page vaddr exists");
+      panic("add_new_page vaddr exists");
     }
     if(pages[i].exists)
       continue;
