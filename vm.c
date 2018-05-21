@@ -223,9 +223,7 @@ loaduvm(pde_t *pgdir, char *addr, struct inode *ip, uint offset, uint sz)
 int
 allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 {
-  if(oldsz == 0){
-    cprintf("\nallocuvm with oldsz == 0 \n");
-  }
+  
   char *mem;
   uint a;
 
@@ -244,19 +242,14 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     //add new page
     if(myproc()){
       int pages_in_ram=numOfPagedIn(myproc());
-      cprintf("\nALLOCUVM id: %d , name: %s- pages in ram : %d\n",myproc()->pid,myproc()->name,pages_in_ram);
       if(pages_in_ram == MAX_PSYC_PAGES){
-        cprintf("ram is full  -   paging out\n");
         pageOut(myproc(),select_page_to_back(myproc()));
-        cprintf("finished paging out!\n");
       }
     }
     #endif
 
 
-    mem = kalloc();
-    //cprintf("got  : %x from kalloc()\n", mem);
-    
+    mem = kalloc();    
 
     if(mem == 0){
       cprintf("allocuvm out of memory\n");
@@ -335,8 +328,6 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       char *v = P2V(pa);
       #ifndef NONE
       if(myproc()){
-        //cprintf("deallocuvm - a: %x, pa: %x\n",a,pa);
-          //free_page(myproc(),(void *)v);
           struct p_meta *meta=&myproc()->paging_meta;
           struct page *pages=meta->pages;
           int i;
@@ -627,7 +618,6 @@ getFreePageOffset(struct proc *p){
   for(i=0; i< MAX_TOTAL_PAGES; i++){
     if(meta -> offsets[i] == 1) //if taken, continue..
       continue;
-    cprintf("getFreePageOffset  -  returning : %d, index : %d\n",PGSIZE*i, i);
     return PGSIZE * i ;
   }
   return PGFILE_FULL_ERR ;
@@ -644,7 +634,6 @@ page_out_meta(struct proc *p,void* vaddr,uint offset){
      if(pages[i].vaddr  ==  vaddr){
        pages[i].in_back =   1;              //mark as "Backed"
        pages[i].offset  =   offset;         //store the offset of the page
-       cprintf("page_out_meta : %x, marking offset index: %d as taken\n",vaddr,offset/PGSIZE);
        meta->offsets[offset / PGSIZE] = 1;  //mark offset as taken
        return 1;
      }
@@ -659,8 +648,6 @@ addPageToBack(struct proc *p, void* vaddr){
 
     if(free_offset == PGFILE_FULL_ERR)
       return 0;
-    //pte_t *e=walkpgdir(p->pgdir,vaddr, 0);
-    //char *real_add=P2V(PTE_ADDR(*e));
     writeToSwapFile(p,vaddr,free_offset,PGSIZE);    //  write the page to the swap file
     page_out_meta(p,vaddr,free_offset);             //  add to meta-data of the process
    
@@ -672,13 +659,10 @@ int
 pageOut(struct proc *p,void* vaddr){
   char* to_free;
    //write page to the Back file.
-   cprintf("paging out -  page with vaddr: %x\n", vaddr);
   if(addPageToBack(p,vaddr)){
     pte_t *pte=walkpgdir(p->pgdir,vaddr,0);
     to_free=(char*)P2V(PTE_ADDR(*pte));   
-    cprintf("pageout - calling kfree - %x\n",to_free);
     kfree(to_free);                                   //free the PHYSICAL memory of the page
-    cprintf("pageout - after kfree\n");
     clearPTE_FLAG(p,vaddr,PTE_P);                     //clear the Present flag from the page table entry
     setPTE_FLAG(p,vaddr,PTE_PG);                      //set the PAGED-OUT flag
     lcr3(V2P(p->pgdir));                              //refresh the Table Lookaside Buffer            
@@ -808,7 +792,7 @@ add_new_page(struct proc *p, void* vaddr){
   struct page toAdd={.exists = 1, .vaddr = vaddr, .in_back = 0, .age = 0, .age2 = 0xffffffff};
 
 
-  cprintf("adding page. proc: %d , %s \t\t vaddr: %x\n",p->pid,p->name, vaddr);
+  //cprintf("adding page. proc: %d , %s \t\t vaddr: %x\n",p->pid,p->name, vaddr);
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(pages[i].exists && pages[i].vaddr == vaddr){
       panic("add_new_page vaddr exists");
@@ -1011,7 +995,7 @@ select_page_to_back(struct proc *p){
 // page out N different pages into the Back.
 int
 page_out_N(struct proc *p,int N){
-  cprintf("page_out_N = %d\n",N);
+  //cprintf("page_out_N = %d\n",N);
   int i;
   //find N pages to page OUT
   for(i=0; i<N; i++){
