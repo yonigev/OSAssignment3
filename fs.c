@@ -779,9 +779,9 @@ writeToSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
 int
 readFromSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
     p->swapFile->off = placeOnFile;
-
+    cprintf("readFromSwapFile       -       calling fileread\n");
     return fileread(p->swapFile, buffer, size);
-}
+};
 
 
 
