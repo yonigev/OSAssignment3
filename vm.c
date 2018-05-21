@@ -284,6 +284,15 @@ free_from_queue(struct proc *p,void* vaddr){
   struct p_meta meta;
   meta=p->paging_meta;
   struct page_queue pq=meta.pq;
+
+
+  int k;
+  cprintf("in free from queue START: \n");
+  for(k=0; k<MAX_TOTAL_PAGES; k++){
+    cprintf("q  -   <exists,vaddr>:<%d, %x>\n",pq.pages[k].exists,pq.pages[k].vaddr);
+  }
+
+
   int to_del;     //index of page to delete from queue
   for(to_del = 0; to_del<MAX_TOTAL_PAGES; to_del++){
     if(!(pq.pages[to_del].exists && pq.pages[to_del].vaddr == vaddr))
@@ -291,7 +300,7 @@ free_from_queue(struct proc *p,void* vaddr){
     break;
   }
   int i;
-  for(i=to_del; i<pq.lastIndex; i++){
+  for(i=to_del; i<MAX_TOTAL_PAGES; i++){
     if(i == MAX_TOTAL_PAGES-1){ //if its the last one, just delete it
       pq.pages[i].exists = 0;
       pq.pages[i].vaddr  = 0;
@@ -302,9 +311,8 @@ free_from_queue(struct proc *p,void* vaddr){
     else
       pq.pages[i] = pq.pages[i + 1];  //shift    
   }
-  int k;
   cprintf("in free from queue: \n");
-  for(k=0; k<pq.lastIndex; k++){
+  for(k=0; k<MAX_TOTAL_PAGES; k++){
     cprintf("q  -   <exists,vaddr>:<%d, %x>\n",pq.pages[k].exists,pq.pages[k].vaddr);
   }
 }
