@@ -844,7 +844,7 @@ age_process_pages(struct proc* proc){
     }
   }
 
-//#ifdef AQ
+#ifdef AQ
   struct page_queue *pq=&proc->paging_meta.pq;   //access the actuall Page Queue
   struct page *pa= pq->pages;                 //access the Queue's array.
   int j;
@@ -878,7 +878,7 @@ age_process_pages(struct proc* proc){
   //   pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
   //    cprintf("<exists,flags,vaddr> <%d,%x,%x>\n",pa[m].exists,PTE_FLAGS(*e),pa[m].vaddr);
   // } 
-//#endif
+#endif
 }
 // Returns a Virtual Address of a page to be replaced in the RAM, according to replacement algorithms.
 void*
