@@ -481,10 +481,12 @@ int enqueue(struct proc *pr,struct page toAdd) {
 
 //Dequeue a page
 struct page dequeue(struct proc *pr) {
+  
     struct p_meta *meta=&(pr->paging_meta);
     struct page toReturn = meta->pq.pages[0];
-    struct page_queue *pq=&meta->pq;
-    struct page *pages=pq->pages;
+    struct page_queue *pq=&(meta->pq);
+    struct page *pages=&pq->pages;
+    
     pages[0].exists = 0;
     pages[0].vaddr  = 0;
     pages[0].age    = 0;
