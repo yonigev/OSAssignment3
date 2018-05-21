@@ -12,7 +12,7 @@
 */
 void forkTest(){
  // int i;
- // char * arr;
+  char * arr;
   arr = malloc (50000); //allocates 13 pages (sums to 16), in lifo, OS puts page #15 in file.
   arr[0]='a';
   // for (i = 0; i < 50; i++) { 
