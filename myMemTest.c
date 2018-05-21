@@ -66,7 +66,7 @@ void globalTest(){
 	char * arr;
 	int i;
 	int randNum;
-	arr = malloc(PGSIZE*15); //allocates 14 pages (sums to 17 - to allow more then one swapping in scfifo)
+	arr = malloc(ARR_SIZE); //allocates 14 pages (sums to 17 - to allow more then one swapping in scfifo)
     
 	for (i = 0; i < TEST_POOL; i++) {
 		randNum = getRandNum();	//generates a pseudo random number between 0 and ARR_SIZE
