@@ -58,7 +58,6 @@ walkpgdir(pde_t *pgdir, const void *va, int alloc)
 // Create PTEs for virtual addresses starting at va that refer to
 // physical addresses starting at pa. va and size might not
 // be page-aligned.
-//    if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) < 0){
 
 static int
 mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
@@ -271,7 +270,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       return 0;
     }
     #ifndef NONE
-    add_new_page(myproc(),a);
+    add_new_page(myproc(),(void *)a);
     #endif
 
 
@@ -717,11 +716,10 @@ numOfPagedIn(struct proc *p){
 //page in a certain page - page-out another if needed
 int
 safe_page_in(struct proc* p,void *vaddr){
-  if(numOfPagedIn == MAX_PSYC_PAGES){
+  if(numOfPagedIn(p) == MAX_PSYC_PAGES){
     pageOut(p,select_page_to_back(p));
-    pageIn(p,vaddr);
-
   }
+  return pageIn(p,vaddr);
 }
 
 
