@@ -43,7 +43,7 @@ exec(char *path, char **argv)
     //create swap file for this execution.
     //if it's not init.
     if(is_user_proc(curproc)){        
-        reset_paging_meta(curproc);
+        //reset_paging_meta(curproc);
         if(createSwapFile(curproc) != 0)
             panic("exec_create swapfile");
     }
