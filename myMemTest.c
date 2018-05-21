@@ -82,7 +82,7 @@ void globalTest(){
 
 int main(int argc, char *argv[]){
   globalTest();			//for testing each policy efficiency
-   //forkTest();			//for testing swapping machanism in fork.
+  forkTest();			//for testing swapping machanism in fork.
   // printf(1,"memtest done\n");
   exit();
 }
