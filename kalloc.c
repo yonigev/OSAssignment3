@@ -9,6 +9,7 @@
 #include "mmu.h"
 #include "spinlock.h"
 
+int initial_pages = 0;
 void freerange(void *vstart, void *vend);
 extern char end[]; // first address after kernel loaded from ELF file
                    // defined by the kernel linker script in kernel.ld
@@ -40,6 +41,7 @@ void
 kinit2(void *vstart, void *vend)
 {
   freerange(vstart, vend);
+  initial_pages=  ((PGROUNDDOWN((uint)vend) - PGROUNDUP((uint)vstart)))/PGSIZE;
   kmem.use_lock = 1;
 }
 
@@ -112,5 +114,9 @@ num_free(void){
   if(kmem.use_lock)
     release(&kmem.lock);
   return counter;            //return the page
+}
+
+int initial_pages_num(void){
+  return initial_pages;
 }
 

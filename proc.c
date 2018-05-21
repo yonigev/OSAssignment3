@@ -582,7 +582,7 @@ procdump(void)
   //now print ratio
   #ifndef NONE
   int free_pages=num_free();
-  int used_kernel=KERNBASE/PGSIZE; //TODO: Check correctness
+  int used_kernel=initial_pages_num(); //TODO: Check correctness
   cprintf("%d  /  %d  free pages in the system\n",free_pages,free_pages + used_kernel);
   #endif
 

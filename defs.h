@@ -74,6 +74,7 @@ void            kinit1(void*, void*);
 void            kinit2(void*, void*);
     //added task 3//
 int             num_free(void);
+int             initial_pages_num(void);
 
 // kbd.c
 void            kbdintr(void);
