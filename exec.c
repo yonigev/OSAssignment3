@@ -44,7 +44,7 @@ exec(char *path, char **argv)
     //if it's not init.
     if(is_user_proc(curproc)){
         cprintf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2creating swapfile for pid- %d\n",curproc->pid);
-        //memset(curproc->paging_meta,0,sizeof(struct p_meta));
+        
         reset_paging_meta(curproc);
         if(createSwapFile(curproc) != 0)
             panic("exec_create swapfile");
