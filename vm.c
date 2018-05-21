@@ -334,13 +334,13 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       char *v = P2V(pa);
       #ifndef NONE
       if(myproc()){
-        cprintf("deallocuvm - v: %x, pa: %x\n",v,pa);
+        cprintf("deallocuvm - a: %x, pa: %x\n",a,pa);
           //free_page(myproc(),(void *)v);
           struct p_meta *meta=&myproc()->paging_meta;
           struct page *pages=meta->pages;
           int i;
           for(i=0; i<MAX_TOTAL_PAGES; i++){
-            if(pages[i].exists && pages[i].vaddr == v){
+            if(pages[i].exists && pages[i].vaddr ==(void *) a){
               pages[i].age=0;
               pages[i].age2=0xffffffff;
               pages[i].in_back=0;
@@ -349,7 +349,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
               pages[i].exists=0;
             }
           }
-          free_from_queue(myproc(),v);
+          free_from_queue(myproc(),(void *a)v);
 
 
 
