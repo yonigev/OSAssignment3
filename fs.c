@@ -771,6 +771,7 @@ createSwapFile(struct proc *p) {
 int
 writeToSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
     p->swapFile->off = placeOnFile;
+    cprintf("writing size: %d, in offset: %d to file. from %x\nthe buffer: %s\n",size,placeOnFile,buffer,buffer);
     return filewrite(p->swapFile, buffer, size);
 
 }
