@@ -706,7 +706,7 @@ numOfPagedIn(struct proc *p){
   for(i=0; i  <MAX_TOTAL_PAGES; i++){
     if(pages[i].exists  == 0)
       continue;  
-    if(pages[i].in_back ==  0)
+    if(pages[i].in_back ==  0 && pages[i].exists == 1)
       counter ++;
   }
   return counter;  
