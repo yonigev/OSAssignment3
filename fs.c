@@ -778,6 +778,9 @@ writeToSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
 //return as sys_read (-1 when error)
 int
 readFromSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
+    cprintf("simple access\n");
+    char a=buffer[0];
+    cprintf("done simple access\n");
     p->swapFile->off = placeOnFile;
     cprintf("readFromSwapFile       -       calling fileread\n");
     return fileread(p->swapFile, buffer, size);
