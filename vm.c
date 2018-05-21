@@ -223,6 +223,9 @@ loaduvm(pde_t *pgdir, char *addr, struct inode *ip, uint offset, uint sz)
 int
 allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 {
+  if(oldsz == 0){
+    cprintf("\nallocuvm with oldsz == 0 \n");
+  }
   char *mem;
   uint a;
 
@@ -241,11 +244,10 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     //add new page
     if(myproc()){
       int pages_in_ram=numOfPagedIn(myproc());
-      cprintf("ALLOCUVM id: %d , name: %s- pages in ram : %d\n",myproc()->pid,myproc()->name,pages_in_ram);
+      cprintf("\nALLOCUVM id: %d , name: %s- pages in ram : %d\n",myproc()->pid,myproc()->name,pages_in_ram);
       if(pages_in_ram == MAX_PSYC_PAGES){
         pageOut(myproc(),select_page_to_back(myproc()));
         cprintf("finished paging out!\n");
-
       }
     }
     #endif
