@@ -914,7 +914,9 @@ int
 is_user_page(struct proc* p, void* vaddr){
   // pte_t *entry=walkpgdir(p->pgdir,vaddr,0);
   // if((*entry & PTE_U) > 0)
+  if(vaddr>=PGSIZE*3)
      return 1;
+  return 0;
 
   // return 0;
 }
