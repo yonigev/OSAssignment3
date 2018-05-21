@@ -347,7 +347,7 @@ void
 freevm(pde_t *pgdir)
 {
   uint i;
-
+  cprintf("in freevm @@@@@@@@@@@@\n");
   if(pgdir == 0)
     panic("freevm: no pgdir");
   deallocuvm(pgdir, KERNBASE, 0);
