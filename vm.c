@@ -256,9 +256,6 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     #ifndef NONE
     add_new_page(myproc(),(void *)a);
     #endif
-
-
-      //////
   }
   return newsz;
 }
@@ -347,7 +344,6 @@ void
 freevm(pde_t *pgdir)
 {
   uint i;
-  cprintf("in freevm @@@@@@@@@@@@\n");
   if(pgdir == 0)
     panic("freevm: no pgdir");
   deallocuvm(pgdir, KERNBASE, 0);
@@ -782,8 +778,7 @@ add_new_page(struct proc *p, void* vaddr){
     }
     if(pages[i].exists)
       continue;
-    cprintf("pid: %d  adding page: %x\n",p->pid,vaddr);
-    cprintf("in ram:  %d\n",numOfPagedIn(p));
+   
     pages[i]  = toAdd;
     enqueue(p,toAdd);
     return 1;

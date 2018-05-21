@@ -230,12 +230,9 @@ fork(void)
   //copy from parent - if he's a user process
   if(is_user_proc(curproc)){ //was curproc before! 
   //initialize swap file meta
-    cprintf("copying swapfile from parent\n");
     copy_parent_swapfile(np,curproc);
     np->paging_meta=curproc->paging_meta;
-    int ram_parent=numOfPagedIn(curproc);
-    int ram_child=numOfPagedIn(np);
-    cprintf("parent: %d, child: %d\n",ram_parent,ram_child);
+   
   }
   np->page_faults = 0;    //reset number of page faults to 0;
   np->num_pageouts = 0;
