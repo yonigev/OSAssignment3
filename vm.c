@@ -782,6 +782,7 @@ add_new_page(struct proc *p, void* vaddr){
    
     pages[i]  = toAdd;
     enqueue(p,toAdd);
+    cprintf("pid: %d ---added--- page: %x. now in ram %d\n",p->pid,vaddr,numOfPagedIn(p));
     return 1;
   }
   return 0;
