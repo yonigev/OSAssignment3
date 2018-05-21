@@ -769,6 +769,8 @@ int
 add_new_page(struct proc *p, void* vaddr){
   struct p_meta *meta = &p->paging_meta;
   struct page *pages= meta->pages;
+
+  cprintf("pid: %d adding page: %x\n",p->pid,vaddr);
   int i;
   struct page toAdd={.exists = 1, .vaddr = vaddr, .in_back = 0, .age = 0, .age2 = 0xffffffff};
   for(i=0; i<MAX_TOTAL_PAGES; i++){
