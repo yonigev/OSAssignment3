@@ -130,7 +130,6 @@ userinit(void)
 {
   struct proc *p;
   extern char _binary_initcode_start[], _binary_initcode_size[];
-  cprintf("calling allocproccccccccccccccccc\n");
   p = allocproc();
   
   initproc = p;
@@ -192,6 +191,7 @@ fork(void)
   int i, pid;
   struct proc *np;
   struct proc *curproc = myproc();
+  cprintf("         IN FORK                 \n");
 
   // Allocate process.
   if((np = allocproc()) == 0){
