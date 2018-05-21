@@ -611,6 +611,8 @@ pageIn(struct proc *p, void* vaddr){
 //returns 1 if the page is PAGED OUT (not present AND marked as paged out.)
 int
 isPagedOut(struct proc *p,  void* vaddr){
+  pte_t *e=walkpgdir(p->pgdir,vaddr, 0);
+  cprintf("isPagedOut: %x\n",*e);
   if( !isFlagged(p,vaddr,PTE_P)  &&  isFlagged(p,vaddr,PTE_PG))
     return 1;
   return 0;
