@@ -42,9 +42,7 @@ exec(char *path, char **argv)
     #ifndef NONE
     //create swap file for this execution.
     //if it's not init.
-    if(is_user_proc(curproc)){
-        cprintf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2creating swapfile for pid- %d\n",curproc->pid);
-        
+    if(is_user_proc(curproc)){        
         reset_paging_meta(curproc);
         if(createSwapFile(curproc) != 0)
             panic("exec_create swapfile");
@@ -52,7 +50,6 @@ exec(char *path, char **argv)
     #endif
 
   // Load program into memory.
-  cprintf("\n@@@@@@ Loading program into memory @@@@@@\n");
   sz = 0;
   for(i=0, off=elf.phoff; i<elf.phnum; i++, off+=sizeof(ph)){
     if(readi(ip, (char*)&ph, off, sizeof(ph)) != sizeof(ph))
