@@ -639,6 +639,7 @@ page_out_meta(struct proc *p,void* vaddr,uint offset){
    struct page *pages   =   meta->pages;
    int i;
    for(i=0; i<MAX_TOTAL_PAGES; i++){
+     cprintf("index: %d, vaddr: %x, exists: %d, in back: %d\n",i,pages[i].vaddr,pages[i].exists,pages[i].in_back);
      if(pages[i].exists  && pages[i].vaddr  ==  vaddr){
        cprintf("found paging out!: %x,  %x\n",vaddr,pages[i].vaddr);
        pages[i].in_back =   1;              //mark as "Backed"
