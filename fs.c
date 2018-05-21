@@ -779,7 +779,7 @@ writeToSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
 int
 readFromSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
     cprintf("simple access\n");
-    char a=buffer[0];
+    char a=buffer[size-1];
     
     cprintf("done simple access -   %s\n",buffer);
     a++;
