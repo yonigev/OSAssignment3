@@ -590,7 +590,7 @@ int
 pageIn(struct proc *p, void* vaddr){
     char* paddr;    //will contain Physical address that the page would be written to.
     paddr = kalloc();                           //allocate physical page
-    mappages(p->pgdir,vaddr,PGSIZE,(uint)paddr,0);    //map the vaddr to the newly allocated Paddr
+    mappages(p->pgdir,vaddr,PGSIZE,V2P(paddr),0);    //map the vaddr to the newly allocated Paddr
     if(!getPageFromBack(p,vaddr,vaddr))             //write the page into memory (vaddr is already mapped to paddr)
       return 0;
     clearPTE_FLAG(p,vaddr,PTE_PG);              //clear the PAGED OUT flag
@@ -714,7 +714,7 @@ safe_page_in(struct proc* p,void *vaddr){
     cprintf("ram full, paging out first-\n");
     pageOut(p,select_page_to_back(p));
   }
-  cprintf("calling page in\n");
+  cprintf("calling page in with : %x\n",vaddr);
   return pageIn(p,vaddr);
 }
 
