@@ -778,7 +778,8 @@ writeToSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
     for(i=0; i<PGSIZE; i++){
         cprintf(" %x ",buffer[i]);
     }
-    return filewrite(p->swapFile, buffer, size);
+    int toReturn = filewrite(p->swapFile, buffer, size);
+    cprintf("done writing to swap file: %d\n",toReturn); 
 
 }
 
