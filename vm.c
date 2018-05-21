@@ -849,7 +849,7 @@ age_process_pages(struct proc* proc){
   struct page *pa= pq->pages;                 //access the Queue's array.
   int j;
 
-  cprintf(" AQ\n-------  before  ----------\n");
+  cprintf(" AQ\n-------  before  ---lastIndex: %d----------\n",pq->lastIndex);
   int m;
   for(m=0; m<MAX_TOTAL_PAGES; m++){
     pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
@@ -871,7 +871,7 @@ age_process_pages(struct proc* proc){
     pte_t *entry=walkpgdir(proc->pgdir,pa[j].vaddr,0);
     *entry &=~PTE_A;                   // clear Accessed bit
   }
-  cprintf(" AQ\n------- after  ----------\n"); 
+  cprintf(" AQ\n------- after  ---lastIndex: %d----------\n",pq->lastIndex);
   for(m=0; m<MAX_TOTAL_PAGES; m++){
     pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
      cprintf("<exists,flags,vaddr> <%d,%x,%x>\n",pa[m].exists,PTE_FLAGS(*e),pa[m].vaddr);
