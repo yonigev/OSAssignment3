@@ -801,24 +801,7 @@ add_new_page(struct proc *p, void* vaddr){
   }
   return 0;
 }
-//free a page with Virtual Address vaddr
-void
-free_page(struct proc *p, void* vaddr){
-  struct p_meta *meta=&p->paging_meta;
-  struct page *pages=meta->pages;
-  int i;
-  for(i=0; i<MAX_TOTAL_PAGES; i++){
-    if(pages[i].exists && pages[i].vaddr == vaddr){
-      pages[i].age=0;
-      pages[i].age2=0xffffffff;
-      pages[i].in_back=0;
-      pages[i].offset=0;
-      pages[i].vaddr=0;
-      pages[i].exists=0;
-    }
-  }
-  free_from_queue(p,vaddr);
-}
+
 //Aging
 void
 age_process_pages(struct proc* proc){
@@ -849,12 +832,12 @@ age_process_pages(struct proc* proc){
   struct page *pa= pq->pages;                 //access the Queue's array.
   int j;
 
-   cprintf(" AQ\n-------  before  ---lastIndex: %d----------\n",pq->lastIndex);
-   int m;
-   for(m=0; m<=pq->lastIndex; m++){
-     pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
-      cprintf("<exists,flags,vaddr> <%d,%x,%x>\n",pa[m].exists,PTE_FLAGS(*e),pa[m].vaddr);
-   }
+  //  cprintf(" AQ\n-------  before  ---lastIndex: %d----------\n",pq->lastIndex);
+  //  int m;
+  //  for(m=0; m<=pq->lastIndex; m++){
+  //    pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
+  //     cprintf("<exists,flags,vaddr> <%d,%x,%x>\n",pa[m].exists,PTE_FLAGS(*e),pa[m].vaddr);
+  //  }
   //start from the second place from last.
   for(j = pq->lastIndex - 1; j>=0; j--){
     pte_t *entry_j = walkpgdir(proc->pgdir,pa[j].vaddr,0);
@@ -873,11 +856,11 @@ age_process_pages(struct proc* proc){
     pte_t *entry=walkpgdir(proc->pgdir,pa[j].vaddr,0);
     *entry &=~PTE_A;                   // clear Accessed bit
   }
-   cprintf(" AQ\n------- after  ---lastIndex: %d----------\n",pq->lastIndex);
-   for(m=0; m<=pq->lastIndex; m++){
-      pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
-      cprintf("<exists,flags,vaddr> <%d,%x,%x>\n",pa[m].exists,PTE_FLAGS(*e),pa[m].vaddr);
-   } 
+  //  cprintf(" AQ\n------- after  ---lastIndex: %d----------\n",pq->lastIndex);
+  //  for(m=0; m<=pq->lastIndex; m++){
+  //     pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
+  //     cprintf("<exists,flags,vaddr> <%d,%x,%x>\n",pa[m].exists,PTE_FLAGS(*e),pa[m].vaddr);
+  //  } 
 #endif
 }
 // Returns a Virtual Address of a page to be replaced in the RAM, according to replacement algorithms.
@@ -958,7 +941,23 @@ select_page_to_back(struct proc *p){
     #ifdef AQ
     while(1){
       struct page toReturn;
+      int k;
+      struct page_queue *q=&p->paging_meta.pq;
+      struct page *pgs=q->pages;
+      int lastIndex=q->lastIndex;
+
+      cprintf("Before - last index: %d\n",lastIndex);
+
+      for(k=0; k<=lastIndex; k++){
+        cprintf("<%d,%x>", pgs[k].exists,pgs[k].vaddr);
+      }
       toReturn  = dequeue(p);
+      
+      cprintf("After - last index: %d\n",lastIndex);
+      for(k=0; k<=lastIndex; k++){
+        cprintf("<%d,%x>", pgs[k].exists,pgs[k].vaddr);
+      }
+
       //if it's legal to swap out, do it. otherwise, keep looping.
       return toReturn.vaddr;
     }
