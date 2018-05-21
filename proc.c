@@ -191,7 +191,6 @@ fork(void)
   int i, pid;
   struct proc *np;
   struct proc *curproc = myproc();
-  cprintf("         IN FORK                 \n");
 
   // Allocate process.
   if((np = allocproc()) == 0){
@@ -231,6 +230,7 @@ fork(void)
   //copy from parent - if he's a user process
   if(is_user_proc(curproc)){  
   //initialize swap file meta
+    cprintf("copying swapfile from parent\n");
     copy_parent_swapfile(np,curproc);
   }
   np->page_faults = 0;    //reset number of page faults to 0;
