@@ -349,7 +349,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
               pages[i].exists=0;
             }
           }
-          free_from_queue(myproc(),(void *a)v);
+          free_from_queue(myproc(),(void *)a);
 
 
 
