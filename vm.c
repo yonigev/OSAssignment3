@@ -470,7 +470,7 @@ int enqueue(struct proc *pr,struct page toAdd) {
     meta=&pr->paging_meta;
     
     int k;
-    cprintf("Before - last index: %d\n",meta->pq.lastIndex);
+    cprintf("Before enq - last index: %d\n",meta->pq.lastIndex);
       for(k=0; k<=meta->pq.lastIndex; k++){
         cprintf("<%d,%x>\n", meta->pq.pages[k].exists,meta->pq.pages[k].vaddr);
       }
@@ -480,7 +480,7 @@ int enqueue(struct proc *pr,struct page toAdd) {
         meta->pq.pages[meta->pq.lastIndex] = toAdd;
         meta->pq.lastIndex++;
 
-      cprintf("Before - last index: %d\n",meta->pq.lastIndex);
+      cprintf("After enq- last index: %d\n",meta->pq.lastIndex);
       for(k=0; k<=meta->pq.lastIndex; k++){
         cprintf("<%d,%x>\n", meta->pq.pages[k].exists,meta->pq.pages[k].vaddr);
       }
