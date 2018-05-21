@@ -97,7 +97,6 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
 
-  cprintf("new process id: %d\n",p->pid);
   release(&ptable.lock);
 
   // Allocate kernel stack.
@@ -131,7 +130,7 @@ userinit(void)
 {
   struct proc *p;
   extern char _binary_initcode_start[], _binary_initcode_size[];
-
+  cprintf("calling allocproccccccccccccccccc\n");
   p = allocproc();
   
   initproc = p;
