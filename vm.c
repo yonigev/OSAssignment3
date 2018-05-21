@@ -508,6 +508,7 @@ struct page dequeue(struct proc *pr) {
             pq->pages[i] = pq->pages[i + 1];
     }
     pq->lastIndex--;
+    cprintf("DE-queueing - %x\n",toReturn.vaddr);
     return toReturn;
 }
 
