@@ -657,10 +657,8 @@ addPageToBack(struct proc *p, void* vaddr){
     if(free_offset == PGFILE_FULL_ERR)
       return 0;
     cprintf("writing to swapfile: %x , %x\n",vaddr, (char *)PTE_ADDR(vaddr));
-    char* newBuff;
-    pte_t *entry= walkpgdir(p->pgdir,vaddr,0);
-    newBuff=P2V(PTE_ADDR(entry));
-    writeToSwapFile(p,newBuff,free_offset,PGSIZE);    //  write the page to the swap file
+   
+    writeToSwapFile(p,(char *)PTE_ADDR(vaddr),free_offset,PGSIZE);    //  write the page to the swap file
     page_out_meta(p,(char *)PTE_ADDR(vaddr),free_offset);                       //  add to meta-data of the process
    
     return 1;
@@ -673,7 +671,7 @@ pageOut(struct proc *p,void* vaddr){
   char* to_free;
    //write page to the Back file.
   if(addPageToBack(p,vaddr)){
-    pte_t *pte=walkpgdir(p->pgdir,vaddr,0);
+    pte_t *pte=walkpgdir(p->pgdir,vaddr,1);
     to_free=(char*)P2V(PTE_ADDR(*pte));   
     kfree(to_free);                                   //free the PHYSICAL memory of the page
     clearPTE_FLAG(p,vaddr,PTE_P);                     //clear the Present flag from the page table entry
