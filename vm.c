@@ -558,12 +558,9 @@ getPageFromBack(struct proc* p, const void* vaddr, char* buffer){
       uint offset   = pages[i].offset;
       if(readFromSwapFile(p,buffer,offset,PGSIZE) < 0)
         panic("get page error");
-
-      cprintf("--------------------------\nfinished reading from swapfile\n the buffer is %s\n--------------------------------",buffer);
       return 1;
     }
   }
-  cprintf("getPageFromBack returining 0!!!!\n");
   return 0;
 }
 
@@ -594,10 +591,13 @@ pageIn(struct proc *p, void* vaddr){
     cprintf("in pageIn with: %x\n",vaddr);
     char* paddr;    //will contain Physical address that the page would be written to.
     paddr = kalloc();                           //allocate physical page
-    mappages(p->pgdir,vaddr,PGSIZE,V2P(paddr),0);    //map the vaddr to the newly allocated Paddr
+    if(mappages(p->pgdir,vaddr,PGSIZE,V2P(paddr),0)!=0)    //map the vaddr to the newly allocated Paddr
+      panic("pagein-mappages");
+
+    cprintf("mapped v: %x to p: %x\n",vaddr,V2P(paddr));
     if(!getPageFromBack(p,vaddr,vaddr))             //write the page into memory (vaddr is already mapped to paddr)
       return 0;
-    clearPTE_FLAG(p,vaddr,PTE_PG);              //clear the PAGED OUT flag
+    clearPTE_FLAG(p,vaddr,PTE_PG);             //clear the PAGED OUT flag
     setPTE_FLAG(p,vaddr,PTE_P);                 //set the PRESENT flag
     
     if(!page_in_meta(p,vaddr))                      //remove meta data from the process meta-data struct 
