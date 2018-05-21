@@ -320,6 +320,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
           struct p_meta *meta=&myproc()->paging_meta;
           struct page *pages=meta->pages;
           int i;
+          cprintf("\npid: %d REMOVING page: %x\n",myproc()->pid,(void*)a);
           for(i=0; i<MAX_TOTAL_PAGES; i++){
             if(pages[i].exists && pages[i].vaddr ==(void *) a){
               pages[i].age=0;
