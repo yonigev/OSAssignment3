@@ -246,6 +246,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       int pages_in_ram=numOfPagedIn(myproc());
       cprintf("\nALLOCUVM id: %d , name: %s- pages in ram : %d\n",myproc()->pid,myproc()->name,pages_in_ram);
       if(pages_in_ram == MAX_PSYC_PAGES){
+        cprintf("ram is full  -   paging out\n");
         pageOut(myproc(),select_page_to_back(myproc()));
         cprintf("finished paging out!\n");
       }
@@ -254,7 +255,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
 
     mem = kalloc();
-    cprintf("got  : %x from kalloc()\n", mem);
+    //cprintf("got  : %x from kalloc()\n", mem);
     
 
     if(mem == 0){
@@ -668,6 +669,7 @@ int
 pageOut(struct proc *p,void* vaddr){
   char* to_free;
    //write page to the Back file.
+   cprintf("paging out -  page with vaddr: %x\n", vaddr);
   if(addPageToBack(p,vaddr)){
     pte_t *pte=walkpgdir(p->pgdir,vaddr,0);
     to_free=(char*)P2V(PTE_ADDR(*pte));   
