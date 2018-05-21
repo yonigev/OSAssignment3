@@ -670,7 +670,7 @@ pageOut(struct proc *p,void* vaddr){
   char* to_free;
    //write page to the Back file.
   if(addPageToBack(p,vaddr)){
-    pte_t *pte=walkpgdir(p->pgdir,vaddr,1);
+    pte_t *pte=walkpgdir(p->pgdir,vaddr,0);
     to_free=(char*)P2V(PTE_ADDR(*pte));   
     kfree(to_free);                                   //free the PHYSICAL memory of the page
     clearPTE_FLAG(p,vaddr,PTE_P);                     //clear the Present flag from the page table entry
