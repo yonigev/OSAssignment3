@@ -22,11 +22,7 @@ static void wakeup1(void *chan);
 
 int is_user_proc(struct proc* p){
   if(p != 0){
-    //cprintf(" is user proc- comparing to %s\n",p->name);
-    if(strncmp(p->name,  "init",4)!=0 && strncmp(p->name,  "sh",2)!=0 )
-    //if p has a parent which is the shell
-    //if(p->parent!=0 && strncmp(p->parent->name,"sh",2) ==0)
-    //if(p->pid != 0  && p->pid != 1)
+    if(p->pid >2)
       return 1;
   }
   return 0;
