@@ -243,7 +243,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     if(myproc()){
       int pages_in_ram=numOfPagedIn(myproc());
       if(pages_in_ram == MAX_PSYC_PAGES){
-        cprintf("paging out something ...in ram: %d\n",numOfPagedIn(myproc()));
+        cprintf("paging out something   - for paging in %x...in ram: %d\n",a,numOfPagedIn(myproc()));
         pageOut(myproc(),select_page_to_back(myproc()));
         cprintf("finished paging out something ...in ram: %d\n",numOfPagedIn(myproc()));
       }
@@ -488,26 +488,26 @@ int enqueue(struct proc *pr,struct page toAdd) {
 
 //Dequeue a page  - is different if defined AQ
 struct page dequeue(struct proc *pr) {
-    struct p_meta meta;
-    meta=pr->paging_meta;
-    struct page toReturn = meta.pq.pages[0];
-    struct page_queue pq=meta.pq;
-    pq.pages[0].exists  = 0;          //delete
-    pq.pages[0].vaddr   = (void *)0;  //it
+    struct p_meta *meta;
+    meta=&pr->paging_meta;
+    struct page toReturn = meta->pq.pages[0];
+    struct page_queue *pq=&meta->pq;
+    pq->pages[0].exists  = 0;          //delete
+    pq->pages[0].vaddr   = (void *)0;  //it
     int i;
-    for (i = 0; i < pq.lastIndex; i++) {    //CHANGED to pq.lastIndex from MAX_TOTAL_PAGES
+    for (i = 0; i < pq->lastIndex; i++) {    //CHANGED to pq.lastIndex from MAX_TOTAL_PAGES
         if (i == MAX_TOTAL_PAGES - 1){
             //pq.pages[i] = {0,0,0,0,0,0};
-            pq.pages[i].exists = 0;
-            pq.pages[i].vaddr  = 0;
-            pq.pages[i].age    = 0;
-            pq.pages[i].age2   = 0;
-            pq.pages[i].in_back= 0;
+            pq->pages[i].exists = 0;
+            pq->pages[i].vaddr  = 0;
+            pq->pages[i].age    = 0;
+            pq->pages[i].age2   = 0;
+            pq->pages[i].in_back= 0;
         }
         else
-            pq.pages[i] = pq.pages[i + 1];
+            pq->pages[i] = pq->pages[i + 1];
     }
-    pq.lastIndex--;
+    pq->lastIndex--;
     return toReturn;
 }
 
@@ -643,6 +643,7 @@ page_out_meta(struct proc *p,void* vaddr,uint offset){
        pages[i].in_back =   1;              //mark as "Backed"
        pages[i].offset  =   offset;         //store the offset of the page
        meta->offsets[offset / PGSIZE] = 1;  //mark offset as taken
+       cprintf("marking i: %d as taken\n",offset/PGSIZE);
        return 1;
      }
    }
