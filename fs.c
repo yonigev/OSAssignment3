@@ -771,30 +771,14 @@ createSwapFile(struct proc *p) {
 int
 writeToSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
     p->swapFile->off = placeOnFile;
-
-    
-    // cprintf("writing size: %d, in offset: %d to file. from %x\nthe buffer: %s\n",size,placeOnFile,buffer,buffer);
-    // int i;
-    // for(i=0; i<PGSIZE; i++){
-    //     cprintf(" %x ",buffer[i]);
-    // }
-    int toReturn = filewrite(p->swapFile, buffer, size);
-    //cprintf("done writing to swap file: %d\n",toReturn); 
-    return toReturn;
+    return filewrite(p->swapFile, buffer, size);
 }
 
 //return as sys_read (-1 when error)
 int
 readFromSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
     p->swapFile->off = placeOnFile;
-    cprintf("readFromSwapFile       -       calling fileread\n");
-    
-    char local[PGSIZE]={0};
-    int toReturn=fileread(p->swapFile, local, size);
-    cprintf("finished reading: %d       -        %s\n",toReturn,local);
-    
-
-
+    int toReturn=fileread(p->swapFile, buffer, size);
     return toReturn;
 };
 

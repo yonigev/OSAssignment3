@@ -566,13 +566,13 @@ getPageFromBack(struct proc* p, const void* vaddr, char* buffer){
 //update page meta-data when going to front
 int 
 page_in_meta(struct proc* p,void* vaddr){
-  cprintf("paging in meta- %x\n",vaddr);
+  //cprintf("paging in meta- %x\n",vaddr);
    struct p_meta *meta  =   &p->paging_meta;
    struct page *pages   =   meta->pages;
    int i;
    for(i=0; i<MAX_TOTAL_PAGES; i++){
      if(pages[i].vaddr  ==  vaddr){
-       cprintf("foung paging in meta!!\n");
+       //cprintf("foung paging in meta!!\n");
        pages[i].in_back =   0;                       //mark as "NOT Backed"
        meta->offsets[pages[i].offset / PGSIZE] = 0;  //mark offset as free
        pages[i].age = 0;                             //reset age
@@ -589,20 +589,20 @@ page_in_meta(struct proc* p,void* vaddr){
 //  And only when there's less than MAX_PSYC pages in memory.
 int
 pageIn(struct proc *p, void* vaddr){
-    cprintf("in pageIn with: %x\n",vaddr);
+    //cprintf("in pageIn with: %x\n",vaddr);
     char* paddr;    //will contain Physical address that the page would be written to.
     paddr = kalloc();                           //allocate physical page
     if(mappages(p->pgdir,vaddr,PGSIZE,V2P(paddr),PTE_W|PTE_U)!=0)    //map the vaddr to the newly allocated Paddr
       panic("pagein-mappages");
 
-    cprintf("PI-mapped v: %x to p: %x\n",vaddr,V2P(paddr));
+    //cprintf("PI-mapped v: %x to p: %x\n",vaddr,V2P(paddr));
     if(!getPageFromBack(p,vaddr,vaddr))             //write the page into memory (vaddr is already mapped to paddr)
       return 0;
     clearPTE_FLAG(p,vaddr,PTE_PG);             //clear the PAGED OUT flag
     setPTE_FLAG(p,vaddr,PTE_P);                 //set the PRESENT flag
-    cprintf("printing flags!!\n");
+    //cprintf("printing flags!!\n");
     pte_t *e=walkpgdir(p->pgdir,vaddr,0);
-    cprintf("entry is: %x\n",*e);
+    //cprintf("entry is: %x\n",*e);
     if(!page_in_meta(p,vaddr))                      //remove meta data from the process meta-data struct 
       return 0;
     return 1;   
@@ -612,7 +612,6 @@ pageIn(struct proc *p, void* vaddr){
 int
 isPagedOut(struct proc *p,  void* vaddr){
   pte_t *e=walkpgdir(p->pgdir,vaddr, 0);
-  cprintf("isPagedOut: %x\n",*e);
   if( !isFlagged(p,vaddr,PTE_P)  &&  isFlagged(p,vaddr,PTE_PG))
     return 1;
   return 0;
@@ -670,19 +669,16 @@ addPageToBack(struct proc *p, void* vaddr){
 //page out a page with the adderss vaddr
 int
 pageOut(struct proc *p,void* vaddr){
-  cprintf("paging out vaddr: %x\n",vaddr);
   char* to_free;
    //write page to the Back file.
   if(addPageToBack(p,vaddr)){
     pte_t *pte=walkpgdir(p->pgdir,vaddr,0);
 
-    cprintf("************************** entry1: %x\n",*pte);
     to_free=(char*)P2V(PTE_ADDR(*pte));   
     kfree(to_free);                                   //free the PHYSICAL memory of the page
     clearPTE_FLAG(p,vaddr,PTE_P);                     //clear the Present flag from the page table entry
     setPTE_FLAG(p,vaddr,PTE_PG);                      //set the PAGED-OUT flag
     pte=walkpgdir(p->pgdir,vaddr,0);
-    cprintf("************************** entry2: %x\n",*pte);
 
     lcr3(V2P(p->pgdir));                              //refresh the Table Lookaside Buffer   
     p->num_pageouts++;         
@@ -729,7 +725,7 @@ numOfPagedIn(struct proc *p){
 int
 safe_page_in(struct proc* p,void *vaddr){
   if(numOfPagedIn(p) == MAX_PSYC_PAGES){
-    cprintf("ram full, paging out first-\n");
+    //cprintf("ram full, paging out first-\n");
     pageOut(p,select_page_to_back(p));
   }
 

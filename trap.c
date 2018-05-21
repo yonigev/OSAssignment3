@@ -88,13 +88,12 @@ trap(struct trapframe *tf)
     if(myproc()){
       myproc()->page_faults++;
     }
-    cprintf("got page fault: %x\n",rcr2());
+    // cprintf("got page fault: %x\n",rcr2());
     //if a process is running this  AND the page is Paged-out in the back
 
     //sanity:
     
     if(is_user_proc(myproc()) && isPagedOut(myproc(),(void *)rcr2())){
-      cprintf("and it's paged out: %x\n",rcr2());
       safe_page_in(myproc(),(void *)rcr2());  //page another one OUT, and page this one IN
       break;
       }
