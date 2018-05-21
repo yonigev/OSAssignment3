@@ -783,7 +783,7 @@ readFromSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
     
     char local[PGSIZE]={0};
     int toReturn=fileread(p->swapFile, local, size);
-    cprintf("finished reading: %s\n",local);
+    cprintf("finished reading: %d       -        %s\n",toReturn,local);
     
 
 
