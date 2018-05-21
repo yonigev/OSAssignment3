@@ -657,6 +657,7 @@ addPageToBack(struct proc *p, void* vaddr){
 //page out a page with the adderss vaddr
 int
 pageOut(struct proc *p,void* vaddr){
+  cprintf("paging out vaddr: %x\n",vaddr);
   char* to_free;
    //write page to the Back file.
   if(addPageToBack(p,vaddr)){
