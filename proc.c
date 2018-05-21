@@ -222,17 +222,17 @@ fork(void)
 
   
   #ifndef NONE
-  cprintf("fork = np pid: %d, curproc pid: %d\n",np->pid,curproc->pid);
   if(is_user_proc(np)){
     if(createSwapFile(np) != 0){
       panic("fork_create swapfile");
     }
   }
   //copy from parent - if he's a user process
-  if(is_user_proc(curproc)){  
+  if(is_user_proc(np)){ //was curproc before! 
   //initialize swap file meta
     cprintf("copying swapfile from parent\n");
     copy_parent_swapfile(np,curproc);
+    np->paging_meta=curproc->paging_meta;
   }
   np->page_faults = 0;    //reset number of page faults to 0;
   np->num_pageouts = 0;
