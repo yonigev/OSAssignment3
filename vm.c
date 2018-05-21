@@ -460,16 +460,10 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 }
 
 
+
+
+#ifndef NONE
 // Our new Functions
-
-
-
-
-
-
-
-
-
 //Enqueue a page - is different if defined AQ
 int enqueue(struct proc *pr,struct page toAdd) {
     struct p_meta *meta;
@@ -539,12 +533,6 @@ clearPTE_FLAG(struct proc *p, const void* vadd, uint FLAG){
     panic("setPTE_PG");
   *entry &= ~FLAG;   //clear the  flag
 }
-
-
-
-  
-
-
 //  get a page from the back, write it into buffer
 //  vaddr - of the page
 //  return 0 on error
@@ -699,8 +687,6 @@ numOfPagedOut(struct proc *p){
   }
   return counter;  
 }
-
-
 //Number of pages in RAM
 int
 numOfPagedIn(struct proc *p){
@@ -715,8 +701,6 @@ numOfPagedIn(struct proc *p){
   }
   return counter;  
 }
-
-
 //page in a certain page - page-out another if needed
 int
 safe_page_in(struct proc* p,void *vaddr){
@@ -727,13 +711,6 @@ safe_page_in(struct proc* p,void *vaddr){
 
   return pageIn(p,(void *)PGROUNDDOWN((uint)vaddr));
 }
-
-
-
-
-
-
-
 //copy the parent's swapfile to the child.
 //copy only if parent is not the shell or init.
 int
@@ -796,7 +773,6 @@ count_set_bits(uint number){
   }
   return counter;
 }
-
 // Adds a TOTALLY new page to the process's list.
 int
 add_new_page(struct proc *p, void* vaddr){
@@ -827,8 +803,6 @@ add_new_page(struct proc *p, void* vaddr){
   }
   return 0;
 }
-
-
 //free a page with Virtual Address vaddr
 void
 free_page(struct proc *p, void* vaddr){
@@ -899,8 +873,6 @@ age_process_pages(struct proc* proc){
 #endif
 
 }
-
-
 // Returns a Virtual Address of a page to be replaced in the RAM, according to replacement algorithms.
 void*
 select_page_to_back(struct proc *p){
@@ -988,17 +960,11 @@ select_page_to_back(struct proc *p){
   return (void*) 1;   //delete
   #endif
 }
-
-
-
-
-
-
 void
 reset_paging_meta(struct proc* pr){
    memset(&pr->paging_meta,0,sizeof(struct p_meta));
 }
-
+#endif
 //PAGEBREAK!
 // Blank page.
 //PAGEBREAK!

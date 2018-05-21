@@ -227,7 +227,6 @@ fork(void)
     if(createSwapFile(np) != 0){
       panic("fork_create swapfile");
     }
-    //reset_paging_meta(np);
   }
   //copy from parent - if he's a user process
   if(is_user_proc(curproc)){  
