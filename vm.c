@@ -595,7 +595,7 @@ pageIn(struct proc *p, void* vaddr){
     if(mappages(p->pgdir,vaddr,PGSIZE,V2P(paddr),PTE_W|PTE_U)!=0)    //map the vaddr to the newly allocated Paddr
       panic("pagein-mappages");
 
-    cprintf("mapped v: %x to p: %x\n",vaddr,V2P(paddr));
+    cprintf("PI-mapped v: %x to p: %x\n",vaddr,V2P(paddr));
     if(!getPageFromBack(p,vaddr,vaddr))             //write the page into memory (vaddr is already mapped to paddr)
       return 0;
     clearPTE_FLAG(p,vaddr,PTE_PG);             //clear the PAGED OUT flag
