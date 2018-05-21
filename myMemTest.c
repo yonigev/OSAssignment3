@@ -73,7 +73,7 @@ void globalTest(){
 		while (PGSIZE*10-8 < randNum && randNum < PGSIZE*10+PGSIZE/2-8)
 			randNum = getRandNum(); //gives page #13 50% less chance of being selected
 															//(redraw number if randNum is in the first half of page #13)
-		arr[randNum] = 'X';				//write to memory
+		//arr[randNum] = 'X';				//write to memory
 	printf(1,"test %d i= \n",i);
   }
 	free(arr);

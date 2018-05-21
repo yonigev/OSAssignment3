@@ -665,7 +665,8 @@ pageOut(struct proc *p,void* vaddr){
     kfree(to_free);                                   //free the PHYSICAL memory of the page
     clearPTE_FLAG(p,vaddr,PTE_P);                     //clear the Present flag from the page table entry
     setPTE_FLAG(p,vaddr,PTE_PG);                      //set the PAGED-OUT flag
-    lcr3(V2P(p->pgdir));                              //refresh the Table Lookaside Buffer            
+    lcr3(V2P(p->pgdir));                              //refresh the Table Lookaside Buffer   
+    p->num_pageouts++;         
     return 1;
   }
   else
@@ -990,21 +991,6 @@ select_page_to_back(struct proc *p){
 
 
 
-// page out N different pages into the Back.
-int
-page_out_N(struct proc *p,int N){
-  //cprintf("page_out_N = %d\n",N);
-  int i;
-  //find N pages to page OUT
-  for(i=0; i<N; i++){
-    void* vaddr=select_page_to_back(p);
-    if(!pageOut(p,vaddr)){
-      panic("page_out_N error");
-    }
-  }
-  p->num_pageouts +=N;    //add to number of pageouts for this process
-  return N;
-}
 
 
 
