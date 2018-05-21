@@ -480,7 +480,7 @@ int enqueue(struct proc *pr,struct page toAdd) {
 
 }
 
-//Dequeue a page  - is different if defined AQ
+//Dequeue a page
 struct page dequeue(struct proc *pr) {
     struct p_meta *meta;
     meta=&pr->paging_meta;
@@ -489,7 +489,7 @@ struct page dequeue(struct proc *pr) {
     pq->pages[0].exists  = 0;          //delete
     pq->pages[0].vaddr   = (void *)0;  //it
     int i;
-    for (i = 0; i < pq->lastIndex; i++) {    //CHANGED to pq.lastIndex from MAX_TOTAL_PAGES
+    for (i = 0; i < MAX_TOTAL_PAGES; i++) {    //CHANGED to pq.lastIndex from MAX_TOTAL_PAGES
         if (i == MAX_TOTAL_PAGES - 1){
             //pq.pages[i] = {0,0,0,0,0,0};
             pq->pages[i].exists = 0;
