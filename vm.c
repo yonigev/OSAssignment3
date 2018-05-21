@@ -290,6 +290,7 @@ free_from_queue(struct proc *p,void* vaddr){
       continue;
     break;
   }
+  cprintf("in free from queue- toDel = %d\n\n",to_del);
   int i;
   for(i=to_del; i<pq.lastIndex; i++){
     if(i == MAX_TOTAL_PAGES-1){ //if its the last one, just delete it
