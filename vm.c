@@ -635,12 +635,12 @@ getFreePageOffset(struct proc *p){
 //page needs to already exist in the list.
 int 
 page_out_meta(struct proc *p,void* vaddr,uint offset){
-  cprintf("paging out meta:   %x\n",vaddr);
    struct p_meta *meta  =   &p->paging_meta;
    struct page *pages   =   meta->pages;
    int i;
    for(i=0; i<MAX_TOTAL_PAGES; i++){
-     if(pages[i].vaddr  ==  vaddr){
+     if(pages[i].exists  && pages[i].vaddr  ==  vaddr){
+       cprintf("found paging out!: %x,  %x\n",vaddr,pages[i].vaddr);
        pages[i].in_back =   1;              //mark as "Backed"
        pages[i].offset  =   offset;         //store the offset of the page
        meta->offsets[offset / PGSIZE] = 1;  //mark offset as taken
