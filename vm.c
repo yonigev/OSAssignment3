@@ -223,44 +223,30 @@ loaduvm(pde_t *pgdir, char *addr, struct inode *ip, uint offset, uint sz)
 int
 allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 {
-  
   char *mem;
   uint a;
-
-  
   if(newsz >= KERNBASE)
     return 0;
   if(newsz < oldsz)
     return oldsz;
-
-  
-
   a = PGROUNDUP(oldsz);
   for(; a < newsz; a += PGSIZE){
-
     #ifndef NONE
     //add new page
     if(myproc()){
       int pages_in_ram=numOfPagedIn(myproc());
       if(pages_in_ram == MAX_PSYC_PAGES){
-        //cprintf("paging out something   - for paging in %x...in ram: %d\n",a,numOfPagedIn(myproc()));
         pageOut(myproc(),select_page_to_back(myproc()));
-        //cprintf("finished paging out something ...in ram: %d\n",numOfPagedIn(myproc()));
       }
     }
     #endif
-
-
     mem = kalloc();    
-
     if(mem == 0){
       cprintf("allocuvm out of memory\n");
       deallocuvm(pgdir, newsz, oldsz);
       return 0;
     }
     memset(mem, 0, PGSIZE);
-
-    
     if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) < 0){
       cprintf("allocuvm out of memory (2)\n");
       deallocuvm(pgdir, newsz, oldsz);
@@ -268,7 +254,6 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       return 0;
     }
     #ifndef NONE
-    //cprintf("\nmapped v: %x to p: %x\n",(char*)a,V2P(mem) |  PTE_W|PTE_U);
     add_new_page(myproc(),(void *)a);
     #endif
 
