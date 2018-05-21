@@ -335,7 +335,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       #ifndef NONE
       if(myproc()){
         cprintf("deallocuvm - v: %x, pa: %x\n",v,pa);
-          free_page(myproc(),(void *)v);
+          //free_page(myproc(),(void *)v);
           struct p_meta *meta=&myproc()->paging_meta;
           struct page *pages=meta->pages;
           int i;
