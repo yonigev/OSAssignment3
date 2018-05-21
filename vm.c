@@ -851,7 +851,7 @@ age_process_pages(struct proc* proc){
 
    cprintf(" AQ\n-------  before  ---lastIndex: %d----------\n",pq->lastIndex);
    int m;
-   for(m=0; m<=pq->lastIndex); m++){
+   for(m=0; m<=pq->lastIndex; m++){
      pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
       cprintf("<exists,flags,vaddr> <%d,%x,%x>\n",pa[m].exists,PTE_FLAGS(*e),pa[m].vaddr);
    }
