@@ -288,7 +288,7 @@ free_from_queue(struct proc *p,void* vaddr){
 
   int k;
   cprintf("in free from queue START: \n");
-  for(k=0; k<MAX_TOTAL_PAGES; k++){
+  for(k=0; k<10; k++){
     cprintf("q  -   <exists,vaddr>:<%d, %x>\n",pq.pages[k].exists,pq.pages[k].vaddr);
   }
 
@@ -312,7 +312,7 @@ free_from_queue(struct proc *p,void* vaddr){
       pq.pages[i] = pq.pages[i + 1];  //shift    
   }
   cprintf("in free from queue: \n");
-  for(k=0; k<MAX_TOTAL_PAGES; k++){
+  for(k=0; k<10; k++){
     cprintf("q  -   <exists,vaddr>:<%d, %x>\n",pq.pages[k].exists,pq.pages[k].vaddr);
   }
 }
