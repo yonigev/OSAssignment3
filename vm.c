@@ -268,7 +268,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       return 0;
     }
     #ifndef NONE
-    cprintf("\nmapped v: %x to p: %x\n",(char*)a,V2P(mem) |  PTE_W|PTE_U);
+    //cprintf("\nmapped v: %x to p: %x\n",(char*)a,V2P(mem) |  PTE_W|PTE_U);
     add_new_page(myproc(),(void *)a);
     #endif
 
@@ -641,7 +641,7 @@ page_out_meta(struct proc *p,void* vaddr,uint offset){
        pages[i].in_back =   1;              //mark as "Backed"
        pages[i].offset  =   offset;         //store the offset of the page
        meta->offsets[offset / PGSIZE] = 1;  //mark offset as taken
-       cprintf("marking i: %d as taken\n",offset/PGSIZE);
+       //cprintf("marking i: %d as taken\n",offset/PGSIZE);
        return 1;
      }
    }
