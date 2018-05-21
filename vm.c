@@ -554,8 +554,8 @@ getPageFromBack(struct proc* p, const void* vaddr, char* buffer){
   struct page* pages=p->paging_meta.pages;
   int i;
   for(i=0; i  < MAX_TOTAL_PAGES; i++){
-    if (pages[i].exists && pages[i].vaddr  ==   vaddr){
-      uint offset   = i * PGSIZE;
+    if (pages[i].exists && pages[i].vaddr  ==   vaddr && pages[i].in_back){
+      uint offset   = pages[i].offset;
       if(readFromSwapFile(p,buffer,offset,PGSIZE) < 0)
         panic("get page error");
       return 1;
