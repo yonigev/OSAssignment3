@@ -343,13 +343,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
               pages[i].exists=0;
             }
           }
-          cprintf("freeing %x from queue\n",a);
           free_from_queue(myproc(),(void *)a);
-
-
-
-
-
       }
       #endif
 
@@ -577,6 +571,7 @@ page_in_meta(struct proc* p,void* vaddr){
    int i;
    for(i=0; i<MAX_TOTAL_PAGES; i++){
      if(pages[i].vaddr  ==  vaddr){
+       cprintf("foung paging in meta!!\n");
        pages[i].in_back =   0;                       //mark as "NOT Backed"
        meta->offsets[pages[i].offset / PGSIZE] = 0;  //mark offset as free
        pages[i].age = 0;                             //reset age
@@ -640,7 +635,7 @@ page_out_meta(struct proc *p,void* vaddr,uint offset){
    struct page *pages   =   meta->pages;
    int i;
    for(i=0; i<MAX_TOTAL_PAGES; i++){
-     cprintf("index: %d, vaddr: %x, exists: %d, in back: %d\n",i,pages[i].vaddr,pages[i].exists,pages[i].in_back);
+     //cprintf("index: %d, vaddr: %x, exists: %d, in back: %d\n",i,pages[i].vaddr,pages[i].exists,pages[i].in_back);
      if(pages[i].exists  && pages[i].vaddr  ==  vaddr){
        cprintf("found paging out!: %x,  %x\n",vaddr,pages[i].vaddr);
        pages[i].in_back =   1;              //mark as "Backed"
