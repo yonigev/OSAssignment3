@@ -571,8 +571,6 @@ page_in_meta(struct proc* p,void* vaddr){
    }
    return 0;
 }
-
-
 //  Called only after checking that this page is indeed paged out!
 //  And only when there's less than MAX_PSYC pages in memory.
 int
@@ -826,13 +824,11 @@ void
 age_process_pages(struct proc* proc){
   struct page * pa_arr=proc->paging_meta.pages;
   int i;
-
   //for every page
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(!pa_arr[i].exists  || pa_arr[i].in_back)
     continue;
     pte_t *e= walkpgdir(proc->pgdir,pa_arr[i].vaddr,0);
-  
     if((*e & PTE_A) > 0){            // if accessed
       *e &=~PTE_A;                   // clear Accessed bit
       pa_arr[i].age=pa_arr[i].age / 2;       //shift right
@@ -868,10 +864,7 @@ age_process_pages(struct proc* proc){
     pte_t *entry=walkpgdir(proc->pgdir,pa[j].vaddr,0);
     *entry &=~PTE_A;                   // clear Accessed bit
   }  
-
-
 #endif
-
 }
 // Returns a Virtual Address of a page to be replaced in the RAM, according to replacement algorithms.
 void*
