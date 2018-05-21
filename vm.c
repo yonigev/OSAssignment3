@@ -572,7 +572,7 @@ page_in_meta(struct proc* p,void* vaddr){
    int i;
    for(i=0; i<MAX_TOTAL_PAGES; i++){
      if(pages[i].vaddr  ==  vaddr){
-       //cprintf("foung paging in meta!!\n");
+       //cprintf("found paging in meta!!\n");
        pages[i].in_back =   0;                       //mark as "NOT Backed"
        meta->offsets[pages[i].offset / PGSIZE] = 0;  //mark offset as free
        pages[i].age = 0;                             //reset age
@@ -790,25 +790,14 @@ add_new_page(struct proc *p, void* vaddr){
   struct page *pages= meta->pages;
   int i;
   struct page toAdd={.exists = 1, .vaddr = vaddr, .in_back = 0, .age = 0, .age2 = 0xffffffff};
-
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(pages[i].exists && pages[i].vaddr == vaddr){
       panic("add_new_page vaddr exists");
     }
     if(pages[i].exists)
       continue;
-    // pages[i].exists = 1;      //mark this spot as taken, a page exists here now.
-    // pages[i].vaddr  = vaddr;
-    // pages[i].in_back= 0;
-    // pages[i].age  = 0;
-    // pages[i].age2  = 0xffffffff;
     pages[i]  = toAdd;
     enqueue(p,toAdd);
-    
-
-
-
-
     return 1;
   }
   return 0;
@@ -824,7 +813,7 @@ age_process_pages(struct proc* proc){
     if(!pa_arr[i].exists  || pa_arr[i].in_back)
       continue;
     pte_t *e= walkpgdir(proc->pgdir,pa_arr[i].vaddr,0);
-    cprintf("B - entry      %x\n",pa_arr[i].age);
+    //cprintf("B - entry      %x\n",pa_arr[i].age);
     if((*e & PTE_A) > 0){            // if accessed
       
       *e &=~PTE_A;                   // clear Accessed bit
@@ -839,7 +828,7 @@ age_process_pages(struct proc* proc){
       pa_arr[i].age=pa_arr[i].age >> 1;       //just shift right
       pa_arr[i].age2=pa_arr[i].age2 >> 1;       //just shift right
     }
-    cprintf("A - entry      %x\n",pa_arr[i].age);
+    //cprintf("A - entry      %x\n",pa_arr[i].age);
   }
 
 #ifdef AQ
@@ -847,23 +836,15 @@ age_process_pages(struct proc* proc){
   struct page *pa= pq->pages;                 //access the Queue's array.
   int j;
 
-  //  cprintf(" AQ\n-------  before  ---lastIndex: %d----------\n",pq->lastIndex);
-  //  int m;
-  //  for(m=0; m<=pq->lastIndex; m++){
-  //    pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
-  //     cprintf("<exists,flags,vaddr> <%d,%x,%x>\n",pa[m].exists,PTE_FLAGS(*e),pa[m].vaddr);
-  //  }
   //start from the second place from last.
   for(j = pq->lastIndex - 1; j>=0; j--){
     pte_t *entry_j = walkpgdir(proc->pgdir,pa[j].vaddr,0);
     pte_t *entry_prec_j = walkpgdir(proc->pgdir,pa[j+1].vaddr,0);
     //if the i'th page was accessed, and the i-1 not, switch them.
     if((*entry_j & PTE_A) > 0 && (*entry_prec_j & PTE_A)<=0){
-      //cprintf("before switch: j - %x  j +1  - %x\n",pa[j].vaddr,pa[j+1].vaddr);
       struct page temp=pa[j];
       pa[j] = pa[j+1];
       pa[j+1]=temp;
-      //cprintf("after switch: j - %x  j +1  - %x\n",pa[j].vaddr,pa[j+1].vaddr);
     }
   }
   //Clean up Accessed bits
@@ -871,11 +852,6 @@ age_process_pages(struct proc* proc){
     pte_t *entry=walkpgdir(proc->pgdir,pa[j].vaddr,0);
     *entry &=~PTE_A;                   // clear Accessed bit
   }
-  //  cprintf(" AQ\n------- after  ---lastIndex: %d----------\n",pq->lastIndex);
-  //  for(m=0; m<=pq->lastIndex; m++){
-  //     pte_t *e=walkpgdir(proc->pgdir,pa[m].vaddr,0);
-  //     cprintf("<exists,flags,vaddr> <%d,%x,%x>\n",pa[m].exists,PTE_FLAGS(*e),pa[m].vaddr);
-  //  } 
 #endif
 }
 // Returns a Virtual Address of a page to be replaced in the RAM, according to replacement algorithms.
