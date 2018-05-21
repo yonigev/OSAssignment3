@@ -51,7 +51,7 @@ exec(char *path, char **argv)
     #endif
 
   // Load program into memory.
-  cprintf("\nLoading program into memory\n");
+  cprintf("\n@@@@@@ Loading program into memory @@@@@@\n");
   sz = 0;
   for(i=0, off=elf.phoff; i<elf.phnum; i++, off+=sizeof(ph)){
     if(readi(ip, (char*)&ph, off, sizeof(ph)) != sizeof(ph))
