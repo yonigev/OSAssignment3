@@ -478,6 +478,7 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 int enqueue(struct proc *pr,struct page toAdd) {
     struct p_meta *meta;
     meta=&pr->paging_meta;
+    cprintf("Enqueueing   -   %x\n",toAdd.vaddr);
     
     if (meta->pq.lastIndex == MAX_TOTAL_PAGES) {
         //no place
@@ -569,6 +570,7 @@ getPageFromBack(struct proc* p, const void* vaddr, char* buffer){
 //update page meta-data when going to front
 int 
 page_in_meta(struct proc* p,void* vaddr){
+  cprintf("paging in meta- %x\n",vaddr);
    struct p_meta *meta  =   &p->paging_meta;
    struct page *pages   =   meta->pages;
    int i;
@@ -633,6 +635,7 @@ getFreePageOffset(struct proc *p){
 //page needs to already exist in the list.
 int 
 page_out_meta(struct proc *p,void* vaddr,uint offset){
+  cprintf("paging out meta:   %x\n",vaddr);
    struct p_meta *meta  =   &p->paging_meta;
    struct page *pages   =   meta->pages;
    int i;
