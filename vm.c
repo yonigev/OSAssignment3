@@ -941,7 +941,7 @@ select_page_to_back(struct proc *p){
     while(1){
       current = dequeue(p);
       pte_t *e= walkpgdir(p->pgdir,current.vaddr,0);  //get the PTE
-      if((*e & PTE_A) > 0){              // if accessed OR illegal to swap out
+      if((*e & PTE_A) > 0){              // if accessed 
           *e &=~PTE_A;                   // clear Accessed bit
           enqueue(p,current);            // give second chance
       }
@@ -951,29 +951,12 @@ select_page_to_back(struct proc *p){
     }
     #endif
 
-    //#ifdef AQ
+    #ifdef AQ
       struct page toReturn;
-      int k;
-      struct page_queue *q=&p->paging_meta.pq;
-      struct page *pgs=q->pages;
-      int lastIndex=q->lastIndex;
-
-      cprintf("Before - last index: %d\n",lastIndex);
-
-      for(k=0; k<=lastIndex; k++){
-        cprintf("<%d,%x>\n", pgs[k].exists,pgs[k].vaddr);
-      }
       toReturn  = dequeue(p);
-      
-      cprintf("After - last index: %d\n",q->lastIndex);
-      for(k=0; k<=lastIndex; k++){
-        cprintf("<%d,%x>\n", pgs[k].exists,pgs[k].vaddr);
-      }
-
-      //if it's legal to swap out, do it. otherwise, keep looping.
       return toReturn.vaddr;
     
-   // #endif
+    #endif
   #ifdef NONE
   return (void*) 1;   //delete
   #endif
