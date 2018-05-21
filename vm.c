@@ -268,6 +268,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       return 0;
     }
     #ifndef NONE
+    cprintf("mapped v: %x to p: %x\n",(char*)a,V2P(mem));
     add_new_page(myproc(),(void *)a);
     #endif
 
