@@ -867,7 +867,7 @@ select_page_to_back(struct proc *p){
     for(i = 0; i<MAX_TOTAL_PAGES; i++){
       if(pa[i].exists && !pa[i].in_back){
           min_page=pa[i];
-         // cprintf("SELECT PAGE : NFUA : FIRST NORMAL : FOUND : %x\n",min_page.vaddr);
+          break;
       }
     }
     //Possible bug?
@@ -897,6 +897,7 @@ select_page_to_back(struct proc *p){
       if(pa[i].exists && !pa[i].in_back){
           min_count=count_set_bits(pa[i].age2);
           min_page=pa[i];
+          break;
       }
     }
     //Possible bug?
