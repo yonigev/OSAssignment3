@@ -133,7 +133,6 @@ filewrite(struct file *f, char *addr, int n)
     int max = ((MAXOPBLOCKS-1-1-2) / 2) * 512;
     int i = 0;
     while(i < n){
-      cprintf("in while\n");
       int n1 = n - i;
       if(n1 > max)
         n1 = max;

@@ -591,7 +591,7 @@ pageIn(struct proc *p, void* vaddr){
     cprintf("in pageIn with: %x\n",vaddr);
     char* paddr;    //will contain Physical address that the page would be written to.
     paddr = kalloc();                           //allocate physical page
-    if(mappages(p->pgdir,vaddr,PGSIZE,V2P(paddr),0)!=0)    //map the vaddr to the newly allocated Paddr
+    if(mappages(p->pgdir,vaddr,PGSIZE,V2P(paddr),1)!=0)    //map the vaddr to the newly allocated Paddr
       panic("pagein-mappages");
 
     cprintf("mapped v: %x to p: %x\n",vaddr,V2P(paddr));
