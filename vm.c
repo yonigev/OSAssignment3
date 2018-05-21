@@ -642,7 +642,7 @@ page_out_meta(struct proc *p,void* vaddr,uint offset){
    for(i=0; i<MAX_TOTAL_PAGES; i++){
      //cprintf("index: %d, vaddr: %x, exists: %d, in back: %d\n",i,pages[i].vaddr,pages[i].exists,pages[i].in_back);
      if(pages[i].exists  && pages[i].vaddr  ==  vaddr){
-       cprintf("found paging out!: %x,  %x\n",vaddr,pages[i].vaddr);
+       //cprintf("found paging out!: %x,  %x\n",vaddr,pages[i].vaddr);
        pages[i].in_back =   1;              //mark as "Backed"
        pages[i].offset  =   offset;         //store the offset of the page
        meta->offsets[offset / PGSIZE] = 1;  //mark offset as taken
@@ -676,11 +676,14 @@ pageOut(struct proc *p,void* vaddr){
   if(addPageToBack(p,vaddr)){
     pte_t *pte=walkpgdir(p->pgdir,vaddr,0);
 
-    cprintf("************************** entry: %x\n",*pte);
+    cprintf("************************** entry1: %x\n",*pte);
     to_free=(char*)P2V(PTE_ADDR(*pte));   
     kfree(to_free);                                   //free the PHYSICAL memory of the page
     clearPTE_FLAG(p,vaddr,PTE_P);                     //clear the Present flag from the page table entry
     setPTE_FLAG(p,vaddr,PTE_PG);                      //set the PAGED-OUT flag
+    pte=walkpgdir(p->pgdir,vaddr,0);
+    cprintf("************************** entry2: %x\n",*pte);
+
     lcr3(V2P(p->pgdir));                              //refresh the Table Lookaside Buffer   
     p->num_pageouts++;         
     return 1;
