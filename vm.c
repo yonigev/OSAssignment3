@@ -949,13 +949,13 @@ select_page_to_back(struct proc *p){
       cprintf("Before - last index: %d\n",lastIndex);
 
       for(k=0; k<=lastIndex; k++){
-        cprintf("<%d,%x>", pgs[k].exists,pgs[k].vaddr);
+        cprintf("<%d,%x>\n", pgs[k].exists,pgs[k].vaddr);
       }
       toReturn  = dequeue(p);
       
       cprintf("After - last index: %d\n",lastIndex);
       for(k=0; k<=lastIndex; k++){
-        cprintf("<%d,%x>", pgs[k].exists,pgs[k].vaddr);
+        cprintf("<%d,%x>\n", pgs[k].exists,pgs[k].vaddr);
       }
 
       //if it's legal to swap out, do it. otherwise, keep looping.
