@@ -343,6 +343,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
               pages[i].exists=0;
             }
           }
+          cprintf("freeing %x from queue\n",a);
           free_from_queue(myproc(),(void *)a);
 
 
@@ -819,7 +820,6 @@ add_new_page(struct proc *p, void* vaddr){
     // pages[i].age  = 0;
     // pages[i].age2  = 0xffffffff;
     pages[i]  = toAdd;
-    cprintf("%x %d",pages[i].vaddr,pages[i].exists);
     enqueue(p,toAdd);
     
 
