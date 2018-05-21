@@ -222,6 +222,7 @@ fork(void)
 
   
   #ifndef NONE
+  cprintf("fork = np pid: %d, curproc pid: %d\n",np->pid,curproc->pid);
   if(is_user_proc(np)){
     if(createSwapFile(np) != 0){
       panic("fork_create swapfile");
