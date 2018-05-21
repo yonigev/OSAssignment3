@@ -572,7 +572,7 @@ procdump(void)
     cprintf("%d %s %s", p->pid, state, p->name);
     #ifndef NONE
     int current_allocated=get_allocated_pages(p);
-    int paged_out=get_paged_out(p);
+    int paged_out=numOfPagedOut(p);
     int page_faults=p->page_faults;
     int total_out=p->num_pageouts;
     cprintf(" %d %d %d %d",current_allocated,paged_out,page_faults,total_out);

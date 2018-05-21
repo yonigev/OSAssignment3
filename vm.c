@@ -254,9 +254,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
     mem = kalloc();
     cprintf("got  : %x from kalloc()\n", mem);
-    #ifndef NONE
-    add_new_page(myproc(),mem);
-    #endif
+    
 
     if(mem == 0){
       cprintf("allocuvm out of memory\n");
@@ -272,6 +270,9 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       kfree(mem);
       return 0;
     }
+    #ifndef NONE
+    add_new_page(myproc(),a);
+    #endif
 
 
       //////
@@ -713,6 +714,15 @@ numOfPagedIn(struct proc *p){
 }
 
 
+//page in a certain page - page-out another if needed
+int
+safe_page_in(struct proc* p,void *vaddr){
+  if(numOfPagedIn == MAX_PSYC_PAGES){
+    pageOut(p,select_page_to_back(p));
+    pageIn(p,vaddr);
+
+  }
+}
 
 
 
