@@ -4,7 +4,7 @@
 #include "fs.h"
 
 #define PGSIZE 4096
-#define ARR_SIZE PGSIZE*16
+#define ARR_SIZE PGSIZE*18
 
 /*
 	Test used to check the swapping machanism in fork.

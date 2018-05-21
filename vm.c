@@ -236,6 +236,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
     if(myproc()){
       int pages_in_ram=numOfPagedIn(myproc());
       if(pages_in_ram == MAX_PSYC_PAGES){
+        cprintf("ram full\n");
         pageOut(myproc(),select_page_to_back(myproc()));
       }
     }
