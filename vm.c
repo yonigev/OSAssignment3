@@ -600,9 +600,6 @@ pageIn(struct proc *p, void* vaddr){
       return 0;
     clearPTE_FLAG(p,vaddr,PTE_PG);             //clear the PAGED OUT flag
     setPTE_FLAG(p,vaddr,PTE_P);                 //set the PRESENT flag
-    //cprintf("printing flags!!\n");
-    pte_t *e=walkpgdir(p->pgdir,vaddr,0);
-    //cprintf("entry is: %x\n",*e);
     if(!page_in_meta(p,vaddr))                      //remove meta data from the process meta-data struct 
       return 0;
     return 1;   
@@ -611,7 +608,6 @@ pageIn(struct proc *p, void* vaddr){
 //returns 1 if the page is PAGED OUT (not present AND marked as paged out.)
 int
 isPagedOut(struct proc *p,  void* vaddr){
-  pte_t *e=walkpgdir(p->pgdir,vaddr, 0);
   if( !isFlagged(p,vaddr,PTE_P)  &&  isFlagged(p,vaddr,PTE_PG))
     return 1;
   return 0;
