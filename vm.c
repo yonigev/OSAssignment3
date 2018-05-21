@@ -900,16 +900,6 @@ age_process_pages(struct proc* proc){
 
 }
 
-//returns 1 if it's a user page (and can be swapped out).
-//0 otherwise
-int
-is_user_page(struct proc* p, void* vaddr){
-  // if((uint)vaddr>=PGSIZE*3)
-  //    return 1;
-  // return 0;
-
-  return 1;
-}
 
 // Returns a Virtual Address of a page to be replaced in the RAM, according to replacement algorithms.
 void*
@@ -922,14 +912,14 @@ select_page_to_back(struct proc *p){
     struct page * pa  =   (&(p->paging_meta))->pages;
     //first loop  - get the first page that exists and is NOT in the back, and is legal to swap out
     for(i = 0; i<MAX_TOTAL_PAGES; i++){
-      if(pa[i].exists && !pa[i].in_back && is_user_page(p,pa[i].vaddr)){
+      if(pa[i].exists && !pa[i].in_back){
           min_page=pa[i];
          // cprintf("SELECT PAGE : NFUA : FIRST NORMAL : FOUND : %x\n",min_page.vaddr);
       }
     }
     //Possible bug?
     for(; i<MAX_TOTAL_PAGES; i++){
-      if(!pa[i].exists || pa[i].in_back || !is_user_page(p,pa[i].vaddr))  //if does not exist, already in back OR not legal to swap out, skip.
+      if(!pa[i].exists || pa[i].in_back)  //if does not exist, already in back OR not legal to swap out, skip.
         continue;
       if(pa[i].age < min_page.age){
         min_page=pa[i];
@@ -947,14 +937,14 @@ select_page_to_back(struct proc *p){
     struct page * pa  =   (&(p->paging_meta))->pages;
     //first loop  - get the first page that exists and is NOT in the back, and legal to swap out
     for(i = 0; i<MAX_TOTAL_PAGES; i++){
-      if(pa[i].exists && !pa[i].in_back && is_user_page(p,pa[i].vaddr)){
+      if(pa[i].exists && !pa[i].in_back){
           min_count=count_set_bits(pa[i].age2);
           min_page=pa[i];
       }
     }
     //Possible bug?
     for(; i<MAX_TOTAL_PAGES; i++){
-      if(!pa[i].exists || pa[i].in_back || pa[i].vaddr  ==  min_page.vaddr || !is_user_page(p,pa[i].vaddr))  //as above
+      if(!pa[i].exists || pa[i].in_back || pa[i].vaddr  ==  min_page.vaddr)  //as above
         continue;
       int curr_count  = count_set_bits(pa[i].age2);
       if(curr_count < min_count){
@@ -976,7 +966,7 @@ select_page_to_back(struct proc *p){
     while(1){
       current = dequeue(p);
       pte_t *e= walkpgdir(p->pgdir,current.vaddr,0);  //get the PTE
-      if((*e & PTE_A) > 0 || !is_user_page(p,current.vaddr)){              // if accessed OR illegal to swap out
+      if((*e & PTE_A) > 0){              // if accessed OR illegal to swap out
           *e &=~PTE_A;                   // clear Accessed bit
           enqueue(p,current);            // give second chance
       }
@@ -991,10 +981,7 @@ select_page_to_back(struct proc *p){
       struct page toReturn;
       toReturn  = dequeue(p);
       //if it's legal to swap out, do it. otherwise, keep looping.
-      if(is_user_page(p,toReturn.vaddr))   
-        return toReturn.vaddr;
-      else
-        enqueue(p,toReturn);
+      return toReturn.vaddr;
     }
     #endif
   #ifdef NONE
