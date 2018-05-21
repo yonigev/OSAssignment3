@@ -22,7 +22,7 @@ static void wakeup1(void *chan);
 
 int is_user_proc(struct proc* p){
   if(p != 0){
-    if(p->pid >2)
+    if(p->pid >=2)
       return 1;
   }
   return 0;
@@ -228,7 +228,7 @@ fork(void)
     }
   }
   //copy from parent - if he's a user process
-  if(is_user_proc(np)){ //was curproc before! 
+  if(is_user_proc(curproc)){ //was curproc before! 
   //initialize swap file meta
     cprintf("copying swapfile from parent\n");
     copy_parent_swapfile(np,curproc);
