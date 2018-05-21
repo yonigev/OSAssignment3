@@ -822,21 +822,24 @@ age_process_pages(struct proc* proc){
   //for every page
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(!pa_arr[i].exists  || pa_arr[i].in_back)
-    continue;
+      continue;
     pte_t *e= walkpgdir(proc->pgdir,pa_arr[i].vaddr,0);
+    cprintf("B - entry      %x\n",pa_arr[i].age);
     if((*e & PTE_A) > 0){            // if accessed
+      
       *e &=~PTE_A;                   // clear Accessed bit
-      pa_arr[i].age=pa_arr[i].age / 2;       //shift right
+      pa_arr[i].age=pa_arr[i].age >> 1;       //shift right
       pa_arr[i].age=pa_arr[i].age | MSB;     //set MSB 
       //for LAPA
-      pa_arr[i].age2=pa_arr[i].age2 / 2;     //shift right
+      pa_arr[i].age2=pa_arr[i].age2 >> 1;     //shift right
       pa_arr[i].age2=pa_arr[i].age2 | MSB;   //set MSB 
       
     }
     else{                             //if not visited 
-      pa_arr[i].age=pa_arr[i].age / 2;       //just shift right
-      pa_arr[i].age2=pa_arr[i].age2 / 2;       //just shift right
+      pa_arr[i].age=pa_arr[i].age >> 1;       //just shift right
+      pa_arr[i].age2=pa_arr[i].age2 >> 1;       //just shift right
     }
+    cprintf("A - entry      %x\n",pa_arr[i].age);
   }
 
 #ifdef AQ
