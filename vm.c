@@ -303,6 +303,7 @@ free_from_queue(struct proc *p,void* vaddr){
     else
       pq->pages[i] = pq->pages[i + 1];  //shift    
   }
+  pq->lastIndex--;
 }
 
 
@@ -469,21 +470,21 @@ int enqueue(struct proc *pr,struct page toAdd) {
     struct p_meta *meta;
     meta=&pr->paging_meta;
     
-    int k;
-    cprintf("Before enq - last index: %d\n",meta->pq.lastIndex);
-      for(k=0; k<=meta->pq.lastIndex; k++){
-        cprintf("<%d,%x>\n", meta->pq.pages[k].exists,meta->pq.pages[k].vaddr);
-      }
+    // int k;
+    // cprintf("Before enq - last index: %d\n",meta->pq.lastIndex);
+    //   for(k=0; k<=meta->pq.lastIndex; k++){
+    //     cprintf("<%d,%x>\n", meta->pq.pages[k].exists,meta->pq.pages[k].vaddr);
+    //   }
     if (meta->pq.lastIndex == MAX_TOTAL_PAGES) {
         panic("enqueue");
     } else {
         meta->pq.pages[meta->pq.lastIndex] = toAdd;
         meta->pq.lastIndex++;
 
-      cprintf("After enq- last index: %d\n",meta->pq.lastIndex);
-      for(k=0; k<=meta->pq.lastIndex; k++){
-        cprintf("<%d,%x>\n", meta->pq.pages[k].exists,meta->pq.pages[k].vaddr);
-      }
+      // cprintf("After enq- last index: %d\n",meta->pq.lastIndex);
+      // for(k=0; k<=meta->pq.lastIndex; k++){
+      //   cprintf("<%d,%x>\n", meta->pq.pages[k].exists,meta->pq.pages[k].vaddr);
+      // }
 
 
         return 1;
@@ -496,27 +497,25 @@ struct page dequeue(struct proc *pr) {
   
     struct p_meta *meta=&(pr->paging_meta);
     struct page toReturn = meta->pq.pages[0];
-    struct page_queue *pq=&(meta->pq);
-    struct page *pages=pq->pages;
 
-    pages[0].exists = 0;
-    pages[0].vaddr  = 0;
-    pages[0].age    = 0;
-    pages[0].age2   = 0;
-    pages[0].in_back= 0;
+    meta->pq.pages[0].exists = 0;
+    meta->pq.pages[0].vaddr  = 0;
+    meta->pq.pages[0].age    = 0;
+    meta->pq.pages[0].age2   = 0;
+    meta->pq.pages[0].in_back= 0;
     int i;
     for (i = 0; i < MAX_TOTAL_PAGES; i++) {    //CHANGED to pq.lastIndex from MAX_TOTAL_PAGES
         if (i == MAX_TOTAL_PAGES - 1){
-            pages[i].exists = 0;
-            pages[i].vaddr  = 0;
-            pages[i].age    = 0;
-            pages[i].age2   = 0;
-            pages[i].in_back= 0;
+            meta->pq.pages[i].exists = 0;
+            meta->pq.pages[i].vaddr  = 0;
+            meta->pq.pages[i].age    = 0;
+            meta->pq.pages[i].age2   = 0;
+            meta->pq.pages[i].in_back= 0;
         }
         else
-            pages[i] = pages[i + 1];
+            meta->pq.pages[i] = meta->pq.pages[i + 1];
     }
-    pq->lastIndex=pq->lastIndex-1;
+    meta->pq.lastIndex--;
     return toReturn;
 }
 
