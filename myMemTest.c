@@ -20,6 +20,7 @@ void forkTest(){
   //child
   printf(1,"Now forking - press Control + P Quickly\n");
   sleep(20);
+  sleep(20);
   if((pid=fork()) == 0){  
     printf(1,"Child  - press Control+ P Quickly\n");
     sleep(300);
@@ -28,7 +29,8 @@ void forkTest(){
     int j;
     printf(1,"Child- printing character from each page");
     for(j=0; j<ARR_SIZE; j+=PGSIZE){
-      printf(1,"%c",arr[j]);
+      //printf(1,"%c",arr[j]);
+      arr[j]='9'; //change the whole array for the child 
     }
     printf(1,"\n");
     exit();
@@ -37,7 +39,6 @@ void forkTest(){
     sleep(30);
     
     wait();
-
     printf(1,"Parent - ");
     for(i=0; i<ARR_SIZE; i+=PGSIZE){
       printf(1,"%c",arr[i]);
