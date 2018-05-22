@@ -18,19 +18,20 @@ void forkTest(){
     arr[i]='1';
   }
   //child
-  printf(1,"Now forking - press Control + P Quickly\n");
+  printf(1,"-------------------------\nNow forking - press Control + P Quickly\n-------------------------\n");
   sleep(20);
   sleep(20);
   if((pid=fork()) == 0){  
-    printf(1,"Child  - press Control+ P Quickly\n");
+    printf(1,"-------------------------\nChild  - press Control+ P Quickly\n-------------------------\n");
     sleep(300);
     sleep(20);
     sleep(20);
     int j;
-    printf(1,"Child- printing character from each page");
+    printf(1,"\nChild- printing character from each page\n");
     for(j=0; j<ARR_SIZE; j++){
-      //printf(1,"%c",arr[j]);
       arr[j]='9'; //change the whole array for the child 
+      if(j % 1000 ==0)
+        printf(1,"%c",arr[j]);
     }
     printf(1,"\n");
     exit();
