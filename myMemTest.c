@@ -4,7 +4,7 @@
 #include "fs.h"
 #define PGSIZE 4096
 #define ARR_SIZE_FORK PGSIZE*17
-#define ARR_SIZE_TEST PGSIZE*17
+#define ARR_SIZE_TEST PGSIZE*20
 
 //tests forking
 //Right after forking, 
@@ -69,8 +69,11 @@ void forkPageTest(){
 //Does a linear iteration over a 17 pages sized array.
 //NFUA- allocation  -  when allocating the last (17th) page, the 1st page should be swapped out into the SwapFile
 //      iteration   -  the 1st page is in the swap file. to reach it, page #2 would be swapped out,then #1 swapped in.
-//                                                                    then to reach page#2, page #1 would be again swapped out and #1 swapped in.
-//                                                                    this continues the same way, or swapping ends here - depends on aging (ticks)
+//                           sleep(0) ensures a clock tick between iterations, so each page  X would be swapped    out in favor of page X-1
+//                            finished with about 9 page faults and 10 total paged out. (or 8,9)
+//LAPA-  pretty much same result.
+//
+//                                                               
 void linear_test(){
 	char * arr;
 	int i;
