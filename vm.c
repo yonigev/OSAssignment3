@@ -320,7 +320,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
           int i;
           for(i=0; i<MAX_TOTAL_PAGES; i++){
             if(pages[i].exists && pages[i].vaddr ==(void *) a){
-              //cprintf(" pid:  %d --removing-- %x\n",myproc()->pid,a);
+              cprintf("deallocuvm pid:  %d --removing-- %x\n",myproc()->pid,a);
               pages[i].age=0;
               pages[i].age2=0xffffffff;
               pages[i].in_back=0;
