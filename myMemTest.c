@@ -103,7 +103,7 @@ void linear_test(){
 //this test alternates between pages. it accesses first, then last. then second from beginning, then second from the end.
 //this goes on for 100 iterations.
 //Results - <page faults , total paged out>
-//NFUA- 34,40
+//NFUA- 38, 44
 //LAPA- 40,46
 //SCFIFO-100,106
 //AQ-   100,106
