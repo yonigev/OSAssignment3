@@ -18,26 +18,24 @@ void forkTest(){
     arr[i]='M';
   }
   printf(1,"\n");
-  //printf(1,"Parent    -   arr[10] == %x  \n",&arr[10] );
-  //printf(1,"-----------------------------------\nNow forking - press Control + P Quickly\n-----------------------------------\n");
+  printf(1,"Parent    -   arr[10] == %x  \n",&arr[10] );
+  printf(1,"-----------------------------------\nNow forking - press Control + P Quickly\n-----------------------------------\n");
   sleep(20);
   sleep(20);
   printf(1,"FORK\n");
   if((pid=fork()) == 0){  
-    //printf(1,"Child    -   arr[10] == %x  \n",&arr[10] );
-    //printf(1,"-----------------------------------\nChild  - press Control+ P Quickly\n-----------------------------------\n");
+    printf(1,"Child    -   arr[10] == %x  \n",&arr[10] );
+    printf(1,"-----------------------------------\nChild  - press Control+ P Quickly\n-----------------------------------\n");
     sleep(300);
     sleep(20);
     sleep(20);
     int j;
-    printf(1,"Child started changing array\n");
     for(j=0; j<ARR_SIZE; j++){
       arr[j]='C'; //change the whole array for the child       
     }
-    printf(1,"Child finished changing array. proof: \n");
-
+    printf(1,"Child -\n-------\n");
     for(j=0; j<ARR_SIZE; j++){
-      if(j % 2 == 0)
+      if(j % 1000 == 0)
         printf(1,"%c",arr[j]);
     }
     printf(1,"\n");
@@ -45,12 +43,17 @@ void forkTest(){
   }
   else{
     //parent changing all chars to P
-    printf(1,"Parent started changing array: \n\n");
     for(i=0; i<ARR_SIZE; i++){
-      arr[i]='P'; //change the whole array for the child       
+      arr[i]='P'; //change the whole array for the Parent       
       arr[i]='p';
     }
-    printf(1,"Parent finished changing array: \n\n");
+    printf(1,"Parent -\n-------\n");
+    for(i=0; i<ARR_SIZE; i++){
+      if(i % 1000 == 0)
+        printf(1,"%c",arr[i]);
+    }
+
+
     sleep(30);
     wait();
     printf(1,"parent exiting.\n");

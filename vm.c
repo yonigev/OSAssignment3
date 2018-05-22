@@ -386,33 +386,28 @@ copyuvm(pde_t *pgdir, uint sz)
       panic("copyuvm: pte should exist");
     if(!(*pte & PTE_P) && !(*pte & PTE_PG))
       panic("copyuvm: page not present");
-    //if paged out
+    //if paged out , turn off the PTE_P flag , AFTER mappages (which turns it on always).
     if((*pte & PTE_PG) > 0){ 
       paged_out = 1;
       cprintf(" %x  -   is paged out\n",(void *)i);
       pte = walkpgdir(pgdir, (void *) i, 0);
       *pte=PTE_PG | PTE_U | PTE_W;    //mark as writable, for user and Page out! (NOT present.)
-      //continue;                       //do not allocate a new entry for this
     }
     else  
       paged_out = 0;
     pa = PTE_ADDR(*pte);
     flags = PTE_FLAGS(*pte);
-    if(paged_out){
-      cprintf("flags is: %x\n",flags);
-    }
     if((mem = kalloc()) == 0)
       goto bad;
     memmove(mem, (char*)P2V(pa), PGSIZE);
     if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) < 0)
       goto bad;
+    //change the PTE_P flag again.
     if(paged_out){
       pte = walkpgdir(d, (void *) i, 0);
       *pte &=~PTE_P;  //mark not present!
 
     }
-
-
   }
   return d;
 
