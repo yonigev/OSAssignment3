@@ -1,4 +1,3 @@
-#include "proc.c"
 #include "types.h"
 #include "stat.h"
 #include "user.h"
@@ -22,13 +21,14 @@ void forkTest(){
       arr[i]='A';
   }
   //child
-  printf(1,"Now forking - proc states: \n");
-  procdump();
+  printf(1,"Now forking - press Control + P Quickly\n");
   sleep(20);
   if((pid=fork()) == 0){  
-    printf(1,"Child  - proc states: \n");
-    procdump();
-    sleep(100);
+    printf(1,"Child  - press Control+ P Quickly\n");
+    sleep(300);
+    sleep(20);
+    sleep(20);
+    
     
     
     
