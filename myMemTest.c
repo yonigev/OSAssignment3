@@ -22,7 +22,7 @@ void forkTest(){
       arr[i]='A';
   }
   //child
-  print(1,"Now forking - press Control + P \n");
+  printf(1,"Now forking - press Control + P \n");
   sleep(10);
   if((pid=fork()) == 0){  
     printf(1,"Child  - press Control+ P\n");
