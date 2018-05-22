@@ -36,7 +36,7 @@ void forkTest(){
     printf(1,"Child finished changing array. proof: \n");
 
     for(j=0; j<ARR_SIZE; j++){
-      if(j % 100 == 0)
+      if(j % 2 == 0)
         printf(1,"%c",arr[j]);
     }
     printf(1,"\n");
