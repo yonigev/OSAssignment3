@@ -719,7 +719,9 @@ copy_parent_swapfile(struct proc *child, struct proc *parent){
 
     cprintf("copy_parent_swapfile - checking pte flags\n");
     pte_t *e=walkpgdir(child->pgdir,(void*)4000,0);
-    cprintf("flags for address 4000: %x\n",PTE_FLAGS(*e));
+    cprintf("child flags for address 4000: %x\n",PTE_FLAGS(*e));
+    e=walkpgdir(parent->pgdir,(void*)4000,0);
+    cprintf("parent flags for address 4000: %x\n",PTE_FLAGS(*e));
     int chunk=  PGSIZE/2;   //limit ? 
     int bytes_read;
     char buff [PGSIZE/2]="";
