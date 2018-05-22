@@ -389,6 +389,7 @@ copyuvm(pde_t *pgdir, uint sz)
       panic("copyuvm: page not present");
     //if paged out
     if(*pte & PTE_PG){ 
+      pte = walkpgdir(pgdir, (void *) i, 0);
       *pte=PTE_PG | PTE_U | PTE_W;    //mark as writable, for user and Page out! (NOT present.)
       continue;                       //do not allocate a new entry for this
     }

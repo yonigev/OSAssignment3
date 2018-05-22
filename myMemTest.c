@@ -22,6 +22,7 @@ void forkTest(){
   //printf(1,"-----------------------------------\nNow forking - press Control + P Quickly\n-----------------------------------\n");
   sleep(20);
   sleep(20);
+  printf(1,"FORK\n");
   if((pid=fork()) == 0){  
     //printf(1,"Child    -   arr[10] == %x  \n",&arr[10] );
     //printf(1,"-----------------------------------\nChild  - press Control+ P Quickly\n-----------------------------------\n");
