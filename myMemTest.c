@@ -29,11 +29,16 @@ void forkTest(){
     sleep(20);
     sleep(20);
     int j;
-    printf(1,"Child started changing array");
+    printf(1,"Child started changing array\n");
     for(j=0; j<ARR_SIZE; j++){
       arr[j]='C'; //change the whole array for the child       
     }
-    printf(1,"Child finished changing array");
+    printf(1,"Child finished changing array. proof: \n");
+
+    for(j=0; j<ARR_SIZE; j++){
+      if(j % 100 == 0)
+        printf(1,"%c",arr[j]);
+    }
     printf(1,"\n");
     exit();
   }
