@@ -25,7 +25,7 @@ void forkTest(){
   print(1,"Now forking - press Control + P \n");
   sleep(10);
   if((pid=fork()) == 0){  
-    print(1,"Child  - press Control+ P\n");
+    printf(1,"Child  - press Control+ P\n");
     sleep(10);
     int j;
     print(1,"Child-");
