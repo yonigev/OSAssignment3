@@ -284,7 +284,7 @@ exit(void)
   #ifndef NONE
   #if VERBOSE_PRINT == TRUE
   cprintf("verbose?");
-  procdump();
+  //procdump();
   #endif
   #endif
   acquire(&ptable.lock);
