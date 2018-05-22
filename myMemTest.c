@@ -100,7 +100,13 @@ void linear_test(){
 	free(arr);
 }
 
-
+//this test alternates between pages. it accesses first, then last. then second from beginning, then second from the end.
+//this goes on for 100 iterations.
+//Results - <page faults , total paged out>
+//NFUA- 36,42
+//LAPA- 94,100
+//SCFIFO-100,106
+//AQ-   100,106
 void alter_test(){
 	char * arr;
 	int j = 0;
@@ -127,8 +133,8 @@ void alter_test(){
       j=0;
     }
     if(times % 10 == 0)
-      printf(1,"iteration: %d\n",times);
-  
+      printf(1,"\n---------\niteration: %d\n---------\n",times);
+    from_ending=from_ending^from_ending;
   }
 
   printf(1,"\n\n");
