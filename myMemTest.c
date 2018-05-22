@@ -112,7 +112,7 @@ void alter_test(){
   printf(1,"iteration\n");
   int  from_ending=0;
   //random but not really
-  while(times < ARR_SIZE_ALTER){
+  while(times < 100){
     arr[i]='c';
     j++;
     times++;
@@ -126,7 +126,7 @@ void alter_test(){
       i=0;
       j=0;
     }
-    if(times % 1000 == 0)
+    if(times % 10 == 0)
       printf(1,"iteration: %d\n",times);
   
   }
