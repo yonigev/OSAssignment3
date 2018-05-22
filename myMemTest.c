@@ -26,7 +26,7 @@ void forkTest(){
   sleep(20);
   if((pid=fork()) == 0){  
     printf(1,"Child  - press Control+ P Quickly\n");
-    sleep(20);
+    sleep(100);
     int j;
     printf(1,"Child-");
     for(j=0; j<20; j++){
