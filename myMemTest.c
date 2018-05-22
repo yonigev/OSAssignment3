@@ -3,7 +3,7 @@
 #include "user.h"
 #include "fs.h"
 #define PGSIZE 4096
-#define ARR_SIZE PGSIZE*20
+#define ARR_SIZE PGSIZE*25
 
 /*
 	Test used to check the swapping machanism in fork.
@@ -14,11 +14,8 @@ void forkTest(){
   char * arr;
   int pid;
   arr = malloc (ARR_SIZE); //allocates 20 pages,  so 16 in RAM and 4 in the swapFile
-  for(i=PGSIZE*14; i<ARR_SIZE; i++){
-    if(i >= 16 * PGSIZE)      //last 4 pages will contain 'B's.
-      arr[i]='B';
-    else
-      arr[i]='A';
+  for(i=0; i<ARR_SIZE; i+=PGSIZE){
+    arr[i]='1'+i;
   }
   //child
   printf(1,"Now forking - press Control + P Quickly\n");
@@ -30,9 +27,8 @@ void forkTest(){
     sleep(20);
     int j;
     printf(1,"Child- printing character from each page");
-    for(j=0; j<19; j++){
-      printf(1,"%c",arr[j*PGSIZE+100]);  //print some characters of the B pages
-
+    for(j=0; j<ARR_SIZE; j+=PGSIZE){
+      printf(1,"%c",arr[j]);
     }
     printf(1,"\n");
     exit();
@@ -43,8 +39,8 @@ void forkTest(){
     wait();
 
     printf(1,"Parent - ");
-    for(i=0; i<20; i++){
-      printf(1,"%c",arr[i+PGSIZE*16]);  //print some characters of the B pages
+    for(i=0; i<ARR_SIZE; i+=PGSIZE){
+      printf(1,"%c",arr[i]);
     }
   }
 
