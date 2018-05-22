@@ -4,7 +4,7 @@
 #include "fs.h"
 #define PGSIZE 4096
 #define ARR_SIZE_FORK PGSIZE*17
-#define ARR_SIZE_TEST PGSIZE*20
+#define ARR_SIZE_TEST PGSIZE*17
 
 //tests forking
 //Right after forking, 
@@ -72,6 +72,9 @@ void forkPageTest(){
 //                           sleep(0) ensures a clock tick between iterations, so each page  X would be swapped    out in favor of page X-1
 //                            finished with about 9 page faults and 10 total paged out. (or 8,9)
 //LAPA-  pretty much same result.
+//
+//SCFIFO- 
+//
 //
 //                                                               
 void linear_test(){
