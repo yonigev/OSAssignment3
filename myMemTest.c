@@ -1,4 +1,4 @@
-#include "proc.h"
+#include "proc.c"
 #include "types.h"
 #include "stat.h"
 #include "user.h"
