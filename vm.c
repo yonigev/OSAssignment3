@@ -394,6 +394,8 @@ copyuvm(pde_t *pgdir, uint sz)
       *pte=PTE_PG | PTE_U | PTE_W;    //mark as writable, for user and Page out! (NOT present.)
       //continue;                       //do not allocate a new entry for this
     }
+    else  
+      paged_out = 0;
     pa = PTE_ADDR(*pte);
     flags = PTE_FLAGS(*pte);
     if(paged_out){
