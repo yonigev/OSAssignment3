@@ -37,12 +37,14 @@ void forkTest(){
     exit();
   }
   else{
-    sleep(10);
+    sleep(30);
+    
+    wait();
+
     printf(1,"Parent - ");
     for(i=0; i<20; i++){
       printf(1,"%c",arr[i+PGSIZE*16]);  //print some characters of the B pages
     }
-    wait();
   }
 
 }
