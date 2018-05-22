@@ -15,14 +15,14 @@ void forkTest(){
   int pid;
   arr = malloc (ARR_SIZE); //allocates 20 pages,  so 16 in RAM and 4 in the swapFile
   for(i=0; i<ARR_SIZE; i+=PGSIZE){
-    arr[i]='1';
+    arr[i]='7';
   }
   //child
-  printf(1,"-------------------------\nNow forking - press Control + P Quickly\n-------------------------\n");
+  printf(1,"-----------------------------------\nNow forking - press Control + P Quickly\n-----------------------------------\n");
   sleep(20);
   sleep(20);
   if((pid=fork()) == 0){  
-    printf(1,"-------------------------\nChild  - press Control+ P Quickly\n-------------------------\n");
+    printf(1,"-----------------------------------\nChild  - press Control+ P Quickly\n-----------------------------------\n");
     sleep(300);
     sleep(20);
     sleep(20);
@@ -31,7 +31,7 @@ void forkTest(){
     for(j=0; j<ARR_SIZE; j++){
       arr[j]='9'; //change the whole array for the child 
       if(j % 1000 ==0)
-        printf(1,"%c",arr[j]);
+        printf(1,"%x  %c",&arr[j],arr[j]);
     }
     printf(1,"\n");
     exit();

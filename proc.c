@@ -232,8 +232,8 @@ fork(void)
   //initialize swap file meta
     copy_parent_swapfile(np,curproc);
   }
-  if(is_user_proc(np))
-    np->paging_meta=curproc->paging_meta;
+  // if(is_user_proc(np))
+  //   np->paging_meta=curproc->paging_meta;
   np->page_faults = 0;    //reset number of page faults to 0;
   np->num_pageouts = 0;
   #endif

@@ -712,6 +712,7 @@ copy_parent_swapfile(struct proc *child, struct proc *parent){
     int bytes_read;
     char buff [PGSIZE/2]="";
     int offset=0;
+    cprintf("copying swapfile from %d to %d     (not really copying)\n",parent->pid,child->pid);
     while((bytes_read=readFromSwapFile(parent,buff,offset,chunk))>0){//read chunk from parent
       //writeToSwapFile(child,buff,offset,chunk);                      //write chunk to child
       offset+=bytes_read;                                            //next offset
