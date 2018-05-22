@@ -43,7 +43,7 @@ void forkTest(){
   }
   else{
     sleep(30);
-    wait();
+    //wait();
     printf(1,"\nParent - \n");
     for(i=0; i<ARR_SIZE; i+=PGSIZE){
       printf(1,"%c",arr[i]);
