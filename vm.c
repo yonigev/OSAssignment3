@@ -654,12 +654,10 @@ pageOut(struct proc *p,void* vaddr){
 
     to_free=(char*)P2V(PTE_ADDR(*pte));   
     kfree(to_free);                                   //free the PHYSICAL memory of the page
-    cprintf("pageOut before clear-  flags - %x\n",PTE_FLAGS(*pte));
     clearPTE_FLAG(p,vaddr,PTE_P);                     //clear the Present flag from the page table entry
     setPTE_FLAG(p,vaddr,PTE_PG);                      //set the PAGED-OUT flag
     
     pte=walkpgdir(p->pgdir,vaddr,0);
-    cprintf("now flags: %x\n",PTE_FLAGS(*pte));
     
     lcr3(V2P(p->pgdir));                              //refresh the Table Lookaside Buffer   
     p->num_pageouts++;         
@@ -712,6 +710,11 @@ safe_page_in(struct proc* p,void *vaddr){
 //copy only if parent is not the shell or init.
 int
 copy_parent_swapfile(struct proc *child, struct proc *parent){
+
+
+    cprintf("copy_parent_swapfile - checking pte flags\n");
+    pte_t *e=walkpgdir(child->pgdir,(void*)4000,0);
+    cprintf("flags for address 4000: %x\n",PTE_FLAGS(*e));
     int chunk=  PGSIZE/2;   //limit ? 
     int bytes_read;
     char buff [PGSIZE/2]="";
