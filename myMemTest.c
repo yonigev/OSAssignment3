@@ -30,7 +30,7 @@ void forkTest(){
     int j;
     printf(1,"Child-");
     for(j=0; j<20; j++){
-      printf(1,"%s",arr[j+PGSIZE*16]);  //print some characters of the B pages
+      printf(1,"%c",arr[j+PGSIZE*16]);  //print some characters of the B pages
 
     }
     exit();
