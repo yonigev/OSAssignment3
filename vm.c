@@ -409,7 +409,7 @@ copyuvm(pde_t *pgdir, uint sz)
     if(paged_out){
       cprintf("checking correctness\n");
       pte_t *ee=walkpgdir(d,(void *)i,0);
-      cprintf("flags of paged out - in child: %x\n",PTE_FLAGS(*ee));
+      cprintf("flags of paged out in mappages: %x - in child: %x\n",flags,PTE_FLAGS(*ee));
     }
 
 
