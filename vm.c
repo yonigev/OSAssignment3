@@ -717,16 +717,16 @@ int
 copy_parent_swapfile(struct proc *child, struct proc *parent){
 
 
-    cprintf("copy_parent_swapfile - checking pte flags\n");
-    pte_t *e=walkpgdir(child->pgdir,(void*)4000,0);
-    cprintf("child flags for address 4000: %x\n",PTE_FLAGS(*e));
-    e=walkpgdir(parent->pgdir,(void*)4000,0);
-    cprintf("parent flags for address 4000: %x\n",PTE_FLAGS(*e));
+    //cprintf("copy_parent_swapfile - checking pte flags\n");
+    //pte_t *e=walkpgdir(child->pgdir,(void*)4000,0);
+    //cprintf("child flags for address 4000: %x\n",PTE_FLAGS(*e));
+   // e=walkpgdir(parent->pgdir,(void*)4000,0);
+   // cprintf("parent flags for address 4000: %x\n",PTE_FLAGS(*e));
     int chunk=  PGSIZE/2;   //limit ? 
     int bytes_read;
     char buff [PGSIZE/2]="";
     int offset=0;
-    cprintf("copying swapfile from %d to %d     (not really copying)\n",parent->pid,child->pid);
+    //cprintf("copying swapfile from %d to %d     (not really copying)\n",parent->pid,child->pid);
     while((bytes_read=readFromSwapFile(parent,buff,offset,chunk))>0){//read chunk from parent
       writeToSwapFile(child,buff,offset,chunk);                      //write chunk to child
       offset+=bytes_read;                                            //next offset
