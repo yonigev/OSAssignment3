@@ -320,7 +320,6 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
           int i;
           for(i=0; i<MAX_TOTAL_PAGES; i++){
             if(pages[i].exists && pages[i].vaddr ==(void *) a){
-              cprintf("deallocuvm pid:  %d --removing-- %x\n",myproc()->pid,a);
               pages[i].age=0;
               pages[i].age2=0xffffffff;
               pages[i].in_back=0;
@@ -379,7 +378,7 @@ copyuvm(pde_t *pgdir, uint sz)
   pte_t *pte;
   uint pa, i, flags;
   char *mem;
-
+  int paged_out = 0;
   if((d = setupkvm()) == 0)
     return 0;
   for(i = 0; i < sz; i += PGSIZE){
@@ -388,13 +387,18 @@ copyuvm(pde_t *pgdir, uint sz)
     if(!(*pte & PTE_P) && !(*pte & PTE_PG))
       panic("copyuvm: page not present");
     //if paged out
-    if(*pte & PTE_PG){ 
+    if((*pte & PTE_PG) > 0){ 
+      paged_out = 1;
+      cprintf(" %x  -   is paged out\n",(void *)i);
       pte = walkpgdir(pgdir, (void *) i, 0);
       *pte=PTE_PG | PTE_U | PTE_W;    //mark as writable, for user and Page out! (NOT present.)
-      continue;                       //do not allocate a new entry for this
+      //continue;                       //do not allocate a new entry for this
     }
     pa = PTE_ADDR(*pte);
     flags = PTE_FLAGS(*pte);
+    if(paged_out){
+      cprintf("flags is: %x\n",flags);
+    }
     if((mem = kalloc()) == 0)
       goto bad;
     memmove(mem, (char*)P2V(pa), PGSIZE);
