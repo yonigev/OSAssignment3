@@ -29,7 +29,9 @@ void forkTest(){
     sleep(20);
     int j;
     for(j=0; j<ARR_SIZE; j++){
-      arr[j]='C'; //change the whole array for the child       
+      arr[j]='C'; //change the whole array for the child   
+      if(j==ARR_SIZE-1)
+        arr[j]='x';    
     }
     printf(1,"Child -\n-------\n");
     for(j=0; j<ARR_SIZE; j++){
@@ -43,7 +45,8 @@ void forkTest(){
     //parent changing all chars to P
     for(i=0; i<ARR_SIZE; i++){
       arr[i]='P'; //change the whole array for the Parent       
-      arr[i]='p';
+      if(i==ARR_SIZE-1)
+        arr[j]='X';    
     }
     printf(1,"Parent -\n-------\n");
     for(i=0; i<ARR_SIZE; i++){
