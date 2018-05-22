@@ -72,7 +72,6 @@ void forkPageTest(){
 void linear_test(){
 	char * arr;
 	int i;
-	int randNum;
   printf(1,"allocation\n");
 	arr = sbrk(ARR_SIZE_TEST); //allocates 17 pages - 1 must be in the swapfile
 
@@ -80,7 +79,7 @@ void linear_test(){
   for(i=0; i<ARR_SIZE_TEST; i++){
     arr[i]='A';
     if(i % PGSIZE/2 == 0){  //print every 2048 digits
-      printf("%c",arr[i]);
+      printf(1,"%c",arr[i]);
     }
   }
 
