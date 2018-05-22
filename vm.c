@@ -818,14 +818,12 @@ add_new_page(struct proc *p, void* vaddr){
 //Aging
 void
 age_process_pages(struct proc* proc){
-  cprintf("AGING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
   struct page * pa_arr=proc->paging_meta.pages;
   int i;
   //for every page
   for(i=0; i<MAX_TOTAL_PAGES; i++){
     if(!pa_arr[i].exists  || pa_arr[i].in_back){
      if(pa_arr[i].vaddr == (void *)3000)
-        cprintf("\n\n\nshit ...in back: %d \n\n\n\n",pa_arr[i].in_back);
      
       continue;
 
@@ -833,7 +831,6 @@ age_process_pages(struct proc* proc){
     
     pte_t *e= walkpgdir(proc->pgdir,pa_arr[i].vaddr,0);
 
-    cprintf("\n\n\nshit 2...accessed: %d \n\n\n\n",PTE_FLAGS(*e));
     if((*e & PTE_A) > 0){                     // if accessed
       
       if(pa_arr[i].vaddr == (void *)3000)
