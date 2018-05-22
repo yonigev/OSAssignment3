@@ -2,6 +2,7 @@
 #include "stat.h"
 #include "user.h"
 #include "fs.h"
+
 #define PGSIZE 4096
 #define ARR_SIZE_FORK PGSIZE*17
 #define ARR_SIZE_TEST PGSIZE*17
@@ -69,13 +70,15 @@ void forkPageTest(){
 //Does a linear iteration over a 17 pages sized array.
 //NFUA- allocation  -  when allocating the last (17th) page, the 1st page should be swapped out into the SwapFile
 //      iteration   -  the 1st page is in the swap file. to reach it, page #2 would be swapped out,then #1 swapped in.
-//                           sleep(0) ensures a clock tick between iterations, so each page  X would be swapped    out in favor of page X-1
+//                           sleep(0) ensures a clock tick between iterations, so each page  X would be swapped    out in favor of page X-1, 
+//                            Until page 1 is "old" enough to be chosen.
 //                            finished with about 9 page faults and 10 total paged out. (or 8,9)
 //LAPA-  pretty much same result.
 //
-//SCFIFO- 
+//SCFIFO- worse in this case, for every time a page is "considered", if its not paged out, it goes to the back of the queue.
+//                                                  so ALWAYS page X would be swapped out for page X-1
 //
-//
+//AQ - Same a SCFIFO here, has no real advantage - when a page is accessed,i won't be needed again anyway (linearity) so if it's "preventing" from being //                                                                                                                 chosen, i doensn't matter
 //                                                               
 void linear_test(){
 	char * arr;
@@ -96,8 +99,30 @@ void linear_test(){
 }
 
 
+void alter_test(){
+	char * arr;
+	int times = 0;
+  int i = 0;
+  printf(1,"allocation\n");
+	arr = sbrk(ARR_SIZE_TEST); //allocates 17 pages - 1 must be in the swapfile
+
+  printf(1,"iteration\n");
+  
+  //random but not really
+  while(times < ARR_SIZE_TEST){
+    arr[i]='c';
+    times++;
+    i=PGSIZE* times+1000/7 % PGSIZE;
+  }
+
+  printf(1,"\n\n");
+	free(arr);
+}
+
+
 int main(int argc, char *argv[]){
-  linear_test();    
+  //linear_test();    
+  alter_test();
   //forkTest();			//for testing swapping machanism in fork.
   printf(1,"memtest done\n");
   exit();
