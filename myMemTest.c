@@ -1,8 +1,8 @@
+#include "proc.h"
 #include "types.h"
 #include "stat.h"
 #include "user.h"
 #include "fs.h"
-#include "proc.c::procdump"
 #define PGSIZE 4096
 #define ARR_SIZE PGSIZE*20
 
