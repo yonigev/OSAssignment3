@@ -112,7 +112,8 @@ void alter_test(){
   while(times < ARR_SIZE_TEST){
     arr[i]='c';
     times++;
-    i=PGSIZE* times+1000/7 % PGSIZE;
+    i=PGSIZE* times+100;
+    i=ARR_SIZE_TEST-i*times;
     i=i%ARR_SIZE_TEST;
   }
 
