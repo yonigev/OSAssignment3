@@ -28,14 +28,10 @@ void forkTest(){
     sleep(300);
     sleep(20);
     sleep(20);
-    
-    
-    
-    
     int j;
-    printf(1,"Child-");
-    for(j=0; j<20; j++){
-      printf(1,"%c",arr[j+PGSIZE*16]);  //print some characters of the B pages
+    printf(1,"Child- printing character from each page");
+    for(j=0; j<19; j++){
+      printf(1,"%c",arr[j*PGSIZE+100]);  //print some characters of the B pages
 
     }
     printf(1,"\n");
