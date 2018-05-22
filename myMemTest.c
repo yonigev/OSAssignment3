@@ -32,11 +32,11 @@ void forkTest(){
     printf(1,"\nChild- printing character from each page\n");
     for(j=0; j<ARR_SIZE; j++){
       arr[j]='9'; //change the whole array for the child 
-      if(j % 10 == 0){
-        printf(1,"<0x%x , %c>",&arr[j],arr[j]);
-        if(j%20 == 0)
-          printf(1,"\n");
-      }
+      // if(j % 10 == 0){
+      //   printf(1,"<0x%x , %c>",&arr[j],arr[j]);
+      //   if(j%20 == 0)
+      //     printf(1,"\n");
+      // }
       
     }
     printf(1,"\n");
@@ -44,11 +44,11 @@ void forkTest(){
   }
   else{
     sleep(30);
-    //wait();
-    // printf(1,"\nParent - \n");
-    // for(i=0; i<ARR_SIZE; i+=PGSIZE){
-    //   printf(1,"%c",arr[i]);
-    // }
+    wait();
+    printf(1,"\nParent - \n");
+    for(i=0; i<ARR_SIZE; i+=PGSIZE){
+      printf(1,"%c",arr[i]);
+    }
     printf(1,"parent exiting.\n");
     exit();
   }

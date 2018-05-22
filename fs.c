@@ -768,8 +768,8 @@ createSwapFile(struct proc *p) {
 //return as sys_write (-1 when error)
 int
 writeToSwapFile(struct proc *p, char *buffer, uint placeOnFile, uint size) {
-    p->swapFile->off = placeOnFile;
-    return filewrite(p->swapFile, buffer, size);
+    // p->swapFile->off = placeOnFile;
+    // return filewrite(p->swapFile, buffer, size);
 }
 
 //return as sys_read (-1 when error)
