@@ -28,7 +28,7 @@ void forkTest(){
     printf(1,"Child  - press Control+ P\n");
     sleep(10);
     int j;
-    print(1,"Child-");
+    printf(1,"Child-");
     for(j=0; j<20; j++){
       printf(1,"%s",arr[j+PGSIZE*16]);  //print some characters of the B pages
 
