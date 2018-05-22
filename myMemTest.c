@@ -36,7 +36,7 @@ void forkTest(){
       if(j % 1000 == 0)
         printf(1,"%c",arr[j]);
     }
-    printf(1,"\n");
+    printf(1,"\n\n");
     exit();
   }
   else{
@@ -50,6 +50,7 @@ void forkTest(){
       if(i % 1000 == 0)
         printf(1,"%c",arr[i]);
     }
+    printf(1,"\n\n");
     sleep(30);
     wait();
     printf(1,"parent exiting.\n");

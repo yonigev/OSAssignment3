@@ -389,7 +389,6 @@ copyuvm(pde_t *pgdir, uint sz)
     //if paged out , turn off the PTE_P flag , AFTER mappages (which turns it on always).
     if((*pte & PTE_PG) > 0){ 
       paged_out = 1;
-      cprintf(" %x  -   is paged out\n",(void *)i);
       pte = walkpgdir(pgdir, (void *) i, 0);
       *pte=PTE_PG | PTE_U | PTE_W;    //mark as writable, for user and Page out! (NOT present.)
     }
