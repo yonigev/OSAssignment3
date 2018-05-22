@@ -103,20 +103,30 @@ void linear_test(){
 
 void alter_test(){
 	char * arr;
-	int times = 0;
+	int j = 0;
   int i = 0;
+  int times= 0;
   printf(1,"allocation\n");
 	arr = sbrk(ARR_SIZE_ALTER); //allocates 17 pages - 1 must be in the swapfile
 
   printf(1,"iteration\n");
-  
+  int  from_ending=0;
   //random but not really
   while(times < ARR_SIZE_ALTER){
     arr[i]='c';
+    j++;
     times++;
-    i=PGSIZE* times+100;
-    i=ARR_SIZE_ALTER-i*times;
-    i=i%(ARR_SIZE_ALTER-2);
+    if(from_ending){
+      i=ARR_SIZE_ALTER-100-j*PGSIZE;
+    }
+    else{
+      i=PGSIZE*j+100;
+    }
+    if(i<0 || i>ARR_SIZE_ALTER-1){
+      i=0;
+      j=0;
+    }
+  
   }
 
   printf(1,"\n\n");
