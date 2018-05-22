@@ -72,7 +72,7 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
       return -1;
     if(*pte & PTE_P)
       panic("remap");
-    *pte = pa | perm;// | PTE_P;
+    *pte = pa | perm | PTE_P;
     if(a == last)
       break;
     a += PGSIZE;
@@ -407,9 +407,9 @@ copyuvm(pde_t *pgdir, uint sz)
     if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) < 0)
       goto bad;
     if(paged_out){
-      cprintf("checking correctness\n");
-      pte_t *ee=walkpgdir(d,(void *)i,0);
-      cprintf("flags of paged out in mappages: %x - in child: %x\n",flags,PTE_FLAGS(*ee));
+      pte = walkpgdir(d, (void *) i, 0);
+      *pte &=~PTE_P;  //mark not present!
+
     }
 
 
