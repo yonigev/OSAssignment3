@@ -827,7 +827,7 @@ age_process_pages(struct proc* proc){
     pte_t *e= walkpgdir(proc->pgdir,pa_arr[i].vaddr,0);
     if((*e & PTE_A) > 0){                     // if accessed
       
-      if(pa_arr[i].vaddr == 3000)
+      if(pa_arr[i].vaddr == (void *)3000)
         cprintf("\n\n\nwell ...\n\n\n\n");
       *e &=~PTE_A;                            // clear Accessed bit
       pa_arr[i].age=pa_arr[i].age >> 1;       //shift right
