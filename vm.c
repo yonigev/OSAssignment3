@@ -406,6 +406,13 @@ copyuvm(pde_t *pgdir, uint sz)
     memmove(mem, (char*)P2V(pa), PGSIZE);
     if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) < 0)
       goto bad;
+    if(paged_out){
+      cprintf("checking correctness\n");
+      pte_t *ee=walkpgdir(d,(void *)i,0);
+      cprintf("flags of paged out - in child: %x\n",PTE_FLAGS(*ee));
+    }
+
+
   }
   return d;
 
