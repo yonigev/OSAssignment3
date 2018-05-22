@@ -4,7 +4,7 @@
 #include "fs.h"
 
 #define PGSIZE 4096
-#define ARR_SIZE PGSIZE*17
+#define ARR_SIZE PGSIZE*20
 
 /*
 	Test used to check the swapping machanism in fork.
@@ -13,29 +13,34 @@
 void forkTest(){
   int i;
   char * arr;
-  arr = malloc (ARR_SIZE); //allocates 13 pages (sums to 16), in lifo, OS puts page #15 in file.
-  arr[0]='a';
-  for (i = 0; i < 50; i++) { 
-    arr[49100+i] = 'A'; //last six A's stored in page #16, the rest in #15
-    arr[45200+i] = 'B'; //all B's are stored in page #15.
+  int pid;
+  arr = malloc (ARR_SIZE); //allocates 20 pages,  so 16 in RAM and 4 in the swapFile
+  for(i=0; i<ARR_SIZE; i++){
+    if(i >= 16 * PGSIZE)      //last 4 pages will contain 'B's.
+      arr[i]='B';
+    else
+      arr[i]='A';
   }
-  arr[49100+i] = 0; //for null terminating string...
-  arr[45200+i] = 0;
-    if (fork() == 0){ //is son
-    for (i = 40; i < 50; i++) { 
-	    arr[49100+i] = 'C'; //changes last ten A's to C
-	    arr[45200+i] = 'D'; //changes last ten B's to D
-  	}
-    printf(1, "SON: %s\n",&arr[49100]); // should print AAAAA..CCC...
-    printf(1, "SON: %s\n",&arr[45200]); // should print BBBBB..DDD...
-  	printf(1,"\n");
-    free(arr);
+  //child
+  print(1,"Now forking - press Control + P \n");
+  sleep(10);
+  if((pid=fork()) == 0){  
+    print(1,"Child  - press Control+ P\n");
+    sleep(10);
+    int j;
+    print(1,"Child-");
+    for(j=0; j<20; j++){
+      printf(1,"%s",arr[j+PGSIZE*16]);  //print some characters of the B pages
+
+    }
     exit();
-  } else { //is parent
-    wait();
-    printf(1, "PARENT: %s\n",&arr[49100]); // should print AAAAA...
-    printf(1, "PARENT: %s\n",&arr[45200]); // should print BBBBB...
-    free(arr);
+  }
+  else{
+    sleep(5);
+    printf(1,"Parent - ");
+    for(i=0; i<20; i++){
+      printf(1,"%s",arr[i+PGSIZE*16]);  //print some characters of the B pages
+    }
   }
 
 }
@@ -67,7 +72,7 @@ void globalTest(){
 	int i;
 	int randNum;
 	arr = malloc(ARR_SIZE); //allocates 14 pages (sums to 17 - to allow more then one swapping in scfifo)
-    
+  
 	for (i = 0; i < TEST_POOL; i++) {
 		randNum = getRandNum();	//generates a pseudo random number between 0 and ARR_SIZE
 		while (PGSIZE*10-8 < randNum && randNum < PGSIZE*10+PGSIZE/2-8)
@@ -81,9 +86,9 @@ void globalTest(){
 
 
 int main(int argc, char *argv[]){
-  globalTest();			//for testing each policy efficiency
+  //globalTest();			//for testing each policy efficiency
     
-    forkTest();			//for testing swapping machanism in fork.
-  // printf(1,"memtest done\n");
+  forkTest();			//for testing swapping machanism in fork.
+  printf(1,"memtest done\n");
   exit();
 }
