@@ -31,10 +31,12 @@ void forkTest(){
     printf(1,"\nChild- printing character from each page\n");
     for(j=0; j<ARR_SIZE; j++){
       arr[j]='9'; //change the whole array for the child 
-      if(j % 10 ==0)
+      if(j % 10 == 0){
         printf(1,"<0x%x , %c>",&arr[j],arr[j]);
-        if(j%4 == 0)
+        if(j%20 == 0)
           printf(1,"\n");
+      }
+      
     }
     printf(1,"\n");
     exit();
