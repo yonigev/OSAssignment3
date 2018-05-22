@@ -13,9 +13,9 @@ void forkTest(){
   int i;
   char * arr;
   int pid;
-  arr = sbrk (ARR_SIZE); //allocates 20 pages,  so 16 in RAM and 4 in the swapFile
+  arr = sbrk(ARR_SIZE); //allocates 20 pages,  so 16 in RAM and 4 in the swapFile
   for(i=0; i<ARR_SIZE; i++)    {
-    arr[i]='7';
+    arr[i]='M';
   }
   printf(1,"\n");
   printf(1,"Parent    -   arr[10] == %x  \n",&arr[10] );
@@ -31,24 +31,18 @@ void forkTest(){
     int j;
     printf(1,"\nChild- printing character from each page\n");
     for(j=0; j<ARR_SIZE; j++){
-      arr[j]='9'; //change the whole array for the child 
-      // if(j % 10 == 0){
-      //   printf(1,"<0x%x , %c>",&arr[j],arr[j]);
-      //   if(j%20 == 0)
-      //     printf(1,"\n");
-      // }
-      
+      arr[j]='C'; //change the whole array for the child       
     }
     printf(1,"\n");
     exit();
   }
   else{
+    //parent changing all chars to P
+    for(i=0; i<ARR_SIZE; i++){
+      arr[i]='P'; //change the whole array for the child       
+    }
     sleep(30);
     wait();
-    printf(1,"\nParent - \n");
-    for(i=0; i<ARR_SIZE; i+=PGSIZE){
-      printf(1,"%c",arr[i]);
-    }
     printf(1,"parent exiting.\n");
     exit();
   }

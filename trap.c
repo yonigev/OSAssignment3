@@ -82,6 +82,8 @@ trap(struct trapframe *tf)
   //page fault
   #ifndef NONE
   case T_PGFLT:
+    if(myproc())
+      cprintf("pid: %d got page fault for: %x\n",myproc()->pid,rcr2());
     //added task 3
     if(myproc()){
       myproc()->page_faults++;
@@ -92,9 +94,6 @@ trap(struct trapframe *tf)
       break;
       }
   #endif
-  
-
-
   //PAGEBREAK: 13
   default:
     if(myproc() == 0 || (tf->cs&3) == 0){
