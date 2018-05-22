@@ -281,12 +281,12 @@ exit(void)
   iput(curproc->cwd);
   end_op();
   curproc->cwd = 0;
-  #ifndef NONE
+  //#ifndef NONE
   #if VERBOSE_PRINT == TRUE
   cprintf("verbose?");
   //procdump();
   #endif
-  #endif
+  //#endif
   acquire(&ptable.lock);
 
   // Parent might be sleeping in wait().
