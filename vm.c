@@ -793,6 +793,7 @@ count_set_bits(uint number){
 // Adds a TOTALLY new page to the process's list.
 int
 add_new_page(struct proc *p, void* vaddr){
+  cprintf("proc: %d adding page: %x\n",p->pid,vaddr);
   struct p_meta *meta = &p->paging_meta;
   struct page *pages= meta->pages;
 
