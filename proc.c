@@ -267,6 +267,7 @@ exit(void)
      if(removeSwapFile(curproc)!=0)
       panic("remove_swap_file");
       reset_paging_meta(curproc);
+
   }
   #endif
 
@@ -286,7 +287,7 @@ exit(void)
   #if  TRUE
   procdump();
   #endif
-  
+  freevm(curproc->pgdir);
   acquire(&ptable.lock);
 
   // Parent might be sleeping in wait().
