@@ -46,7 +46,7 @@ void forkTest(){
     for(i=0; i<ARR_SIZE; i++){
       arr[i]='P'; //change the whole array for the Parent       
       if(i==ARR_SIZE-1)
-        arr[j]='X';    
+        arr[i]='X';    
     }
     printf(1,"Parent -\n-------\n");
     for(i=0; i<ARR_SIZE; i++){
