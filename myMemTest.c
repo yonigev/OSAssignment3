@@ -29,18 +29,22 @@ void forkTest(){
     sleep(20);
     sleep(20);
     int j;
-    printf(1,"\nChild- printing character from each page\n");
+    printf(1,"Child started changing array");
     for(j=0; j<ARR_SIZE; j++){
       arr[j]='C'; //change the whole array for the child       
     }
+    printf(1,"Child finished changing array");
     printf(1,"\n");
     exit();
   }
   else{
     //parent changing all chars to P
+    printf(1,"Parent started changing array: \n\n");
     for(i=0; i<ARR_SIZE; i++){
       arr[i]='P'; //change the whole array for the child       
+      arr[i]='p';
     }
+    printf(1,"Parent finished changing array: \n\n");
     sleep(30);
     wait();
     printf(1,"parent exiting.\n");
