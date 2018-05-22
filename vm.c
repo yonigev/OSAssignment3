@@ -818,6 +818,7 @@ add_new_page(struct proc *p, void* vaddr){
 //Aging
 void
 age_process_pages(struct proc* proc){
+  cprintf("AGING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
   struct page * pa_arr=proc->paging_meta.pages;
   int i;
   //for every page
