@@ -227,13 +227,12 @@ fork(void)
       panic("fork_create swapfile");
     }
   }
-  //copy from parent - if he's a user process
-  if(is_user_proc(curproc)){ //was curproc before! 
+  //copy from parent - if he's a user process OR the shell
+  if(is_user_proc(curproc)){
   //initialize swap file meta
     copy_parent_swapfile(np,curproc);
-    np->paging_meta=curproc->paging_meta;
-   
   }
+  np->paging_meta=curproc->paging_meta;
   np->page_faults = 0;    //reset number of page faults to 0;
   np->num_pageouts = 0;
   #endif
@@ -281,12 +280,11 @@ exit(void)
   iput(curproc->cwd);
   end_op();
   curproc->cwd = 0;
-  //#ifndef NONE
+  
   #if  TRUE
-  cprintf("verbose?");
   procdump();
   #endif
-  //#endif
+  
   acquire(&ptable.lock);
 
   // Parent might be sleeping in wait().
