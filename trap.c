@@ -82,9 +82,6 @@ trap(struct trapframe *tf)
   //page fault
   #ifndef NONE
   case T_PGFLT:
-    if(myproc() && myproc()->pid >= 3 ){
-      cprintf("proc  %d  got pagefault!! yay? \n", myproc()->pid);
-    }
     //added task 3
     if(myproc()){
       myproc()->page_faults++;

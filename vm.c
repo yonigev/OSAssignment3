@@ -723,13 +723,13 @@ copy_parent_swapfile(struct proc *child, struct proc *parent){
     cprintf("Parent meta   \n");
     int i;
     for(i=0; i<MAX_TOTAL_PAGES; i++){
-      cprintf("%x",parent->paging_meta.pages[i]);
+      cprintf("%x",parent->paging_meta.pages[i].vaddr);
     }
 
     cprintf("\n\nChild meta   \n");
 
      for(i=0; i<MAX_TOTAL_PAGES; i++){
-      cprintf("%x",child->paging_meta.pages[i]);
+      cprintf("%x",child->paging_meta.pages[i].vaddr);
     }
     
   
