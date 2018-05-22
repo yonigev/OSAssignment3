@@ -287,7 +287,6 @@ exit(void)
   #if  TRUE
   procdump();
   #endif
-  freevm(curproc->pgdir);
   acquire(&ptable.lock);
 
   // Parent might be sleeping in wait().
