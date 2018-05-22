@@ -13,7 +13,7 @@ void forkTest(){
   int i;
   char * arr;
   int pid;
-  arr = malloc (ARR_SIZE); //allocates 20 pages,  so 16 in RAM and 4 in the swapFile
+  arr = sbrk (ARR_SIZE); //allocates 20 pages,  so 16 in RAM and 4 in the swapFile
   for(i=0; i<ARR_SIZE; i++){
     arr[i]='7';
   }
