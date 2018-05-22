@@ -6,6 +6,8 @@
 #define PGSIZE 4096
 #define ARR_SIZE_FORK PGSIZE*17
 #define ARR_SIZE_TEST PGSIZE*17
+#define ARR_SIZE_ALTER PGSIZE*22
+
 
 //tests forking
 //Right after forking, 
@@ -104,17 +106,17 @@ void alter_test(){
 	int times = 0;
   int i = 0;
   printf(1,"allocation\n");
-	arr = sbrk(ARR_SIZE_TEST); //allocates 17 pages - 1 must be in the swapfile
+	arr = sbrk(ARR_SIZE_ALTER); //allocates 17 pages - 1 must be in the swapfile
 
   printf(1,"iteration\n");
   
   //random but not really
-  while(times < ARR_SIZE_TEST){
+  while(times < ARR_SIZE_ALTER){
     arr[i]='c';
     times++;
     i=PGSIZE* times+100;
-    i=ARR_SIZE_TEST-i*times;
-    i=i%ARR_SIZE_TEST;
+    i=ARR_SIZE_ALTER-i*times;
+    i=i%ARR_SIZE_ALTER;
   }
 
   printf(1,"\n\n");
