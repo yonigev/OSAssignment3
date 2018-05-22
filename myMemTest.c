@@ -3,18 +3,19 @@
 #include "user.h"
 #include "fs.h"
 #define PGSIZE 4096
-#define ARR_SIZE PGSIZE*18
+#define ARR_SIZE_FORK PGSIZE*17
+#define ARR_SIZE_TEST PGSIZE*17
 
-/*
-	Test used to check the swapping machanism in fork.
-	Best tested when LIFO is used (for more swaps)
-*/
-void forkTest(){
+//tests forking
+//Right after forking, 
+// the child process should have the same number of allocated pages, and number of paged-out pages.
+
+void forkPageTest(){
   int i;
   char * arr;
   int pid;
-  arr = sbrk(ARR_SIZE); //allocates 20 pages,  so 16 in RAM and 4 in the swapFile
-  for(i=0; i<ARR_SIZE; i++)    {
+  arr = sbrk(ARR_SIZE_FORK); //allocates 20 pages,  so 16 in RAM and 4 in the swapFile
+  for(i=0; i<ARR_SIZE_FORK; i++)    {
     arr[i]='M';
   }
   printf(1,"\n");
@@ -29,14 +30,14 @@ void forkTest(){
     sleep(20);
     sleep(20);
     int j;
-    for(j=0; j<ARR_SIZE; j++){
+    for(j=0; j<ARR_SIZE_FORK; j++){
       arr[j]='C'; //change the whole array for the child   
-      if(j==ARR_SIZE-1)
+      if(j==ARR_SIZE_FORK-1)
         arr[j]='x';    
     }
     printf(1,"Child -\n-------\n");
-    for(j=0; j<ARR_SIZE; j++){
-      if(j % 1000 == 0 || j==ARR_SIZE-1)
+    for(j=0; j<ARR_SIZE_FORK; j++){
+      if(j % 1000 == 0 || j==ARR_SIZE_FORK-1)
         printf(1,"%c",arr[j]);
     }
     printf(1,"\n\n");
@@ -45,14 +46,14 @@ void forkTest(){
   //Parent- change array to 'P's and print some.
   else{
     //parent changing all chars to P
-    for(i=0; i<ARR_SIZE; i++){
+    for(i=0; i<ARR_SIZE_FORK; i++){
       arr[i]='P'; //change the whole array for the Parent       
-      if(i==ARR_SIZE-1)
+      if(i==ARR_SIZE_TEST-1)
         arr[i]='X';    
     }
     printf(1,"Parent -\n-------\n");
-    for(i=0; i<ARR_SIZE; i++){
-      if(i % 1000 == 0|| i==ARR_SIZE-1)
+    for(i=0; i<ARR_SIZE_FORK; i++){
+      if(i % 1000 == 0|| i==ARR_SIZE_TEST-1)
         printf(1,"%c",arr[i]);
     }
     printf(1,"\n\n");
@@ -65,49 +66,32 @@ void forkTest(){
 }
 
 
-static unsigned long int next = 1;
-int getRandNum() {
-  next = next * 1103515245 + 12341;
-  return (unsigned int)(next/65536) % ARR_SIZE;
-}
-
-#define PAGE_NUM(addr) ((uint)(addr) & ~0xFFF)
-#define TEST_POOL 500
-/*
-Global Test:
-Allocates 17 pages (1 code, 1 space, 1 stack, 14 malloc)
-Using pseudoRNG to access a single cell in the array and put a number in it.
-Idea behind the algorithm:
-	Space page will be swapped out sooner or later with scfifo or lap.
-	Since no one calls the space page, an extra page is needed to play with swapping (hence the #17).
-	We selected a single page and reduced its page calls to see if scfifo and lap will become more efficient.
-Results (for TEST_POOL = 500):
-LIFO: 42 Page faults
-LAP: 18 Page faults
-SCFIFO: 35 Page faults
-*/
-void globalTest(){
+//Does a linear iteration over a 17 pages sized array.
+//NFUA- allocation  -  when allocating the last (17th) page, the 1st page should be swapped out into the SwapFile
+//      iteration   -  the 1st page is in the swap file. to reach it, page #2 would be swapped out... then #3 etc..
+void linear_test(){
 	char * arr;
 	int i;
 	int randNum;
-	arr = malloc(ARR_SIZE); //allocates 14 pages (sums to 17 - to allow more then one swapping in scfifo)
-  
-	for (i = 0; i < TEST_POOL; i++) {
-		randNum = getRandNum();	//generates a pseudo random number between 0 and ARR_SIZE
-		while (PGSIZE*10-8 < randNum && randNum < PGSIZE*10+PGSIZE/2-8)
-			randNum = getRandNum(); //gives page #13 50% less chance of being selected
-															//(redraw number if randNum is in the first half of page #13)
-		arr[randNum] = 'X';				//write to memory
-	printf(1,"test  i= %d\n",i);
+  printf(1,"allocation\n");
+	arr = sbrk(ARR_SIZE_TEST); //allocates 17 pages - 1 must be in the swapfile
+
+  printf(1,"iteration\n");
+  for(i=0; i<ARR_SIZE_TEST; i++){
+    arr[i]='A';
+    if(i % PGSIZE/2 == 0){  //print every 2048 digits
+      printf("%c",arr[i]);
+    }
   }
+
+	
 	free(arr);
 }
 
 
 int main(int argc, char *argv[]){
-  //globalTest();			//for testing each policy efficiency
-    
-  forkTest();			//for testing swapping machanism in fork.
+  linear_test();    
+  //forkTest();			//for testing swapping machanism in fork.
   printf(1,"memtest done\n");
   exit();
 }
