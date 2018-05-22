@@ -104,7 +104,7 @@ void linear_test(){
 //this goes on for 100 iterations.
 //Results - <page faults , total paged out>
 //NFUA- 38, 44
-//LAPA- 40,46
+//LAPA- 80,86
 //SCFIFO-100,106
 //AQ-   100,106
 //
@@ -114,8 +114,7 @@ void linear_test(){
 //  so pages that haven't been accessed for a long time would be paged out.
 //  
 //  pages here are accessed on a regular basis,
-//
-//
+//  SCFIFO and AQ 
 //
 //
 void alter_test(){
