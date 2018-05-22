@@ -116,8 +116,7 @@ void alter_test(){
     times++;
     i=PGSIZE* times+100;
     i=ARR_SIZE_ALTER-i*times;
-    i=i%ARR_SIZE_ALTER;
-    i=9000000;
+    i=i%(ARR_SIZE_ALTER-2);
   }
 
   printf(1,"\n\n");
