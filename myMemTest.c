@@ -13,17 +13,17 @@
 	Best tested when LIFO is used (for more swaps)
 */
 void forkTest(){
-  int i;
-  char * arr;
-  arr = malloc (ARR_2_SIZE); 
+//   int i;
+//   char * arr;
+//   arr = malloc (ARR_2_SIZE); 
 
-}
+// }
 
 
-static unsigned long int next = 1;
-int getRandNum() {
-  next = next * 1103515245 + 12341;
-  return (unsigned int)(next/65536) % ARR_1_SIZE;
+// static unsigned long int next = 1;
+// int getRandNum() {
+//   next = next * 1103515245 + 12341;
+//   return (unsigned int)(next/65536) % ARR_1_SIZE;
 }
 
 #define PAGE_NUM(addr) ((uint)(addr) & ~0xFFF)
