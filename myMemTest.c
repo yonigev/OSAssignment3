@@ -33,14 +33,16 @@ void forkTest(){
       printf(1,"%c",arr[j+PGSIZE*16]);  //print some characters of the B pages
 
     }
+    printf(1,"\n");
     exit();
   }
   else{
-    sleep(5);
+    sleep(10);
     printf(1,"Parent - ");
     for(i=0; i<20; i++){
-      printf(1,"%s",arr[i+PGSIZE*16]);  //print some characters of the B pages
+      printf(1,"%c",arr[i+PGSIZE*16]);  //print some characters of the B pages
     }
+    wait();
   }
 
 }
