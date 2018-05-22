@@ -22,6 +22,7 @@ void forkTest(){
   sleep(20);
   sleep(20);
   printf(1,"FORK\n");
+  //Child - change array to C's and print some
   if((pid=fork()) == 0){  
     printf(1,"-----------------------------------\nChild  - press Control+ P Quickly\n-----------------------------------\n");
     sleep(300);
@@ -35,12 +36,13 @@ void forkTest(){
     }
     printf(1,"Child -\n-------\n");
     for(j=0; j<ARR_SIZE; j++){
-      if(j % 1000 == 0)
+      if(j % 1000 == 0 || j==ARR_SIZE-1)
         printf(1,"%c",arr[j]);
     }
     printf(1,"\n\n");
     exit();
   }
+  //Parent- change array to 'P's and print some.
   else{
     //parent changing all chars to P
     for(i=0; i<ARR_SIZE; i++){
@@ -50,7 +52,7 @@ void forkTest(){
     }
     printf(1,"Parent -\n-------\n");
     for(i=0; i<ARR_SIZE; i++){
-      if(i % 1000 == 0)
+      if(i % 1000 == 0|| i==ARR_SIZE-1)
         printf(1,"%c",arr[i]);
     }
     printf(1,"\n\n");
