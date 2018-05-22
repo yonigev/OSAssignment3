@@ -113,6 +113,7 @@ void alter_test(){
     arr[i]='c';
     times++;
     i=PGSIZE* times+1000/7 % PGSIZE;
+    i=i%ARR_SIZE_TEST;
   }
 
   printf(1,"\n\n");
