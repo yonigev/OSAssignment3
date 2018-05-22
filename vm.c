@@ -830,7 +830,10 @@ age_process_pages(struct proc* proc){
       continue;
 
     }
+    
     pte_t *e= walkpgdir(proc->pgdir,pa_arr[i].vaddr,0);
+
+    cprintf("\n\n\nshit 2...accessed: %d \n\n\n\n",PTE_FLAGS(*e));
     if((*e & PTE_A) > 0){                     // if accessed
       
       if(pa_arr[i].vaddr == (void *)3000)
