@@ -282,9 +282,9 @@ exit(void)
   end_op();
   curproc->cwd = 0;
   //#ifndef NONE
-  #if VERBOSE_PRINT := TRUE
+  #if  TRUE
   cprintf("verbose?");
-  //procdump();
+  procdump();
   #endif
   //#endif
   acquire(&ptable.lock);
