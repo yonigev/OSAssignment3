@@ -2,7 +2,7 @@
 #include "stat.h"
 #include "user.h"
 #include "fs.h"
-
+#include "proc.c::procdump"
 #define PGSIZE 4096
 #define ARR_SIZE PGSIZE*20
 
@@ -22,11 +22,16 @@ void forkTest(){
       arr[i]='A';
   }
   //child
-  printf(1,"Now forking - press Control + P Quickly\n");
+  printf(1,"Now forking - proc states: \n");
+  procdump();
   sleep(20);
   if((pid=fork()) == 0){  
-    printf(1,"Child  - press Control+ P Quickly\n");
+    printf(1,"Child  - proc states: \n");
+    procdump();
     sleep(100);
+    
+    
+    
     int j;
     printf(1,"Child-");
     for(j=0; j<20; j++){
