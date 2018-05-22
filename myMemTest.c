@@ -104,7 +104,7 @@ void linear_test(){
 //this goes on for 100 iterations.
 //Results - <page faults , total paged out>
 //NFUA- 34,40
-//LAPA- 73,79
+//LAPA- 40,46
 //SCFIFO-100,106
 //AQ-   100,106
 //
@@ -146,6 +146,7 @@ void alter_test(){
     if(times % 10 == 0)
       printf(1,"\n---------\niteration: %d\n---------\n",times);
     from_ending=from_ending^from_ending;
+    sleep(0);
   }
 
   printf(1,"\n\n");
