@@ -126,6 +126,8 @@ void alter_test(){
       i=0;
       j=0;
     }
+    if(times % 1000 == 0)
+      printf(1,"iteration: %d\n",times);
   
   }
 
