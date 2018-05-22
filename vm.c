@@ -387,6 +387,11 @@ copyuvm(pde_t *pgdir, uint sz)
       panic("copyuvm: pte should exist");
     if(!(*pte & PTE_P) && !(*pte & PTE_PG))
       panic("copyuvm: page not present");
+    //if paged out
+    if(*pte & PTE_PG){ 
+      *pte=PTE_PG | PTE_U | PTE_W;    //mark as writable, for user and Page out! (NOT present.)
+      continue;                       //do not allocate a new entry for this
+    }
     pa = PTE_ADDR(*pte);
     flags = PTE_FLAGS(*pte);
     if((mem = kalloc()) == 0)
