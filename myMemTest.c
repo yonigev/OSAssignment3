@@ -103,10 +103,21 @@ void linear_test(){
 //this test alternates between pages. it accesses first, then last. then second from beginning, then second from the end.
 //this goes on for 100 iterations.
 //Results - <page faults , total paged out>
-//NFUA- 36,42
-//LAPA- 94,100
+//NFUA- 34,40
+//LAPA- 73,79
 //SCFIFO-100,106
 //AQ-   100,106
+//
+//
+//Explanation:
+//NFUA removes the page with the "earliest" last visit. (10000, 01111 >> 10000 would be paged out)
+//  so pages that haven't been accessed for a long time would be paged out.
+//  
+//  pages here are accessed on a regular basis,
+//
+//
+//
+//
 void alter_test(){
 	char * arr;
 	int j = 0;

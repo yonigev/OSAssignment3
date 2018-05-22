@@ -583,7 +583,7 @@ page_in_meta(struct proc* p,void* vaddr){
 //  And only when there's less than MAX_PSYC pages in memory.
 int
 pageIn(struct proc *p, void* vaddr){
-    cprintf("paging in: %x\n",vaddr);
+    //cprintf("paging in: %x\n",vaddr);
     char* paddr;    //will contain Physical address that the page would be written to.
     paddr = kalloc();                           //allocate physical page
     if(mappages(p->pgdir,vaddr,PGSIZE,V2P(paddr), PTE_U|PTE_W)!=0)    //map the vaddr to the newly allocated Paddr
@@ -661,7 +661,7 @@ addPageToBack(struct proc *p, void* vaddr){
 //page out a page with the adderss vaddr
 int
 pageOut(struct proc *p,void* vaddr){
-  cprintf("paging out - %x\n",vaddr);
+  //cprintf("paging out - %x\n",vaddr);
   char* to_free;
    //write page to the Back file.
   if(addPageToBack(p,vaddr)){
@@ -794,7 +794,7 @@ count_set_bits(uint number){
 // Adds a TOTALLY new page to the process's list.
 int
 add_new_page(struct proc *p, void* vaddr){
-  cprintf("proc: %d adding page: %x\n",p->pid,vaddr);
+  //cprintf("proc: %d adding page: %x\n",p->pid,vaddr);
   struct p_meta *meta = &p->paging_meta;
   struct page *pages= meta->pages;
 
@@ -823,19 +823,15 @@ age_process_pages(struct proc* proc){
   int i;
   //for every page
   for(i=0; i<MAX_TOTAL_PAGES; i++){
-    if(!pa_arr[i].exists  || pa_arr[i].in_back){
-     if(pa_arr[i].vaddr == (void *)3000)
-     
+    if(!pa_arr[i].exists  || pa_arr[i].in_back){     
       continue;
-
     }
     
     pte_t *e= walkpgdir(proc->pgdir,pa_arr[i].vaddr,0);
 
     if((*e & PTE_A) > 0){                     // if accessed
       
-      if(pa_arr[i].vaddr == (void *)3000)
-        cprintf("\n\n\nwell ...\n\n\n\n");
+     
       *e &=~PTE_A;                            // clear Accessed bit
       pa_arr[i].age=pa_arr[i].age >> 1;       //shift right
       pa_arr[i].age=pa_arr[i].age | MSB;     //set MSB 
