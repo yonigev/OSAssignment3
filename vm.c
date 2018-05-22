@@ -603,7 +603,8 @@ pageIn(struct proc *p, void* vaddr){
 //returns 1 if the page is PAGED OUT (not present AND marked as paged out.)
 int
 isPagedOut(struct proc *p,  void* vaddr){
-  if( !isFlagged(p,vaddr,PTE_P)  &&  isFlagged(p,vaddr,PTE_PG))
+  void * rounded=(void *)PGROUNDDOWN((uint)vaddr);
+  if( !isFlagged(p,vaddr,PTE_P)  &&  isFlagged(p,rounded,PTE_PG))
     return 1;
   return 0;
 }
