@@ -74,6 +74,7 @@ endif
 ifndef SELECTION
 SELECTION := NONE
 endif
+
 ifndef VERBOSE_PRINT
 VERBOSE_PRINT:=FALSE
 endif
