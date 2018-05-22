@@ -18,13 +18,11 @@ void forkTest(){
     arr[i]='M';
   }
   printf(1,"\n");
-  printf(1,"Parent    -   arr[10] == %x  \n",&arr[10] );
   printf(1,"-----------------------------------\nNow forking - press Control + P Quickly\n-----------------------------------\n");
   sleep(20);
   sleep(20);
   printf(1,"FORK\n");
   if((pid=fork()) == 0){  
-    printf(1,"Child    -   arr[10] == %x  \n",&arr[10] );
     printf(1,"-----------------------------------\nChild  - press Control+ P Quickly\n-----------------------------------\n");
     sleep(300);
     sleep(20);
@@ -52,8 +50,6 @@ void forkTest(){
       if(i % 1000 == 0)
         printf(1,"%c",arr[i]);
     }
-
-
     sleep(30);
     wait();
     printf(1,"parent exiting.\n");
