@@ -15,18 +15,18 @@ void forkTest(){
   char * arr;
   int pid;
   arr = malloc (ARR_SIZE); //allocates 20 pages,  so 16 in RAM and 4 in the swapFile
-  for(i=0; i<ARR_SIZE; i++){
+  for(i=PGSIZE*14; i<ARR_SIZE; i++){
     if(i >= 16 * PGSIZE)      //last 4 pages will contain 'B's.
       arr[i]='B';
     else
       arr[i]='A';
   }
   //child
-  printf(1,"Now forking - press Control + P \n");
-  sleep(10);
+  printf(1,"Now forking - press Control + P Quickly\n");
+  sleep(20);
   if((pid=fork()) == 0){  
-    printf(1,"Child  - press Control+ P\n");
-    sleep(10);
+    printf(1,"Child  - press Control+ P Quickly\n");
+    sleep(20);
     int j;
     printf(1,"Child-");
     for(j=0; j<20; j++){
