@@ -72,7 +72,7 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
       return -1;
     if(*pte & PTE_P)
       panic("remap");
-    *pte = pa | perm | PTE_P;
+    *pte = pa | perm;// | PTE_P;
     if(a == last)
       break;
     a += PGSIZE;
