@@ -79,7 +79,7 @@ void linear_test(){
 
   printf(1,"iteration\n");
   for(i=0; i<ARR_SIZE_TEST; i++){
-    sleep(1);
+    sleep(0);
     arr[i]='A';
     if(i % PGSIZE/2 == 0){  //print every 2048 digits
       printf(1,"%c",arr[i]);
