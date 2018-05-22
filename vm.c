@@ -713,8 +713,7 @@ copy_parent_swapfile(struct proc *child, struct proc *parent){
     char buff [PGSIZE/2]="";
     int offset=0;
     while((bytes_read=readFromSwapFile(parent,buff,offset,chunk))>0){//read chunk from parent
-      int written_child=writeToSwapFile(child,buff,offset,chunk);                      //write chunk to child
-      cprintf("wrote %d bytes in child's swapFile: %d %d %d %d %d\n",written_child,buff[500],buff[800],buff[1000],buff[1300],buff[1600]);
+     //writeToSwapFile(child,buff,offset,chunk);                      //write chunk to child
       offset+=bytes_read;                                            //next offset
     }
     //copy all the meta data from the parent
