@@ -68,7 +68,9 @@ void forkPageTest(){
 
 //Does a linear iteration over a 17 pages sized array.
 //NFUA- allocation  -  when allocating the last (17th) page, the 1st page should be swapped out into the SwapFile
-//      iteration   -  the 1st page is in the swap file. to reach it, page #2 would be swapped out... then #3 etc..
+//      iteration   -  the 1st page is in the swap file. to reach it, page #2 would be swapped out,then #1 swapped in.
+//                                                                    then to reach page#2, page #1 would be again swapped out and #1 swapped in.
+//                                                                    this continues the same way, or swapping ends here - depends on aging (ticks)
 void linear_test(){
 	char * arr;
 	int i;
@@ -82,8 +84,7 @@ void linear_test(){
       printf(1,"%c",arr[i]);
     }
   }
-
-	
+  printf(1,"\n\n");
 	free(arr);
 }
 

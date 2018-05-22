@@ -825,10 +825,11 @@ age_process_pages(struct proc* proc){
     if(!pa_arr[i].exists  || pa_arr[i].in_back)
       continue;
     pte_t *e= walkpgdir(proc->pgdir,pa_arr[i].vaddr,0);
-    //cprintf("B - entry      %x\n",pa_arr[i].age);
-    if((*e & PTE_A) > 0){            // if accessed
+    if((*e & PTE_A) > 0){                     // if accessed
       
-      *e &=~PTE_A;                   // clear Accessed bit
+      if(pa_arr[i].vaddr == 3000)
+        cprintf("\n\n\nwell ...\n\n\n\n");
+      *e &=~PTE_A;                            // clear Accessed bit
       pa_arr[i].age=pa_arr[i].age >> 1;       //shift right
       pa_arr[i].age=pa_arr[i].age | MSB;     //set MSB 
       //for LAPA
