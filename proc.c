@@ -283,6 +283,7 @@ exit(void)
   curproc->cwd = 0;
   #ifndef NONE
   #if VERBOSE_PRINT == TRUE
+  cprintf("verbose?");
   procdump();
   #endif
   #endif
