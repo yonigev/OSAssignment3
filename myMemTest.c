@@ -145,7 +145,7 @@ void alter_test(){
     if(times % 10 == 0)
       printf(1,"\n---------\niteration: %d\n---------\n",times);
     from_ending=from_ending^from_ending;
-    sleep(0);
+    //sleep(0);
   }
 
   printf(1,"\n\n");
