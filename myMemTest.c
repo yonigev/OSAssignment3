@@ -156,7 +156,7 @@ void alter_test(){
 int main(int argc, char *argv[]){
   linear_test();    
   alter_test();
-  forkTest();			//for testing swapping machanism in fork.
+  forkPageTest();			//for testing swapping machanism in fork.
   printf(1,"memtest done\n");
   exit();
 }
