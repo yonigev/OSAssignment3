@@ -14,7 +14,7 @@
 // the child process should have the same number of allocated pages, and number of paged-out pages.
 
 void forkPageTest(){
-  printf(1,"Fork Page -\n--------------");
+  printf(1,"Fork Page Test-\n--------------\n");
   int i;
   char * arr;
   int pid;
@@ -63,8 +63,8 @@ void forkPageTest(){
     sleep(30);
     wait();
     printf(1,"parent exiting.\n");
-  }
     exit();
+  }
 
 
 }
@@ -84,7 +84,7 @@ void forkPageTest(){
 //AQ - Same a SCFIFO here, has no real advantage - when a page is accessed,i won't be needed again anyway (linearity) so if it's "preventing" from being //                                                                                                                 chosen, i doensn't matter
 //                                                               
 void linear_test(){
-  printf(1,"Linear Test -\n--------------");
+  printf(1,"Linear Test -\n--------------\n");
 	char * arr;
 	int i;
 
@@ -122,7 +122,7 @@ void linear_test(){
 //
 //
 void alter_test(){
-  printf(1,"Alter Test -\n--------------");
+  printf(1,"Alter Test -\n--------------\n");
 	char * arr;
 	int j = 0;
   int i = 0;
@@ -163,8 +163,8 @@ void alter_test(){
 int main(int argc, char *argv[]){
   // UN-COMMENT ONLY THE TEST TO RUN
   linear_test();    
-  alter_test();
-  forkPageTest();			//for testing swapping machanism in fork.
+ // alter_test();
+  //forkPageTest();			//for testing swapping machanism in fork.
   printf(1,"memtest done\n");
   exit();
 }
