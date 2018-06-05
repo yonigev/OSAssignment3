@@ -64,6 +64,8 @@ void forkPageTest(){
     wait();
     printf(1,"parent exiting.\n");
   }
+    exit();
+
 
 }
 
@@ -85,7 +87,6 @@ void linear_test(){
   printf(1,"Linear Test -\n--------------");
 	char * arr;
 	int i;
-    printf(1,"allocation\n");
 
   printf(1,"allocation\n");
 	arr = sbrk(ARR_SIZE_TEST); //allocates 17 pages - 1 must be in the swapfile
@@ -100,6 +101,7 @@ void linear_test(){
   }
   printf(1,"\n\n");
 	free(arr);
+  exit();
 }
 
 //this test alternates between pages. it accesses first, then last. then second from beginning, then second from the end.
@@ -153,10 +155,13 @@ void alter_test(){
 
   printf(1,"\n\n");
 	free(arr);
+    exit();
+
 }
 
 
 int main(int argc, char *argv[]){
+  // UN-COMMENT ONLY THE TEST TO RUN
   linear_test();    
   alter_test();
   forkPageTest();			//for testing swapping machanism in fork.
