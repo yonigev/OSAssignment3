@@ -314,7 +314,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
         panic("kfree");
       char *v = P2V(pa);
       #ifndef NONE
-      if(myproc()){
+      if(myproc() && pgdir == myproc()->pgdir){
           struct p_meta *meta=&myproc()->paging_meta;
           struct page *pages=meta->pages;
           int i;
